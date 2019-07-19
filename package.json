@@ -2,14 +2,16 @@
   "name": "scout.ts",
   "version": "0.0.1",
   "description": "TS/AS port of scout",
-  "main": "dist/index.js",
+  "main": "dist/lib.js",
   "types": "./dist/index.d.ts",
-  "bin": "./dist/index.js",
+  "bin": "./dist/cli.js",
   "files": [
     "dist"
   ],
   "scripts": {
-    "start": "node ./dist/index.js",
+    "start": "node ./dist/cli.js",
+    "start:browser": "cp -r build public/ && http-server public",
+    "build:browser": "browserify src/browser.js > public/bundle.js",
     "build": "ethereumjs-config-build",
     "tsc": "ethereumjs-config-tsc",
     "coverage": "ethereumjs-config-coverage",
@@ -36,7 +38,10 @@
     "@types/node": "^12.6.8",
     "@types/webassembly-js-api": "0.0.3",
     "assemblyscript": "github:AssemblyScript/assemblyscript",
+    "browserify": "^16.3.0",
+    "http-server": "^0.11.1",
     "prettier": "^1.18.2",
+    "tsify": "^4.0.1",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3",
     "typestrict": "^1.0.2"

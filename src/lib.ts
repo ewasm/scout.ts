@@ -2,9 +2,14 @@ import * as assert from 'assert'
 import * as fs from 'fs'
 import { safeLoad } from 'js-yaml'
 
-
 let mem: WebAssembly.Memory
 let res: Buffer
+
+export const setMemory = (m: WebAssembly.Memory) => {
+  mem = m
+}
+
+export const getRes = () => res
 
 const memset = (mem: WebAssembly.Memory, offset: number, data: Buffer) => {
   const asBytes = new Uint8Array(mem.buffer, offset, data.length)
@@ -15,24 +20,24 @@ const memget = (mem: WebAssembly.Memory, offset: number, length: number) => {
   return Buffer.from(new Uint8Array(mem.buffer, offset, length))
 }
 
-interface ShardBlock {
+export interface ShardBlock {
   env: number
   blockData: Buffer
 }
 
-interface TestCase {
+export interface TestCase {
   script: string
   preStateRoot: Buffer
   blocks: Buffer[]
   postStateRoot: Buffer
 }
 
-interface EnvData {
+export interface EnvData {
   preStateRoot: Buffer
   blockData: Buffer
 }
 
-const getImports = (env: EnvData) => {
+export const getImports = (env: EnvData) => {
   return {
     env: {
       eth2_loadPreStateRoot: (ptr: number) => {
@@ -54,9 +59,8 @@ const getImports = (env: EnvData) => {
   }
 }
 
-function readYaml (path = 'test.yaml'): TestCase[] {
-  const testCaseFile = fs.readFileSync(path, { encoding: 'utf8' })
-  const testCase = safeLoad(testCaseFile)
+export function parseYaml (file: string): TestCase[] {
+  const testCase = safeLoad(file)
   const scripts = testCase.beacon_state.execution_scripts
   const shardBlocks = testCase.shard_blocks
   const testCases = []
@@ -85,33 +89,3 @@ function readYaml (path = 'test.yaml'): TestCase[] {
 
   return testCases
 }
-
-async function main() {
-  let testCases: TestCase[]
-  if (process.argv.length === 3) {
-    testCases = readYaml(process.argv[2])
-  } else if (process.argv.length === 2) {
-    testCases = readYaml('test.yaml')
-  } else {
-    throw new Error('invalid args')
-  }
-
-  for (const testCase of testCases) {
-    const wasmFile = fs.readFileSync(testCase.script)
-    const wasmModule = new WebAssembly.Module(wasmFile)
-    let preStateRoot = testCase.preStateRoot
-    for (const block of testCase.blocks) {
-      const instance = new WebAssembly.Instance(wasmModule, getImports({ preStateRoot, blockData: block }))
-      mem = instance.exports.memory
-      let t = process.hrtime()
-      instance.exports.main()
-      t = process.hrtime(t)
-      console.log('benchmark took %d seconds and %d nanoseconds (%d ms)', t[0], t[1], t[1] / 1000000)
-      preStateRoot = res
-    }
-    console.log(`expected ${testCase.postStateRoot.toString('hex')}, received ${res.toString('hex')}`)
-    assert(testCase.postStateRoot.equals(res))
-  }
-}
-
-main().then().catch((e) => { throw(e) })
