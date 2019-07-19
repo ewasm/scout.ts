@@ -54,7 +54,7 @@ const getImports = (env: EnvData) => {
   }
 }
 
-function readYaml (path = 'bazaar.yaml'): TestCase[] {
+function readYaml (path = 'test.yaml'): TestCase[] {
   const testCaseFile = fs.readFileSync(path, { encoding: 'utf8' })
   const testCase = safeLoad(testCaseFile)
   const scripts = testCase.beacon_state.execution_scripts
@@ -87,7 +87,14 @@ function readYaml (path = 'bazaar.yaml'): TestCase[] {
 }
 
 async function main() {
-  const testCases = readYaml()
+  let testCases: TestCase[]
+  if (process.argv.length === 3) {
+    testCases = readYaml(process.argv[2])
+  } else if (process.argv.length === 2) {
+    testCases = readYaml('test.yaml')
+  } else {
+    throw new Error('invalid args')
+  }
 
   for (const testCase of testCases) {
     const wasmFile = fs.readFileSync(testCase.script)
