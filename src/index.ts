@@ -15,30 +15,36 @@ const memget = (mem: WebAssembly.Memory, offset: number, length: number) => {
   return Buffer.from(new Uint8Array(mem.buffer, offset, length))
 }
 
+interface ShardBlock {
+  env: number
+  blockData: Buffer
+}
+
 interface TestCase {
   script: string
   preStateRoot: Buffer
-  blockData: Buffer
+  blocks: Buffer[]
   postStateRoot: Buffer
 }
 
-const getImports = (testCase: TestCase) => {
+interface EnvData {
+  preStateRoot: Buffer
+  blockData: Buffer
+}
+
+const getImports = (env: EnvData) => {
   return {
     env: {
       eth2_loadPreStateRoot: (ptr: number) => {
-        console.log('eth2_loadPreStateRoot')
-        memset(mem, ptr, testCase.preStateRoot)
+        memset(mem, ptr, env.preStateRoot)
       },
       eth2_blockDataSize: () => {
-        console.log('eth2_blockDataSize', testCase.blockData.length, testCase.blockData.byteLength)
-        return testCase.blockData.byteLength
+        return env.blockData.byteLength
       },
       eth2_blockDataCopy: (ptr: number, offset: number, length: number) => {
-        console.log('eth2_blockDataCopy', ptr, offset, length)
-        memset(mem, ptr, testCase.blockData.slice(offset, offset + length))
+        memset(mem, ptr, env.blockData.slice(offset, offset + length))
       },
       eth2_savePostStateRoot: (ptr: number) => {
-        console.log('eth2_savePostStateRoot')
         res = memget(mem, ptr, 32)
       },
       debug_startTimer: () => console.log('start timer'),
@@ -48,40 +54,57 @@ const getImports = (testCase: TestCase) => {
   }
 }
 
-function readYaml (path = 'test.yaml'): TestCase {
+function readYaml (path = 'bazaar.yaml'): TestCase[] {
   const testCaseFile = fs.readFileSync(path, { encoding: 'utf8' })
   const testCase = safeLoad(testCaseFile)
-  const preStateRoot = Buffer.from(testCase.shard_pre_state.exec_env_states[0], 'hex')
-  const blockData = Buffer.from(testCase.shard_blocks[0].data, 'hex')
-  const postStateRoot = Buffer.from(testCase.shard_post_state.exec_env_states[0], 'hex')
-  const script = testCase.beacon_state.execution_scripts[0]
+  const scripts = testCase.beacon_state.execution_scripts
+  const shardBlocks = testCase.shard_blocks
+  const testCases = []
+  for (let i = 0; i < scripts.length; i++) {
+    const script = scripts[i]
+    const preStateRoot = Buffer.from(testCase.shard_pre_state.exec_env_states[i], 'hex')
+    const postStateRoot = Buffer.from(testCase.shard_post_state.exec_env_states[i], 'hex')
+    assert(preStateRoot.length === 32)
+    assert(postStateRoot.length === 32)
 
-  assert(preStateRoot.length === 32)
-  assert(postStateRoot.length === 32)
+    const blocks = []
+    for (let b of shardBlocks) {
+      if (parseInt(b.env, 10) === i) {
+        blocks.push(Buffer.from(b.data, 'hex'))
+      }
+    }
 
-  return {
-    script,
-    preStateRoot,
-    blockData,
-    postStateRoot
+    testCases.push({
+      script,
+      preStateRoot,
+      postStateRoot,
+      blocks
+    })
   }
+
+
+  return testCases
 }
 
 async function main() {
-  const testCase = readYaml()
+  const testCases = readYaml()
 
-  const wasmFile = fs.readFileSync(testCase.script)
-  const wasmModule = new WebAssembly.Module(wasmFile)
-  const instance = new WebAssembly.Instance(wasmModule, getImports(testCase))
-  console.log(instance)
-  mem = instance.exports.memory
-  let t = process.hrtime()
-  instance.exports.main()
-  t = process.hrtime(t)
-  console.log('benchmark took %d seconds and %d nanoseconds (%d ms)', t[0], t[1], t[1] / 1000000)
-  console.log(`expected ${testCase.postStateRoot.toString('hex')}, received ${res.toString('hex')}`)
-  assert(testCase.postStateRoot.equals(res))
-
+  for (const testCase of testCases) {
+    const wasmFile = fs.readFileSync(testCase.script)
+    const wasmModule = new WebAssembly.Module(wasmFile)
+    let preStateRoot = testCase.preStateRoot
+    for (const block of testCase.blocks) {
+      const instance = new WebAssembly.Instance(wasmModule, getImports({ preStateRoot, blockData: block }))
+      mem = instance.exports.memory
+      let t = process.hrtime()
+      instance.exports.main()
+      t = process.hrtime(t)
+      console.log('benchmark took %d seconds and %d nanoseconds (%d ms)', t[0], t[1], t[1] / 1000000)
+      preStateRoot = res
+    }
+    console.log(`expected ${testCase.postStateRoot.toString('hex')}, received ${res.toString('hex')}`)
+    assert(testCase.postStateRoot.equals(res))
+  }
 }
 
 main().then().catch((e) => { throw(e) })
