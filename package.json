@@ -1,0 +1,47 @@
+{
+  "name": "scout.ts",
+  "version": "0.0.1",
+  "description": "TS/AS port of scout",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "build": "ethereumjs-config-build",
+    "tsc": "ethereumjs-config-tsc",
+    "coverage": "ethereumjs-config-coverage",
+    "coveralls": "ethereumjs-config-coveralls",
+    "format": "ethereumjs-config-format",
+    "format:fix": "ethereumjs-config-format-fix",
+    "tslint": "ethereumjs-config-tslint",
+    "tslint:fix": "ethereumjs-config-tslint-fix",
+    "lint": "ethereumjs-config-lint",
+    "lint:fix": "ethereumjs-config-lint-fix",
+    "test": "ts-node node_modules/tape/bin/tape ./test/**/*.ts",
+    "docs": "typedoc --out docs --mode modules --theme markdown --excludeNotExported src",
+    "asbuild:untouched": "asc assembly/hello-world/index.ts -b build/hello-world-untouched.wasm -t build/hello-world-untouched.wat --sourceMap --validate --debug",
+    "asbuild:optimized": "asc assembly/hello-world/index.ts -b build/hello-world-optimized.wasm -t build/hello-world-optimized.wat --sourceMap --validate --optimize",
+    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized"
+  },
+  "author": "s1na",
+  "license": "MIT",
+  "devDependencies": {
+    "@ethereumjs/config-prettier": "^1.1.1",
+    "@ethereumjs/config-tsc": "^1.1.1",
+    "@ethereumjs/config-tslint": "^1.1.1",
+    "@types/js-yaml": "^3.12.1",
+    "@types/node": "^12.6.8",
+    "@types/webassembly-js-api": "0.0.3",
+    "assemblyscript": "github:AssemblyScript/assemblyscript",
+    "prettier": "^1.18.2",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3",
+    "typestrict": "^1.0.2"
+  },
+  "dependencies": {
+    "js-yaml": "^3.13.1"
+  }
+}
