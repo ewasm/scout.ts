@@ -1,6 +1,8 @@
 import * as assert from 'assert'
 import * as fs from 'fs'
 import { safeLoad } from 'js-yaml'
+import BN = require('bn.js')
+import { TWO_POW256 } from 'ethereumjs-util'
 
 let mem: WebAssembly.Memory
 let res: Buffer
@@ -55,6 +57,41 @@ export const getImports = (env: EnvData) => {
       debug_startTimer: () => console.log('start timer'),
       debug_endTimer: () => console.log('end timer'),
       abort: () => { throw ('Wasm aborted') }
+    },
+    bignum: {
+      add256: (aOffset: number, bOffset: number, cOffset: number) => {
+        const a = new BN(memget(mem, aOffset, 32))
+        const b = new BN(memget(mem, bOffset, 32))
+        const c = a.add(b).mod(TWO_POW256).toArrayLike(Buffer, 'be', 32)
+        memset(mem, cOffset, c)
+      },
+      mul256: (aOffset: number, bOffset: number, cOffset: number) => {
+        const a = new BN(memget(mem, aOffset, 32))
+        const b = new BN(memget(mem, bOffset, 32))
+        const c = a.mul(b).mod(TWO_POW256).toArrayLike(Buffer, 'be', 32)
+        memset(mem, cOffset, c)
+      },
+      sub256: (aOffset: number, bOffset: number, cOffset: number) => {
+        const a = new BN(memget(mem, aOffset, 32))
+        const b = new BN(memget(mem, bOffset, 32))
+        const c = a.sub(b).toTwos(256).toArrayLike(Buffer, 'be', 32)
+        memset(mem, cOffset, c)
+      },
+      div256: (aOffset: number, bOffset: number, cOffset: number) => {
+        const a = new BN(memget(mem, aOffset, 32))
+        const b = new BN(memget(mem, bOffset, 32))
+        if (b.isZero()) throw new Error('division by zero')
+        const c = a.div(b).toArrayLike(Buffer, 'be', 32)
+        memset(mem, cOffset, c)
+      },
+      mulMod: (aOffset: number, bOffset: number, cOffset: number, rOffset: number) => {
+        const a = new BN(memget(mem, aOffset, 32))
+        const b = new BN(memget(mem, bOffset, 32))
+        const c = new BN(memget(mem, cOffset, 32))
+        if (c.isZero()) throw new Error('modulus is zero')
+        const r = a.mul(b).mod(c).toArrayLike(Buffer, 'be', 32)
+        memset(mem, rOffset, r)
+      }
     }
   }
 }

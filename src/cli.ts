@@ -28,8 +28,7 @@ function main() {
       console.log('benchmark took %d seconds and %d nanoseconds (%d ms)', t[0], t[1], t[1] / 1000000)
       preStateRoot = getRes()
     }
-    assert(testCase.postStateRoot.equals(getRes()))
-    console.log(`expected ${testCase.postStateRoot.toString('hex')}, received ${getRes().toString('hex')}`)
+    assert(testCase.postStateRoot.equals(getRes()), `expected ${testCase.postStateRoot.toString('hex')}, received ${getRes().toString('hex')}`)
   }
 }
 

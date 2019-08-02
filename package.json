@@ -34,6 +34,7 @@
     "@ethereumjs/config-prettier": "^1.1.1",
     "@ethereumjs/config-tsc": "^1.1.1",
     "@ethereumjs/config-tslint": "^1.1.1",
+    "@types/bn.js": "^4.11.5",
     "@types/js-yaml": "^3.12.1",
     "@types/node": "^12.6.8",
     "@types/webassembly-js-api": "0.0.3",
@@ -47,6 +48,8 @@
     "typestrict": "^1.0.2"
   },
   "dependencies": {
+    "bn.js": "^5.0.0",
+    "ethereumjs-util": "^6.1.0",
     "js-yaml": "^3.13.1"
   }
 }
