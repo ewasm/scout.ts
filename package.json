@@ -23,6 +23,7 @@
     "lint": "ethereumjs-config-lint",
     "lint:fix": "ethereumjs-config-lint-fix",
     "test": "ts-node node_modules/tape/bin/tape ./test/**/*.ts",
+    "test:as": "asp",
     "docs": "typedoc --out docs --mode modules --theme markdown --excludeNotExported src",
     "asbuild:untouched": "asc assembly/hello-world/index.ts -b build/hello-world-untouched.wasm -t build/hello-world-untouched.wat --sourceMap --validate --debug",
     "asbuild:optimized": "asc assembly/hello-world/index.ts -b build/hello-world-optimized.wasm -t build/hello-world-optimized.wat --sourceMap --validate --optimize",
@@ -31,6 +32,9 @@
   "author": "s1na",
   "license": "MIT",
   "devDependencies": {
+    "@as-pect/assembly": "^2.3.1",
+    "@as-pect/cli": "^2.3.1",
+    "@as-pect/core": "^2.3.1",
     "@ethereumjs/config-prettier": "^1.1.1",
     "@ethereumjs/config-tsc": "^1.1.1",
     "@ethereumjs/config-tslint": "^1.1.1",
