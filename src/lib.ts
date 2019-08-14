@@ -4,6 +4,9 @@ import { safeLoad } from 'js-yaml'
 import BN = require('bn.js')
 import { TWO_POW256 } from 'ethereumjs-util'
 
+// Cache size in bytes
+export const CACHE_SIZE = 256 * 1024
+
 let mem: WebAssembly.Memory
 let res: Buffer
 
@@ -37,6 +40,8 @@ export interface TestCase {
 export interface EnvData {
   preStateRoot: Buffer
   blockData: Buffer
+  readableCache: Buffer
+  writableCache: Buffer
 }
 
 export const getImports = (env: EnvData) => {
@@ -57,6 +62,16 @@ export const getImports = (env: EnvData) => {
       debug_startTimer: () => console.log('start timer'),
       debug_endTimer: () => console.log('end timer'),
       abort: () => { throw ('Wasm aborted') }
+    },
+    cache: {
+      load: (ptr: number, offset: number, len: number) => {
+        const c = env.readableCache.slice(offset, offset + len)
+        memset(mem, ptr, c)
+      },
+      save: (ptr: number, offset: number, len: number) => {
+        const c = memget(mem, ptr, len)
+        env.writableCache.write(c.toString('hex'), offset, len, 'hex')
+      }
     },
     bignum: {
       add256: (aOffset: number, bOffset: number, cOffset: number) => {
