@@ -4,8 +4,6 @@ import { safeLoad } from 'js-yaml'
 import BN = require('bn.js')
 import { TWO_POW256 } from 'ethereumjs-util'
 
-// How many blocks will the cache persist
-export const CACHE_TTL = 1
 // Cache size in bytes
 export const CACHE_SIZE = 256 * 1024
 

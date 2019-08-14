@@ -1,7 +1,7 @@
 import * as assert from 'assert'
 import * as fs from 'fs'
 import { safeLoad } from 'js-yaml'
-import { TestCase, parseYaml, getImports, setMemory, getRes, CACHE_SIZE, CACHE_TTL } from './lib'
+import { TestCase, parseYaml, getImports, setMemory, getRes, CACHE_SIZE } from './lib'
 
 function main() {
   let yamlPath

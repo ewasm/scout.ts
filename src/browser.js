@@ -1,5 +1,5 @@
 const { safeLoad } = require('js-yaml')
-const { TestCase, parseYaml, getImports, setMemory, getRes, CACHE_SIZE, CACHE_TTL } = require('../dist/lib')
+const { TestCase, parseYaml, getImports, setMemory, getRes, CACHE_SIZE } = require('../dist/lib')
 
 async function main() {
   let yamlPath = 'test.yaml'
