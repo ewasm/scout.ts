@@ -1,5 +1,5 @@
 const { safeLoad } = require('js-yaml')
-const { TestCase, parseYaml, getImports, setMemory, getRes } = require('../dist/lib')
+const { TestCase, parseYaml, getImports, setMemory, getRes, CACHE_SIZE, CACHE_TTL } = require('../dist/lib')
 
 async function main() {
   let yamlPath = 'test.yaml'
@@ -10,12 +10,17 @@ async function main() {
     const wasmResponse = await fetch(testCase.script)
     const wasmBuffer = await wasmResponse.arrayBuffer()
     let preStateRoot = testCase.preStateRoot
+    let readableCache = Buffer.alloc(CACHE_SIZE)
+    let writableCache = Buffer.alloc(CACHE_SIZE)
     for (const block of testCase.blocks) {
-      const compiled = await WebAssembly.instantiate(wasmBuffer, getImports({ preStateRoot, blockData: block }))
+      const compiled = await WebAssembly.instantiate(wasmBuffer, getImports({ preStateRoot, blockData: block, readableCache, writableCache }))
       const instance = compiled.instance
       setMemory(instance.exports.memory)
       instance.exports.main()
       preStateRoot = getRes()
+
+      readableCache = writableCache
+      writableCache = Buffer.alloc(CACHE_SIZE)
     }
     if (!testCase.postStateRoot.equals(getRes())) {
       console.error('Assertion failed, post state root doesn\'t match')
