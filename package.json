@@ -9,6 +9,7 @@
     "dist"
   ],
   "scripts": {
+    "prepublish": "npm run build && npm run test",
     "start": "node ./dist/cli.js",
     "start:browser": "cp -r build public/ && http-server public",
     "build:browser": "browserify src/browser.js > public/bundle.js",
