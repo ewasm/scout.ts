@@ -6,6 +6,7 @@ import { TWO_POW256 } from 'ethereumjs-util'
 
 let mem: WebAssembly.Memory
 let res: Buffer
+res = Buffer.alloc(32)
 
 export const setMemory = (m: WebAssembly.Memory) => {
   mem = m
@@ -53,6 +54,10 @@ export const getImports = (env: EnvData) => {
       },
       eth2_savePostStateRoot: (ptr: number) => {
         res = memget(mem, ptr, 32)
+      },
+      debug_log: (ptr: number) => console.log('debug_log:', ptr),
+      debug_mem: (ptr: number, len: number) => {
+        console.log(len + ' bytes at mem pos ' + ptr + ':', memget(mem, ptr, len).toString('hex'))
       },
       debug_startTimer: () => console.log('start timer'),
       debug_endTimer: () => console.log('end timer'),
