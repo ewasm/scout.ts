@@ -58,6 +58,13 @@ export const getImports = (env: EnvData) => {
       debug_endTimer: () => console.log('end timer'),
       abort: () => { throw ('Wasm aborted') }
     },
+    debug: {
+      debug_print32: (value: number) => console.log('debug_print32', value),
+      debug_printMem: (ptr: number, length: number) => console.log('debug_printMem: ', ptr, length, memget(mem, ptr, length)),
+      debug_printMemHex: (ptr: number, length: number) => {
+        console.log('debug_printMemHex: ', ptr, length, memget(mem, ptr, length).toString('hex'))
+      }
+    },
     bignum: {
       add256: (aOffset: number, bOffset: number, cOffset: number) => {
         const a = new BN(memget(mem, aOffset, 32))
