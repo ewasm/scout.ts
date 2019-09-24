@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import * as assert from 'assert'
 import * as fs from 'fs'
 import { safeLoad } from 'js-yaml'
