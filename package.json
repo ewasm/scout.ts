@@ -6,9 +6,10 @@
   "types": "./dist/index.d.ts",
   "bin": "./dist/cli.js",
   "files": [
-    "dist"
+    "dist/**/*"
   ],
   "scripts": {
+    "prepublishOnly": "npm run build",
     "start": "node ./dist/cli.js",
     "start:browser": "cp -r build public/ && http-server public",
     "build:browser": "browserify src/browser.js > public/bundle.js",
@@ -30,7 +31,7 @@
     "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized"
   },
   "author": "s1na",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@as-pect/assembly": "^2.3.1",
     "@as-pect/cli": "^2.3.1",
