@@ -1,6 +1,6 @@
 {
   "name": "scout.ts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "TS/AS port of scout",
   "main": "dist/lib.js",
   "types": "./dist/index.d.ts",
