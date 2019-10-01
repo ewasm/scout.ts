@@ -1,5 +1,4 @@
 import * as env from '../env'
-import * as bignum from '../bignum'
 
 /*
  * Increments preStateRoot by one
@@ -13,7 +12,7 @@ export function main(): void {
   var numPtr: u32 = __heap_base + 64
   store<u8>(numPtr, 1, 31)
 
-  bignum.add256(preStateRootPtr, numPtr, postStateRootPtr)
+  env.bignum_add256(preStateRootPtr, numPtr, postStateRootPtr)
 
   env.eth2_savePostStateRoot(postStateRootPtr)
 }
