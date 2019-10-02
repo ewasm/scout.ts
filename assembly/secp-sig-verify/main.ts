@@ -5,10 +5,7 @@ import { keccakMain } from "./keccak";
 //import { decode } from "./rlp";
 
 /*
-@external("env", "debug_log")
-export declare function debug(a: i32): void;
-
-@external("env", "debug_mem")
+@external("env", "debug_printMem")
 export declare function debug_mem(pos: i32, len: i32): void;
 */
 
