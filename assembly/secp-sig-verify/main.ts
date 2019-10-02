@@ -1,4 +1,4 @@
-import { secp_g1m_toMontgomery, secp_g1m_timesScalar, secp_g1m_add, secp_fr_inverse, secp_g1m_affine, secp_g1m_fromMontgomery, secp_f1m_neg, secp_frm_neg } from "./websnark_secp256k1";
+import { secp_g1m_toMontgomery, secp_g1m_timesScalar, secp_g1m_add, secp_fr_inverse, secp_g1m_affine, secp_g1m_fromMontgomery, secp_frm_neg } from "./websnark_secp256k1";
 import { keccakMain } from "./keccak";
 //import { hashBranchNode, RLPBranchNode, RLPData, decode, encode } from "./rlp";
 
@@ -27,6 +27,8 @@ export declare function eth2_savePostStateRoot(offset: i32): void;
 
 
 /****
+## python reference: https://repl.it/repls/UsableBumpyPyramid
+
 ## Test vector of a signed tx (generated from smpt.js)
 
 from account: 0x29120ac3527858f5637e698cdbf0548c6b59ec77
@@ -55,6 +57,24 @@ export function main(): i32 {
   let input_data_buff = new ArrayBuffer(input_data_len);
   eth2_blockDataCopy(input_data_buff as usize, 0, input_data_len);
 
+  let sig_recovered_address = new ArrayBuffer(32);
+
+  for (let i=0; i<72; i++) { // benchmarking loop
+    sig_recovered_address = txSigECRecover(input_data_buff.slice());
+  }
+
+  eth2_savePostStateRoot(sig_recovered_address as usize);
+
+  return 1;
+}
+
+
+function txSigECRecover(tx_sig_data: ArrayBuffer): ArrayBuffer {
+
+  // tx rlp is 25 bytes
+  // TODO: use rlp_decode to handle varying tx's
+  let tx_rlp = Uint8Array.wrap(tx_sig_data, 0, 25);
+  //debug_mem((tx_rlp.buffer as usize) + tx_rlp.byteOffset, 25);
 
   /*
   // r = 15ed312c5863d1e3ff253e8c9077c460233f62bc73d69c5364e0f2de0f7cd064
@@ -62,8 +82,17 @@ export function main(): i32 {
   sig_r = [100, 208, 124, 15, 222, 242, 224, 100, 83, 156, 214, 115, 188, 98, 63, 35, 96, 196, 119, 144, 140, 62, 37, 255, 227, 209, 99, 88, 44, 49, 237, 21];
   */
 
-  let sig_r = Uint8Array.wrap(input_data_buff, 25, 32);
+  let sig_r = Uint8Array.wrap(tx_sig_data, 25, 32);
   let sig_r_le = sig_r.reverse();
+
+  /*
+  // s = 173d84e53ad0bb8bbbd2f48703c59697ca33bf9077524d9df154bc944f8f6516
+  let s = Array.create<u8>(32);
+  s = [22, 101, 143, 79, 148, 188, 84, 241, 157, 77, 82, 119, 144, 191, 51, 202, 151, 150, 197, 3, 135, 244, 210, 187, 139, 187, 208, 58, 229, 132, 61, 23];
+  */
+
+  let sig_s = Uint8Array.wrap(tx_sig_data, 57, 32); // starts at byte 57 (25 for tx_rlp + 32 for sig_r)
+  let sig_s_le = sig_s.reverse();
 
 
   // r2.x = 15ed312c5863d1e3ff253e8c9077c460233f62bc73d69c5364e0f2de0f7cd064
@@ -81,6 +110,7 @@ export function main(): i32 {
 
   // r2.x is txSig.r
   // r2.y is fixed (derived form the secp curve)
+  // TODO: do we need to check that the R2 points is valid?
   // initialize r2 with the x coord as zeros. txSig.r will be copied in memory.copy()
   r2_coords = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49, 203, 99, 206, 49, 162, 21, 64, 200, 155, 232, 27, 18, 245, 33, 31, 205, 17, 38, 27, 139, 79, 242, 212, 213, 31, 16, 246, 116, 102, 118, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -97,35 +127,22 @@ export function main(): i32 {
   // 243791c9b0e3e823228deb7a896dbef8a2d5537cd37a9b4dad451954217c9c06ea03b8c702326a6a6e29d0c2e4e580ece5e46bbbafa3e7cb9cce7be83424ed12e14000001100000000000000000000000000000000000000730b0000133d0000
 
 
-  /*
-  // s = 173d84e53ad0bb8bbbd2f48703c59697ca33bf9077524d9df154bc944f8f6516
-  let s = Array.create<u8>(32);
-  s = [22, 101, 143, 79, 148, 188, 84, 241, 157, 77, 82, 119, 144, 191, 51, 202, 151, 150, 197, 3, 135, 244, 210, 187, 139, 187, 208, 58, 229, 132, 61, 23];
-  */
-
-  let sig_s = Uint8Array.wrap(input_data_buff, 57, 32); // starts at byte 57 (25 for tx_rlp + 32 for sig_r)
-  let sig_s_le = sig_s.reverse();
-
   let s_times_r2_result = new ArrayBuffer(96);
-
   secp_g1m_timesScalar(r2_mont_form as usize, (sig_s_le.buffer as usize) + sig_s_le.byteOffset, 32, s_times_r2_result as usize);
   //debug_mem(s_times_r2_result as usize, 96);
+
 
   // secp256k1 base point G
   // g = (0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798,
   // 0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8)
 
+  // TODO: move to global
   let g1_gen = Array.create<u8>(96);
   // [x, y, 1]
   g1_gen = [152, 23, 248, 22, 91, 129, 242, 89, 217, 40, 206, 45, 219, 252, 155, 2, 7, 11, 135, 206, 149, 98, 160, 85, 172, 187, 220, 249, 126, 102, 190, 121, 184, 212, 16, 251, 143, 208, 71, 156, 25, 84, 133, 166, 72, 180, 23, 253, 168, 8, 17, 14, 252, 251, 164, 93, 101, 196, 163, 38, 119, 218, 58, 72, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   secp_g1m_toMontgomery(g1_gen.buffer as usize, g1_gen.buffer as usize);
   //debug_mem(g1_gen.buffer as usize, 96);
 
-
-  // tx rlp is 25 bytes
-  // TODO: use rlp_decode to handle varying tx's
-  let tx_rlp = Uint8Array.wrap(input_data_buff, 0, 25);
-  //debug_mem((tx_rlp.buffer as usize) + tx_rlp.byteOffset, 25);
 
   let tx_rlp_hash = new ArrayBuffer(32);
   // TODO: ensure that the keccak memory offset (llvm shadow stack) doesn't collide with websnark or assemblyscript
@@ -176,7 +193,9 @@ export function main(): i32 {
   let q2_bytes = new ArrayBuffer(64);
   memory.copy((q2_bytes as usize), q2_bytes_x_rev.buffer as usize, 32);
   memory.copy((q2_bytes as usize) + 32, q2_bytes_y_rev.buffer as usize, 32);
+  // TODO: do we need to check that q2 has the right order? (assert(g1_gen.order() * q2 == INFINITY))
   //debug_mem(q2_bytes as usize, 64);
+
 
   let q2HashOutput = new ArrayBuffer(32);
   // TODO: ensure that the keccak memory offset (llvm shadow stack) doesn't collide with websnark or assemblyscript
@@ -193,14 +212,7 @@ export function main(): i32 {
   //debug_mem(sig_recovered_address.buffer as usize, 32);
   // recovered address is 29120ac3527858f5637e698cdbf0548c6b59ec77
 
-  eth2_savePostStateRoot((sig_recovered_address.buffer as usize) + sig_recovered_address.byteOffset);
-
-  return 1;
-}
-
-
-function TxSigRecover(tx_sig_data: ArrayBuffer): ArrayBuffer {
-  
+  return sig_recovered_address.buffer;
 }
 
 
