@@ -232,9 +232,10 @@ function build(callback) {
 
     console.log('mainLines length after deleting import statements:', mainLines.length);
 
-    // write merged wat for debugging purposes
     var merged_wat = mainLines.join("\n");
-    fs.writeFileSync("out/main_with_websnark_and_keccak_merged.wat", merged_wat);
+
+    // write merged wat for debugging purposes
+    //fs.writeFileSync("out/main_with_websnark_and_keccak_merged.wat", merged_wat);
 
 
 
