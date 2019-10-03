@@ -118,8 +118,6 @@ function build(callback) {
     // mainLines[914] is an empty line ``
     // closing paren is second to last line
 
-    let closing_paren_ix_before_websnark_merge = mainLines.length - 2;
-
 
 
     /****
@@ -175,15 +173,71 @@ function build(callback) {
     secpFuncsRenamed = secpFuncsRenamed.replace(/\$f1m_neg/g, "\$websnark_secp256k1/secp_f1m_neg");
     secpFuncsRenamed = secpFuncsRenamed.replace(/\$frm_neg/g, "\$websnark_secp256k1/secp_frm_neg");
 
-    const secpFuncsWat = secpFuncsRenamed;
+    let secpFuncsWat = secpFuncsRenamed;
 
     // for debugging
     fs.writeFileSync("out/secp_funcs.wat", secpFuncsWat);
 
 
+    // $websnark_secp256k1/secp_frm_neg
+
+    //  (import "env" "eth2_loadPreStateRoot" (func $main/eth2_loadPreStateRoot (param i32)))
+
+    // bignum_mulModMont: (aOffset: number, bOffset: number, rOffset: number) => {
+    // (import "env" "bignum_mulModMont" (func $main/bignum_mulModMont (param i32 i32 i32)))
+
+
+    const bignumMulModMontImport = '(import "env" "bignum_mulModMont" (func $main/bignum_mulModMont (param i32 i32 i32)))';
+
+    const bignumImportStatements = [bignumMulModMontImport];
+
+    // insert bignum host function import statement
+
+    // find line number to insert at (after last import)
+    var foundLastImport = false;
+    var foundFirstImport = false;
+    let line_i = 0;
+    while (!foundLastImport) {
+      console.log("checking line_i="+line_i+" for an import:", mainLines[line_i]);
+      if (mainLines[line_i].includes('(import') == true) {
+        console.log("found import statement. checking next line..");
+        foundFirstImport = true;
+        // splice on mainLines will delete a line. use same `i` to search the next line
+      } else if (foundFirstImport == true) {
+        // no import statement is on this line.
+        // if one was already found before, assume the previous line was the last import
+        foundLastImport = true;
+      }
+      line_i++;
+    }
+    const lastImportLine = line_i - 1;
+
+    console.log('last import:', mainLines[lastImportLine]);
+    mainLines.splice(lastImportLine, 0, ...bignumImportStatements);
+
+
+    /****
+    * replace websnark calls to bignum funcs with calls to host funcs
+    */
+
+    // (func $f1m_mul (export "f1m_mul")  (param $p0 i32) (param $p1 i32) (param $p2 i32)
+
+    // TODO: automate check that replacing `(call $f1m_mul` works.
+    //  `(call $f1m_mul` is found 39 times.  `$f1m_mul` is found 40 times, one more for the function declaration
+
+    let secpUsingBignumFuncs = secpFuncsWat.replace(/\(call \$f1m_mul/g, "\(call \$main/bignum_mulModMont");
+    secpFuncsWat = secpUsingBignumFuncs;
+
+    // for debugging
+    fs.writeFileSync("out/secp_funcs_bignum_host.wat", secpFuncsWat);
+
+
     /****
     * insert websnark code
     */
+
+    // closing paren is second to last line
+    let closing_paren_ix_before_websnark_merge = mainLines.length - 2;
 
     const secpLines = secpFuncsWat.split("\n");
     mainLines.splice(closing_paren_ix_before_websnark_merge, 0, ...secpLines );
@@ -235,7 +289,7 @@ function build(callback) {
     var merged_wat = mainLines.join("\n");
 
     // write merged wat for debugging purposes
-    //fs.writeFileSync("out/main_with_websnark_and_keccak_merged.wat", merged_wat);
+    fs.writeFileSync("out/main_with_websnark_and_keccak_merged.wat", merged_wat);
 
 
 
