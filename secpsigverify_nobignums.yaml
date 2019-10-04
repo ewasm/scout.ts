@@ -1,6 +1,6 @@
 beacon_state:
   execution_scripts:
-    - assembly/secp-sig-verify/out/main_with_websnark_and_keccak.wasm
+    - assembly/secp-sig-verify/out/main_with_websnark_and_keccak_no_bignums.wasm
 shard_pre_state:
   exec_env_states:
     - "0000000000000000000000000000000000000000000000000000000000000000"
@@ -9,5 +9,4 @@ shard_blocks:
     data: "d894895b62b6dc6115fe23c931f9765041a078e1241881ff8015ed312c5863d1e3ff253e8c9077c460233f62bc73d69c5364e0f2de0f7cd064173d84e53ad0bb8bbbd2f48703c59697ca33bf9077524d9df154bc944f8f6516"
 shard_post_state:
   exec_env_states:
-    #- "00000000000000000000000029120ac3527858f5637e698cdbf0548c6b59ec77"
-    - "000000000000000000000000d683fd3465c996598dc972688b7ace676c89077b"
+    - "00000000000000000000000029120ac3527858f5637e698cdbf0548c6b59ec77"

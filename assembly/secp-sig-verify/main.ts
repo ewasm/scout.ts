@@ -5,10 +5,9 @@ import { keccakMain } from "./keccak";
 //import { decode } from "./rlp";
 
 /*
-@external("env", "debug_printMem")
+@external("env", "debug_printMemHex")
 export declare function debug_mem(pos: i32, len: i32): void;
 */
-
 
 @external("env", "eth2_blockDataSize")
 export declare function eth2_blockDataSize(): i32;
@@ -73,21 +72,12 @@ function txSigECRecover(tx_sig_data: ArrayBuffer): ArrayBuffer {
   let tx_rlp = Uint8Array.wrap(tx_sig_data, 0, 25);
   //debug_mem((tx_rlp.buffer as usize) + tx_rlp.byteOffset, 25);
 
-  /*
-  // r = 15ed312c5863d1e3ff253e8c9077c460233f62bc73d69c5364e0f2de0f7cd064
-  let sig_r = Array.create<u8>(32);
-  sig_r = [100, 208, 124, 15, 222, 242, 224, 100, 83, 156, 214, 115, 188, 98, 63, 35, 96, 196, 119, 144, 140, 62, 37, 255, 227, 209, 99, 88, 44, 49, 237, 21];
-  */
 
+  // r = 15ed312c5863d1e3ff253e8c9077c460233f62bc73d69c5364e0f2de0f7cd064
   let sig_r = Uint8Array.wrap(tx_sig_data, 25, 32);
   let sig_r_le = sig_r.reverse();
 
-  /*
   // s = 173d84e53ad0bb8bbbd2f48703c59697ca33bf9077524d9df154bc944f8f6516
-  let s = Array.create<u8>(32);
-  s = [22, 101, 143, 79, 148, 188, 84, 241, 157, 77, 82, 119, 144, 191, 51, 202, 151, 150, 197, 3, 135, 244, 210, 187, 139, 187, 208, 58, 229, 132, 61, 23];
-  */
-
   let sig_s = Uint8Array.wrap(tx_sig_data, 57, 32); // starts at byte 57 (25 for tx_rlp + 32 for sig_r)
   let sig_s_le = sig_s.reverse();
 
@@ -120,14 +110,14 @@ function txSigECRecover(tx_sig_data: ArrayBuffer): ArrayBuffer {
   //debug_mem(r2_coords.buffer as usize, 96);
   // 64d07c0fdef2e064539cd673bc623f2360c477908c3e25ffe3d163582c31ed1531cb63ce31a21540c89be81b12f5211fcd11261b8b4ff2d4d51f10f6746676090100000000000000000000000000000000000000000000000000000000000000
 
-  //debug_mem(r2_mont_form.buffer as usize, 96);
+  //debug_mem(r2_mont_form as usize, 96);
   // 243791c9b0e3e823228deb7a896dbef8a2d5537cd37a9b4dad451954217c9c06ea03b8c702326a6a6e29d0c2e4e580ece5e46bbbafa3e7cb9cce7be83424ed12e14000001100000000000000000000000000000000000000730b0000133d0000
 
 
   let s_times_r2_result = new ArrayBuffer(96);
   secp_g1m_timesScalar(r2_mont_form as usize, (sig_s_le.buffer as usize) + sig_s_le.byteOffset, 32, s_times_r2_result as usize);
   //debug_mem(s_times_r2_result as usize, 96);
-
+  // s_times_r2_result should be (LE) 2d9da8bd8d3918fb58a248bbb47d89df66940cd163d7e6390dfcdb3c745474659f12b894fb253ae447bebff6f2e94c40865ae7635f7410c2f7a755d35522d9073901ad0eb4596627789f3215374ccba59e1a4d033681f1c1580c060bc4eae9fc
 
   // secp256k1 base point G
   // g = (0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798,
@@ -154,19 +144,23 @@ function txSigECRecover(tx_sig_data: ArrayBuffer): ArrayBuffer {
   let neg_hash_msg = new ArrayBuffer(32);
   secp_frm_neg(tx_rlp_hash as usize, neg_hash_msg as usize);
   //debug_mem(neg_hash_msg as usize, 32);
+  // (LE) 059fbeb6e0098fd15614cc1beeb161dbe5d1dd7ed68d5882452cd2a7ff5bda78
   // neg_hash_msg should be 78da5bffa7d22c4582588dd67eddd1e5db61b1ee1bcc1456d18f09e0b6be9f05
 
   let p_e_times_gen = new ArrayBuffer(96);
   secp_g1m_timesScalar(g1_gen.buffer as usize, neg_hash_msg as usize, 32, p_e_times_gen as usize);
   //debug_mem(p_e_times_gen as usize, 96);
+  // (LE) 7789077fde1ddc9d1fc3215c7ae969a959b630587c5cfc8a279d38ed4938bd17cc59c8bcf8842dcd2e61c2d0917e46033f500ebec3e885467eca1470e61b715f08ee2d38062f346dde7f8b1bde821f2dba386501bb2ab7e139baf1a823775ffd
 
   let muls_added = new ArrayBuffer(96);
   secp_g1m_add(s_times_r2_result as usize, p_e_times_gen as usize, muls_added as usize);
   //debug_mem(muls_added as usize, 96);
+  // (LE) 2f83406281fea1ccc4cb1f9e3653e0dfbecdf146f9eeb5ec1b21b788e3560573aec4b63c6c23caf77a1ceb1172dded035524d4e084778b7e3573f64e5acf090fa910fedf7e905e436ee8f592ca0e702ba29868de6c1d07d4910b248150b1d121
 
   let r_inverse = new ArrayBuffer(32);
   secp_fr_inverse((sig_r_le.buffer as usize) + sig_r_le.byteOffset, r_inverse as usize);
   //debug_mem(r_inverse as usize, 32);
+  // (LE) f4c3aa2d9d29b5266685177d5063f26b2a757588f526f737ec39e3ae63ca606d
 
   let q2 = new ArrayBuffer(96);
   secp_g1m_timesScalar(muls_added as usize, r_inverse as usize, 32, q2 as usize);
@@ -176,7 +170,6 @@ function txSigECRecover(tx_sig_data: ArrayBuffer): ArrayBuffer {
   secp_g1m_affine(q2 as usize, q2_affine as usize);
   secp_g1m_fromMontgomery(q2_affine as usize, q2_affine as usize);
   //debug_mem(q2_affine as usize, 96);
-
 
   // convert q2 affine to big endian before hashing
   let q2_bytes_x = q2_affine.slice(0, 32);
@@ -199,13 +192,8 @@ function txSigECRecover(tx_sig_data: ArrayBuffer): ArrayBuffer {
   keccakMain(q2_bytes as usize, 64, q2HashOutput as usize);
   // hash is 0f586183a7dfc59955f0abf829120ac3527858f5637e698cdbf0548c6b59ec77
 
-
-  //let sig_recovered_address = q2HashOutput.slice(12);
-  //debug_mem((sig_recovered_address as usize), 20);
-
   let sig_recovered_address = Uint8Array.wrap(q2HashOutput, 0, 32);
   sig_recovered_address.fill(0, 0, 12); // zero out first 12 bytes. remaining 20 bytes is the recovered address
-
   //debug_mem(sig_recovered_address.buffer as usize, 32);
   // recovered address is 29120ac3527858f5637e698cdbf0548c6b59ec77
 

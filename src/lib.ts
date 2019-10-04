@@ -39,8 +39,35 @@ export interface EnvData {
   blockData: Buffer
 }
 
-// 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f == 115792089237316195423570985008687907853269984665640564039457584007908834671663
-//const q = bigInt("115792089237316195423570985008687907853269984665640564039457584007908834671663");
+var secp256k1_field_modulus = new BN('fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f', 16);
+var field_modulus = secp256k1_field_modulus;
+
+function addmod(a: BN, b: BN): BN {
+  var res = a.add(b);
+  if (res.cmp(field_modulus) >= 0) {
+    res.isub(field_modulus);
+  }
+  return res
+}
+
+function submod(a: BN, b: BN): BN {
+  var res = a.sub(b);
+  if (res.cmpn(0) < 0) {
+    res.iadd(field_modulus);
+  }
+  return res
+}
+
+function mulmodmont(a: BN, b: BN): BN {
+  var r_inv = new BN('bcb223fedc24a059d838091dd2253531', 16);
+  var t = a.mul(b);
+  var k0 = t.mul(r_inv).maskn(128);
+  var res2 = k0.mul(field_modulus).add(t).shrn(128);
+  var k1 = res2.mul(r_inv).maskn(128);
+  var result = k1.mul(field_modulus).add(res2).shrn(128).maskn(256);
+  //console.log('mulmodmont result:', result.toString('hex'))
+  return result
+}
 
 export const getImports = (env: EnvData) => {
   return {
@@ -96,97 +123,59 @@ export const getImports = (env: EnvData) => {
         const r = a.mul(b).mod(c).toArrayLike(Buffer, 'be', 32)
         memset(mem, rOffset, r)
       },
+      bignum_f1m_square: (inOffset: number, outOffset: number) => {
+        const in_param = new BN(memget(mem, inOffset, 32), 'le');
+        var result = mulmodmont(in_param, in_param);
+
+        var result_le = result.toArrayLike(Buffer, 'le', 32)
+        memset(mem, outOffset, result_le)
+      },
+      bignum_f1m_add: (aOffset: number, bOffset: number, outOffset: number) => {
+        const a = new BN(memget(mem, aOffset, 32), 'le');
+        const b = new BN(memget(mem, aOffset, 32), 'le');
+        var result = addmod(a, b);
+
+        var result_le = result.toArrayLike(Buffer, 'le', 32)
+
+        memset(mem, outOffset, result_le)
+      },
+      bignum_f1m_sub: (aOffset: number, bOffset: number, outOffset: number) => {
+        const a = new BN(memget(mem, aOffset, 32), 'le');
+        const b = new BN(memget(mem, aOffset, 32), 'le');
+        var result = submod(a, b);
+
+        var result_le = result.toArrayLike(Buffer, 'le', 32)
+        memset(mem, outOffset, result_le)
+      },
+      bignum_int_mul: (aOffset: number, bOffset: number, outOffset: number) => {
+        const a = new BN(memget(mem, aOffset, 32), 'le');
+        const b = new BN(memget(mem, aOffset, 32), 'le');
+        const result = a.mul(b).maskn(256);
+
+        const result_le = result.toArrayLike(Buffer, 'le', 32)
+
+        memset(mem, outOffset, result_le)
+      },
+      bignum_f1m_toMontgomery: (inOffset: number, outOffset: number) => {
+        const in_param = new BN(memget(mem, inOffset, 32), 'le');
+
+        var r_squared = new BN('1000007a2000e90a1', 16);
+
+        var result = mulmodmont(in_param, r_squared);
+        var result_le = result.toArrayLike(Buffer, 'le', 32)
+
+        memset(mem, outOffset, result_le)
+      },
       // modular multiplication of two numbers in montgomery form (i.e. montgomery multiplication)
-      bignum_mulModMont: (aOffset: number, bOffset: number, rOffset: number) => {
-        //console.log('bignum_mulModMont.')
-        /*
-        BN.prototype.redMul = function redMul (num) {
-          assert(this.red, 'redMul works only with red numbers');
-          this.red._verify2(this, num);
-          return this.red.mul(this, num);
-        };
- 
-        Red.prototype.mul = function mul (a, b) {
-          this._verify2(a, b);
-          return this.imod(a.mul(b));
-        };
+      bignum_f1m_mul: (aOffset: number, bOffset: number, rOffset: number) => {
 
-        Red.prototype.imod = function imod (a) {
-          if (this.prime) return this.prime.ireduce(a)._forceRed(this);
-
-          a.umod(this.m)._forceRed(this)._move(a);
-          return a;
-        };
-
-        BN.prototype.umod = function umod (num) {
-          return this.divmod(num, 'mod', true).mod;
-        };
-
-        MPrime.prototype.ireduce = function ireduce (num) {
-          // Assumes that `num` is less than `P^2`
-          // num = HI * (2 ^ N - K) + HI * K + LO = HI * K + LO (mod P)
-          var r = num;
-          var rlen;
-
-          do {
-            this.split(r, this.tmp);
-            r = this.imulK(r);
-            r = r.iadd(this.tmp);
-            rlen = r.bitLength();
-          } while (rlen > this.n);
-
-          var cmp = rlen < this.n ? -1 : r.ucmp(this.p);
-          if (cmp === 0) {
-            r.words[0] = 0;
-            r.length = 1;
-          } else if (cmp > 0) {
-            r.isub(this.p);
-          } else {
-            r._strip();
-          }
-
-          return r;
-        };
-        */
-
-        // modulus c is a state variable, not an argument
         const a = new BN(memget(mem, aOffset, 32), 'le')
         const b = new BN(memget(mem, bOffset, 32), 'le')
 
-        var red = BN.red('k256')
+        var result = mulmodmont(a, b);
+        var result_le = result.toArrayLike(Buffer, 'le', 32);
 
-        // use forceRed to flag that the numbers are already in montgomery form
-        // error TS2339: Property 'forceRed' does not exist on type 'BN'.
-        // @ts-ignore
-        var redA = a.forceRed(red)
-        // looks like typescript defs for bn.js don't include forceRed
-        // @ts-ignore
-        var redB = b.forceRed(red)
-
-        const r = redA.redMul(redB).toArrayLike(Buffer, 'le', 32)
-
-        // error TS2576: Property 'red' is a static member of type 'BN'
-        //a.red = red
-        //b.red = red
-
-        /*
-        // this compiles with default typescript types
-        var redA = a.toRed(red)
-        var redB = b.toRed(red)
-        const r = redA.redMul(b).toArrayLike(Buffer, 'le', 32)
-        */
-
-
-        //const r = a.redMul(b).toArrayLike(Buffer, 'le', 32)
-        //console.log('bignum_mulModMont result:', r.toString('hex'))
-        memset(mem, rOffset, r)
-
-        /*
-        //const c = new BN(memget(mem, cOffset, 32))
-        if (c.isZero()) throw new Error('modulus is zero')
-        const r = a.mul(b).mod(c).toArrayLike(Buffer, 'be', 32)
-        memset(mem, rOffset, r)
-        */
+        memset(mem, rOffset, result_le)
       }
     }
   }
