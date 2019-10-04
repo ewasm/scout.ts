@@ -4,10 +4,10 @@ import { keccakMain } from "./keccak";
 
 //import { decode } from "./rlp";
 
-/*
+
 @external("env", "debug_printMemHex")
 export declare function debug_mem(pos: i32, len: i32): void;
-*/
+
 
 @external("env", "eth2_blockDataSize")
 export declare function eth2_blockDataSize(): i32;
@@ -119,6 +119,22 @@ function txSigECRecover(tx_sig_data: ArrayBuffer): ArrayBuffer {
   //debug_mem(s_times_r2_result as usize, 96);
   // s_times_r2_result should be (LE) 2d9da8bd8d3918fb58a248bbb47d89df66940cd163d7e6390dfcdb3c745474659f12b894fb253ae447bebff6f2e94c40865ae7635f7410c2f7a755d35522d9073901ad0eb4596627789f3215374ccba59e1a4d033681f1c1580c060bc4eae9fc
 
+  //let s_times_r2_result_affine_normal = new ArrayBuffer(96);
+  //secp_g1m_affine(s_times_r2_result as usize, s_times_r2_result_affine_normal as usize);
+  //secp_g1m_fromMontgomery(s_times_r2_result_affine_normal as usize, s_times_r2_result_affine_normal as usize);
+  //debug_mem(0, 8);
+  //debug_mem(s_times_r2_result_affine_normal as usize, 96);
+  // with host funcs: c56e650848dcba22e9c5eaaf4af310455b6f521cb90b556dbab388b9c0190205cc9c5d22d315c4841a54a1529a759ed5a6569efbd62d8f7184d2eb0ab8574c420100000000000000000000000000000000000000000000000000000000000000
+  // without: 058229da280d92f597bc88e740e54b513be59539ee6e88ab325e641d7dfc75d9c6b281953acfc58df03f1bc04be2a657f4beefa251fe725d8216f8fdcb5f50e90100000000000000000000000000000000000000000000000000000000000000
+
+
+  //let s_times_r2_result_norm_form = new ArrayBuffer(96);
+  //secp_g1m_fromMontgomery(s_times_r2_result as usize, s_times_r2_result_norm_form as usize);
+  //debug_mem(s_times_r2_result_norm_form as usize, 96);
+  // using host funcs: 4d8ac3a0cb79166e99af54ea0d49beefe6ba75203191972735a0113280db8d3655983521d58ba3228ed421e362dc42fe09d8ac32546baaf5daa9b330f1e0db90ac0f1705f7a0558123c7d524d750f16887b5f799f30ad0aeaa96475b2df7838a
+  // no host funcs:   4d8ac3a0cb79166e99af54ea0d49beefe6ba75203191972735a0113280db8d3655983521d58ba3228ed421e362dc42fe09d8ac32546baaf5daa9b330f1e0db90ac0f1705f7a0558123c7d524d750f16887b5f799f30ad0aeaa96475b2df7838a
+
+
   // secp256k1 base point G
   // g = (0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798,
   // 0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8)
@@ -129,6 +145,14 @@ function txSigECRecover(tx_sig_data: ArrayBuffer): ArrayBuffer {
   g1_gen = [152, 23, 248, 22, 91, 129, 242, 89, 217, 40, 206, 45, 219, 252, 155, 2, 7, 11, 135, 206, 149, 98, 160, 85, 172, 187, 220, 249, 126, 102, 190, 121, 184, 212, 16, 251, 143, 208, 71, 156, 25, 84, 133, 166, 72, 180, 23, 253, 168, 8, 17, 14, 252, 251, 164, 93, 101, 196, 163, 38, 119, 218, 58, 72, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   secp_g1m_toMontgomery(g1_gen.buffer as usize, g1_gen.buffer as usize);
   //debug_mem(g1_gen.buffer as usize, 96);
+
+  //debug_mem(0, 16);
+
+  //let g1_gen_norm_form = new ArrayBuffer(96);
+  //secp_g1m_fromMontgomery(g1_gen.buffer as usize, g1_gen_norm_form as usize);
+  //debug_mem(g1_gen_norm_form as usize, 96);
+  // no host funcs: 9817f8165b81f259d928ce2ddbfc9b02070b87ce9562a055acbbdcf97e66be79b8d410fb8fd0479c195485a648b417fda808110efcfba45d65c4a32677da3a480100000000000000000000000000000000000000000000000000000000000000
+  // us host funcs: 9817f8165b81f259d928ce2ddbfc9b02070b87ce9562a055acbbdcf97e66be79b8d410fb8fd0479c195485a648b417fda808110efcfba45d65c4a32677da3a480100000000000000000000000000000000000000000000000000000000000000
 
 
   let tx_rlp_hash = new ArrayBuffer(32);

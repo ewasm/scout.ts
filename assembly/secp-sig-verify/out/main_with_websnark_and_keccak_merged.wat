@@ -1,13 +1,14 @@
 (module
+ (type $FUNCSIG$vii (func (param i32 i32)))
  (type $FUNCSIG$i (func (result i32)))
  (type $FUNCSIG$viii (func (param i32 i32 i32)))
  (type $FUNCSIG$vi (func (param i32)))
  (type $FUNCSIG$iii (func (param i32 i32) (result i32)))
  (type $FUNCSIG$ii (func (param i32) (result i32)))
  (type $FUNCSIG$iiii (func (param i32 i32 i32) (result i32)))
- (type $FUNCSIG$vii (func (param i32 i32)))
  (type $FUNCSIG$viiii (func (param i32 i32 i32 i32)))
  (type $FUNCSIG$v (func))
+ (import "env" "debug_printMemHex" (func $main/debug_mem (param i32 i32)))
  (import "env" "eth2_blockDataSize" (func $main/eth2_blockDataSize (result i32)))
  (import "env" "eth2_blockDataCopy" (func $main/eth2_blockDataCopy (param i32 i32 i32)))
  (import "env" "eth2_loadPreStateRoot" (func $main/eth2_loadPreStateRoot (param i32)))
@@ -19,13 +20,14 @@
  (global $~lib/rt/stub/startOffset (mut i32) (i32.const 0))
  (global $~lib/rt/stub/offset (mut i32) (i32.const 0))
  (export "memory" (memory $0))
+ (export "debug_mem" (func $main/debug_mem))
  (export "eth2_blockDataSize" (func $main/eth2_blockDataSize))
  (export "eth2_blockDataCopy" (func $main/eth2_blockDataCopy))
  (export "eth2_loadPreStateRoot" (func $main/eth2_loadPreStateRoot))
  (export "eth2_savePostStateRoot" (func $main/eth2_savePostStateRoot))
  (export "main" (func $main/main))
  (start $start)
- (func $~lib/rt/stub/__alloc (; 12 ;) (type $FUNCSIG$iii) (param $0 i32) (param $1 i32) (result i32)
+ (func $~lib/rt/stub/__alloc (; 13 ;) (type $FUNCSIG$iii) (param $0 i32) (param $1 i32) (result i32)
   (local $2 i32)
   (local $3 i32)
   (local $4 i32)
@@ -99,7 +101,7 @@
   i32.store offset=12
   local.get $3
  )
- (func $~lib/memory/memory.fill (; 13 ;) (type $FUNCSIG$vii) (param $0 i32) (param $1 i32)
+ (func $~lib/memory/memory.fill (; 14 ;) (type $FUNCSIG$vii) (param $0 i32) (param $1 i32)
   (local $2 i32)
   block $~lib/util/memory/memset|inlined.0
    local.get $1
@@ -308,7 +310,7 @@
    end
   end
  )
- (func $~lib/arraybuffer/ArrayBuffer#constructor (; 14 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/arraybuffer/ArrayBuffer#constructor (; 15 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   (local $1 i32)
   local.get $0
   i32.const 1073741808
@@ -324,13 +326,13 @@
   call $~lib/memory/memory.fill
   local.get $1
  )
- (func $~lib/arraybuffer/ArrayBuffer#get:byteLength (; 15 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/arraybuffer/ArrayBuffer#get:byteLength (; 16 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   local.get $0
   i32.const 16
   i32.sub
   i32.load offset=12
  )
- (func $~lib/memory/memory.copy (; 16 ;) (type $FUNCSIG$viii) (param $0 i32) (param $1 i32) (param $2 i32)
+ (func $~lib/memory/memory.copy (; 17 ;) (type $FUNCSIG$viii) (param $0 i32) (param $1 i32) (param $2 i32)
   (local $3 i32)
   (local $4 i32)
   block $~lib/util/memory/memmove|inlined.0
@@ -505,7 +507,7 @@
    end
   end
  )
- (func $~lib/arraybuffer/ArrayBuffer#slice (; 17 ;) (type $FUNCSIG$iiii) (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
+ (func $~lib/arraybuffer/ArrayBuffer#slice (; 18 ;) (type $FUNCSIG$iiii) (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
   (local $3 i32)
   local.get $0
   call $~lib/arraybuffer/ArrayBuffer#get:byteLength
@@ -572,7 +574,7 @@
   call $~lib/memory/memory.copy
   local.get $3
  )
- (func $~lib/typedarray/Uint8Array.wrap (; 18 ;) (type $FUNCSIG$iiii) (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
+ (func $~lib/typedarray/Uint8Array.wrap (; 19 ;) (type $FUNCSIG$iiii) (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
   (local $3 i32)
   (local $4 i32)
   block $folding-inner0
@@ -627,7 +629,7 @@
   end
   unreachable
  )
- (func $~lib/typedarray/Uint8Array#reverse (; 19 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/typedarray/Uint8Array#reverse (; 20 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   (local $1 i32)
   (local $2 i32)
   (local $3 i32)
@@ -678,7 +680,7 @@
   end
   local.get $3
  )
- (func $~lib/rt/__allocArray (; 20 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/rt/__allocArray (; 21 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   (local $1 i32)
   (local $2 i32)
   i32.const 16
@@ -708,7 +710,7 @@
   end
   local.get $1
  )
- (func $~lib/array/Array.create<u8> (; 21 ;) (type $FUNCSIG$i) (result i32)
+ (func $~lib/array/Array.create<u8> (; 22 ;) (type $FUNCSIG$i) (result i32)
   (local $0 i32)
   i32.const 0
   call $~lib/rt/__allocArray
@@ -722,14 +724,14 @@
   call $~lib/memory/memory.fill
   local.get $0
  )
- (func $~lib/arraybuffer/ArrayBufferView#get:byteOffset (; 22 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/arraybuffer/ArrayBufferView#get:byteOffset (; 23 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   local.get $0
   i32.load offset=4
   local.get $0
   i32.load
   i32.sub
  )
- (func $~lib/typedarray/Uint8Array#fill (; 23 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/typedarray/Uint8Array#fill (; 24 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   (local $1 i32)
   (local $2 i32)
   (local $3 i32)
@@ -764,7 +766,7 @@
   end
   local.get $0
  )
- (func $main/txSigECRecover (; 24 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $main/txSigECRecover (; 25 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   (local $1 i32)
   (local $2 i32)
   (local $3 i32)
@@ -945,7 +947,7 @@
   local.get $0
   i32.load
  )
- (func $main/main (; 25 ;) (type $FUNCSIG$i) (result i32)
+ (func $main/main (; 26 ;) (type $FUNCSIG$i) (result i32)
   (local $0 i32)
   (local $1 i32)
   (local $2 i32)
@@ -981,13 +983,13 @@
   call $main/eth2_savePostStateRoot
   i32.const 1
  )
- (func $start (; 26 ;) (type $FUNCSIG$v)
+ (func $start (; 27 ;) (type $FUNCSIG$v)
   i32.const 32992
   global.set $~lib/rt/stub/startOffset
   global.get $~lib/rt/stub/startOffset
   global.set $~lib/rt/stub/offset
  )
- (func $null (; 27 ;) (type $FUNCSIG$v)
+ (func $null (; 28 ;) (type $FUNCSIG$v)
   nop
  )
   (func $int_copy (export "int_copy") (export "f1m_copy") (export "frm_copy") (export "fr_copy")  (param $p0 i32) (param $p1 i32)

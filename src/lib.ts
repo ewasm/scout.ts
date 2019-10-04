@@ -127,6 +127,16 @@ export const getImports = (env: EnvData) => {
         const r = a.mul(b).mod(c).toArrayLike(Buffer, 'be', 32)
         memset(mem, rOffset, r)
       },
+      // modular multiplication of two numbers in montgomery form (i.e. montgomery multiplication)
+      bignum_f1m_mul: (aOffset: number, bOffset: number, rOffset: number) => {
+        const a = new BN(memget(mem, aOffset, 32), 'le')
+        const b = new BN(memget(mem, bOffset, 32), 'le')
+
+        var result = mulmodmont(a, b);
+        var result_le = result.toArrayLike(Buffer, 'le', 32);
+
+        memset(mem, rOffset, result_le)
+      },
       bignum_f1m_square: (inOffset: number, outOffset: number) => {
         const in_param = new BN(memget(mem, inOffset, 32), 'le');
         var result = mulmodmont(in_param, in_param);
@@ -151,27 +161,23 @@ export const getImports = (env: EnvData) => {
         var result_le = result.toArrayLike(Buffer, 'le', 32)
         memset(mem, outOffset, result_le)
       },
-      bignum_int_mul: (aOffset: number, bOffset: number, outOffset: number) => {
-        const a = new BN(memget(mem, aOffset, 32), 'le');
-        const b = new BN(memget(mem, bOffset, 32), 'le');
-        //const result = a.mul(b).maskn(256);
-        const result = a.mul(b).mod(TWO_POW256);
+      bignum_f1m_toMontgomery: (inOffset: number, outOffset: number) => {
+        const in_param = new BN(memget(mem, inOffset, 32), 'le');
 
-        const result_le = result.toArrayLike(Buffer, 'le', 32)
+        var r_squared = new BN('1000007a2000e90a1', 16);
+        var result = mulmodmont(in_param, r_squared);
+        var result_le = result.toArrayLike(Buffer, 'le', 32)
+
         memset(mem, outOffset, result_le)
       },
-      bignum_int_div: (aOffset: number, bOffset: number, cOffset: number, rOffset: number) => {
-        // c is the quotient
-        // r is the remainder
-        const a = new BN(memget(mem, aOffset, 32), 'le');
-        const b = new BN(memget(mem, bOffset, 32), 'le');
-        // @ts-ignore
-        const result = a.divmod(b);
-        const result_quotient_le = result.div.toArrayLike(Buffer, 'le', 32)
-        const result_remainder_le = result.mod.toArrayLike(Buffer, 'le', 32)
+      bignum_f1m_fromMontgomery: (inOffset: number, outOffset: number) => {
+        const in_param = new BN(memget(mem, inOffset, 32), 'le');
 
-        memset(mem, cOffset, result_quotient_le)
-        memset(mem, rOffset, result_remainder_le)
+        var one = new BN('1', 16);
+        var result = mulmodmont(in_param, one);
+        var result_le = result.toArrayLike(Buffer, 'le', 32)
+
+        memset(mem, outOffset, result_le)
       },
       bignum_int_add: (aOffset: number, bOffset: number, outOffset: number) => {
         const a = new BN(memget(mem, aOffset, 32), 'le');
@@ -208,25 +214,27 @@ export const getImports = (env: EnvData) => {
         
         return carry
       },
-      bignum_f1m_toMontgomery: (inOffset: number, outOffset: number) => {
-        const in_param = new BN(memget(mem, inOffset, 32), 'le');
+      bignum_int_mul: (aOffset: number, bOffset: number, outOffset: number) => {
+        const a = new BN(memget(mem, aOffset, 32), 'le');
+        const b = new BN(memget(mem, bOffset, 32), 'le');
+        //const result = a.mul(b).maskn(256);
+        const result = a.mul(b).mod(TWO_POW256);
 
-        var r_squared = new BN('1000007a2000e90a1', 16);
-
-        var result = mulmodmont(in_param, r_squared);
-        var result_le = result.toArrayLike(Buffer, 'le', 32)
-
+        const result_le = result.toArrayLike(Buffer, 'le', 32)
         memset(mem, outOffset, result_le)
       },
-      // modular multiplication of two numbers in montgomery form (i.e. montgomery multiplication)
-      bignum_f1m_mul: (aOffset: number, bOffset: number, rOffset: number) => {
-        const a = new BN(memget(mem, aOffset, 32), 'le')
-        const b = new BN(memget(mem, bOffset, 32), 'le')
+      bignum_int_div: (aOffset: number, bOffset: number, cOffset: number, rOffset: number) => {
+        // c is the quotient
+        // r is the remainder
+        const a = new BN(memget(mem, aOffset, 32), 'le');
+        const b = new BN(memget(mem, bOffset, 32), 'le');
+        // @ts-ignore
+        const result = a.divmod(b);
+        const result_quotient_le = result.div.toArrayLike(Buffer, 'le', 32)
+        const result_remainder_le = result.mod.toArrayLike(Buffer, 'le', 32)
 
-        var result = mulmodmont(a, b);
-        var result_le = result.toArrayLike(Buffer, 'le', 32);
-
-        memset(mem, rOffset, result_le)
+        memset(mem, cOffset, result_quotient_le)
+        memset(mem, rOffset, result_remainder_le)
       }
     }
   }

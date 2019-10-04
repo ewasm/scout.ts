@@ -120,6 +120,8 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
         /****
         * insert bignum host function import statements
         */
+        const bignumf1mToMontImport = '(import "env" "bignum_f1m_toMontgomery" (func $main/bignum_f1m_toMontgomery (param i32 i32)))';
+        const bignumf1mFromMontImport = '(import "env" "bignum_f1m_fromMontgomery" (func $main/bignum_f1m_fromMontgomery (param i32 i32)))';
         const bignumf1mMulImport = '(import "env" "bignum_f1m_mul" (func $main/bignum_f1m_mul (param i32 i32 i32)))';
         const bignumf1mSqrImport = '(import "env" "bignum_f1m_square" (func $main/bignum_f1m_square (param i32 i32)))';
         const bignumf1mAddImport = '(import "env" "bignum_f1m_add" (func $main/bignum_f1m_add (param i32 i32 i32)))';
@@ -129,11 +131,20 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
         const bignumIntSubImport = '(import "env" "bignum_int_sub" (func $main/bignum_int_sub (param i32 i32 i32) (result i32)))';
         const bignumIntDivImport = '(import "env" "bignum_int_div" (func $main/bignum_int_div (param i32 i32 i32 i32)))';
 
-        //const bignumImportStatements = [bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport, bignumf1mSqrImport,
-        //                              bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
+        const bignumImportStatements = [bignumf1mToMontImport, bignumf1mFromMontImport,
+                                        bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport, bignumf1mSqrImport,
+                                        bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
+
+        /*
+        const bignumImportStatements = [
+                                        bignumf1mToMontImport, bignumf1mFromMontImport,
+                                        bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport, bignumf1mSqrImport,
+                                        //bignumf1mAddImport, bignumf1mSubImport,
+                                        bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
+        */
 
         //const bignumImportStatements = [bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport, bignumf1mSqrImport];
-        const bignumImportStatements = [bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
+        //const bignumImportStatements = [bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
         //const bignumImportStatements = [bignumIntMulImport, bignumIntAddImport, bignumIntSubImport];
 
         // find line number to insert at (after last import)
@@ -170,12 +181,13 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
 
         let secpUsingBignumFuncs = secpFuncsWat;
 
-        /*
-        secpUsingBignumFuncs = secpFuncsWat.replace(/\(call \$f1m_mul/g, "\(call \$main/bignum_f1m_mul");
+        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_mul/g, "\(call \$main/bignum_f1m_mul");
+        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_square/g, "\(call \$main/bignum_f1m_square");
         secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_add/g, "\(call \$main/bignum_f1m_add");
         secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_sub/g, "\(call \$main/bignum_f1m_sub");
-        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_square/g, "\(call \$main/bignum_f1m_square");
-        */
+
+        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_toMontgomery/g, "\(call \$main/bignum_f1m_toMontgomery");
+        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_fromMontgomery/g, "\(call \$main/bignum_f1m_fromMontgomery");
 
         secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$int_mul/g, "\(call \$main/bignum_int_mul");
         secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$int_add/g, "\(call \$main/bignum_int_add");
