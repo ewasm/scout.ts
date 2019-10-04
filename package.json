@@ -13,6 +13,8 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "start": "node ./dist/cli.js",
+    "start:turbofan": "node ./dist/cli.js",
+    "start:liftoff": "node --liftoff --no-wasm-tier-up ./dist/cli.js",
     "start:browser": "cp -r build public/ && http-server public",
     "build:browser": "browserify src/browser.js > public/bundle.js",
     "build": "ethereumjs-config-build",
