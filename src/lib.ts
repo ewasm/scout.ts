@@ -68,8 +68,10 @@ function mulmodmont(a: BN, b: BN): BN {
   var k0 = t.mul(r_inv).maskn(128);
   var res2 = k0.mul(field_modulus).add(t).shrn(128);
   var k1 = res2.mul(r_inv).maskn(128);
-  var result = k1.mul(field_modulus).add(res2).shrn(128).maskn(256);
-  //console.log('mulmodmont result:', result.toString('hex'))
+  var result = k1.mul(field_modulus).add(res2).shrn(128);
+  if (result.gt(secp256k1_field_modulus)) {
+    result = result.sub(secp256k1_field_modulus)
+  }
   return result
 }
 
