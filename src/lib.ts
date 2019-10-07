@@ -43,8 +43,25 @@ export interface EnvData {
 //const TWO_POW256 = new BN('10000000000000000000000000000000000000000000000000000000000000000', 16);
 const MASK_256 = new BN('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', 16);
 
-var secp256k1_field_modulus = new BN('fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f', 16);
-var field_modulus = secp256k1_field_modulus;
+//var secp256k1_field_modulus = new BN('fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f', 16);
+//var secp256k1_r_inv = new BN('bcb223fedc24a059d838091dd2253531', 16);
+//var secp256k1_r_squared = new BN('1000007a2000e90a1', 16);
+
+// 0x30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47
+var bn128_field_modulus = new BN('30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47', 16);
+var bn128_r_inv = new BN('9ede7d651eca6ac987d20782e4866389', 16);
+var bn128_r_squared = new BN('06d89f71cab8351f47ab1eff0a417ff6b5e71911d44501fbf32cfc5b538afa89', 16)
+
+
+//var field_modulus = secp256k1_field_modulus;
+//var r_inv = secp256k1_r_inv;
+//var r_squared = secp256k1_r_squared;
+
+
+var field_modulus = bn128_field_modulus;
+var r_inv = bn128_r_inv;
+var r_squared = bn128_r_squared;
+
 
 function addmod(a: BN, b: BN): BN {
   var res = a.add(b);
@@ -63,14 +80,13 @@ function submod(a: BN, b: BN): BN {
 }
 
 function mulmodmont(a: BN, b: BN): BN {
-  var r_inv = new BN('bcb223fedc24a059d838091dd2253531', 16);
   var t = a.mul(b);
   var k0 = t.mul(r_inv).maskn(128);
   var res2 = k0.mul(field_modulus).add(t).shrn(128);
   var k1 = res2.mul(r_inv).maskn(128);
   var result = k1.mul(field_modulus).add(res2).shrn(128);
-  if (result.gt(secp256k1_field_modulus)) {
-    result = result.sub(secp256k1_field_modulus)
+  if (result.gt(field_modulus)) {
+    result = result.sub(field_modulus)
   }
   return result
 }
@@ -136,9 +152,9 @@ export const getImports = (env: EnvData) => {
 
         var result = mulmodmont(a, b);
 
-        console.log('bignum_f1m_mul a:', a.toString())
-        console.log('bignum_f1m_mul b:', b.toString())
-        console.log('bignum_f1m_mul result:', result.toString())
+        //console.log('bignum_f1m_mul a:', a.toString())
+        //console.log('bignum_f1m_mul b:', b.toString())
+        //console.log('bignum_f1m_mul result:', result.toString())
 
         var result_le = result.toArrayLike(Buffer, 'le', 32);
 
@@ -171,7 +187,6 @@ export const getImports = (env: EnvData) => {
       bignum_f1m_toMontgomery: (inOffset: number, outOffset: number) => {
         const in_param = new BN(memget(mem, inOffset, 32), 'le');
 
-        var r_squared = new BN('1000007a2000e90a1', 16);
         var result = mulmodmont(in_param, r_squared);
         var result_le = result.toArrayLike(Buffer, 'le', 32)
 

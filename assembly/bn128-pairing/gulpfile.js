@@ -184,26 +184,26 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
         // TODO: automate check that replacing `(call $f1m_mul` works.
         //  e.g. check that `(call $f1m_mul` is found 39 times, and that `$f1m_mul` is found 40 times (one more for the function declaration)
 
-        let secpUsingBignumFuncs = secpFuncsWat;
+        let bnUsingBignumFuncs = bnFuncsWat;
 
-        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_mul/g, "\(call \$main/bignum_f1m_mul");
-        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_square/g, "\(call \$main/bignum_f1m_square");
-        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_add/g, "\(call \$main/bignum_f1m_add");
-        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_sub/g, "\(call \$main/bignum_f1m_sub");
+        bnUsingBignumFuncs = bnUsingBignumFuncs.replace(/\(call \$f1m_mul/g, "\(call \$main/bignum_f1m_mul");
+        bnUsingBignumFuncs = bnUsingBignumFuncs.replace(/\(call \$f1m_square/g, "\(call \$main/bignum_f1m_square");
+        bnUsingBignumFuncs = bnUsingBignumFuncs.replace(/\(call \$f1m_add/g, "\(call \$main/bignum_f1m_add");
+        bnUsingBignumFuncs = bnUsingBignumFuncs.replace(/\(call \$f1m_sub/g, "\(call \$main/bignum_f1m_sub");
 
-        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_toMontgomery/g, "\(call \$main/bignum_f1m_toMontgomery");
-        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$f1m_fromMontgomery/g, "\(call \$main/bignum_f1m_fromMontgomery");
+        bnUsingBignumFuncs = bnUsingBignumFuncs.replace(/\(call \$f1m_toMontgomery/g, "\(call \$main/bignum_f1m_toMontgomery");
+        bnUsingBignumFuncs = bnUsingBignumFuncs.replace(/\(call \$f1m_fromMontgomery/g, "\(call \$main/bignum_f1m_fromMontgomery");
 
-        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$int_mul/g, "\(call \$main/bignum_int_mul");
-        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$int_add/g, "\(call \$main/bignum_int_add");
-        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$int_sub/g, "\(call \$main/bignum_int_sub");
-        secpUsingBignumFuncs = secpUsingBignumFuncs.replace(/\(call \$int_div/g, "\(call \$main/bignum_int_div");
+        bnUsingBignumFuncs = bnUsingBignumFuncs.replace(/\(call \$int_mul/g, "\(call \$main/bignum_int_mul");
+        bnUsingBignumFuncs = bnUsingBignumFuncs.replace(/\(call \$int_add/g, "\(call \$main/bignum_int_add");
+        bnUsingBignumFuncs = bnUsingBignumFuncs.replace(/\(call \$int_sub/g, "\(call \$main/bignum_int_sub");
+        bnUsingBignumFuncs = bnUsingBignumFuncs.replace(/\(call \$int_div/g, "\(call \$main/bignum_int_div");
 
 
-        secpFuncsWat = secpUsingBignumFuncs;
+        bnFuncsWat = bnUsingBignumFuncs;
 
         // for debugging
-        fs.writeFileSync("out/secp_funcs_bignum_host.wat", secpFuncsWat);
+        fs.writeFileSync("out/bn_funcs_bignum_host.wat", bnFuncsWat);
     }
 
 
@@ -318,7 +318,7 @@ function build(callback) {
   function mergeWats() {
     //console.log('wabt:', wabt);
 
-    //mergeAndWriteWasm(true, 'main_with_websnark_bignum_hostfuncs.wasm')
+    mergeAndWriteWasm(true, 'main_with_websnark_bignum_hostfuncs.wasm')
     mergeAndWriteWasm(false, 'main_with_websnark.wasm')
 
     console.log('done merging wat codes.');
