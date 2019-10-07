@@ -131,21 +131,26 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
         const bignumIntSubImport = '(import "env" "bignum_int_sub" (func $main/bignum_int_sub (param i32 i32 i32) (result i32)))';
         const bignumIntDivImport = '(import "env" "bignum_int_div" (func $main/bignum_int_div (param i32 i32 i32 i32)))';
 
+
         const bignumImportStatements = [bignumf1mToMontImport, bignumf1mFromMontImport,
                                         bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport, bignumf1mSqrImport,
                                         bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
 
+
+
         /*
         const bignumImportStatements = [
                                         bignumf1mToMontImport, bignumf1mFromMontImport,
-                                        bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport, bignumf1mSqrImport,
-                                        //bignumf1mAddImport, bignumf1mSubImport,
+                                        //bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport, bignumf1mSqrImport,
+                                        bignumf1mAddImport, bignumf1mSubImport,
                                         bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
         */
 
         //const bignumImportStatements = [bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport, bignumf1mSqrImport];
         //const bignumImportStatements = [bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
+
         //const bignumImportStatements = [bignumIntMulImport, bignumIntAddImport, bignumIntSubImport];
+
 
         // find line number to insert at (after last import)
         var foundLastImport = false;

@@ -135,6 +135,11 @@ export const getImports = (env: EnvData) => {
         const b = new BN(memget(mem, bOffset, 32), 'le')
 
         var result = mulmodmont(a, b);
+
+        console.log('bignum_f1m_mul a:', a.toString())
+        console.log('bignum_f1m_mul b:', b.toString())
+        console.log('bignum_f1m_mul result:', result.toString())
+
         var result_le = result.toArrayLike(Buffer, 'le', 32);
 
         memset(mem, rOffset, result_le)
