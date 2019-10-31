@@ -22,7 +22,10 @@ function main() {
     const wasmModule = new WebAssembly.Module(wasmFile)
     let preStateRoot = testCase.preStateRoot
     for (const block of testCase.blocks) {
-      const instance = new WebAssembly.Instance(wasmModule, getImports({ preStateRoot, blockData: block }))
+      let libExports = getLibExports(testCase.libs)
+      let imports = getImports({ preStateRoot, blockData: block })
+      imports.env = { ...imports.env, ...libExports }
+      const instance = new WebAssembly.Instance(wasmModule, imports)
       setMemory(instance.exports.memory)
       let t = process.hrtime()
       instance.exports.main()
@@ -32,6 +35,28 @@ function main() {
     }
     assert(testCase.postStateRoot.equals(getRes()), `expected ${testCase.postStateRoot.toString('hex')}, received ${getRes().toString('hex')}`)
   }
+}
+
+interface Exports {
+  [k: string]: Function
+}
+
+function getLibExports(libs: string[]): Exports {
+  let libExports = {}
+  for (const lib of libs) {
+    const libFile = fs.readFileSync(lib)
+    const libModule = new WebAssembly.Module(libFile)
+    const libInstance = new WebAssembly.Instance(libModule, { env: { abort: () => { throw new Error('Wasm aborted') } } })
+    const exports: { [k: string]: any } = {}
+    for (const fn in libInstance.exports) {
+      if (fn === 'memory' || fn.startsWith('_')) {
+        continue
+      }
+      exports[fn] = libInstance.exports[fn]
+    }
+    libExports = { ...libExports, ...exports }
+  }
+  return libExports
 }
 
 main()

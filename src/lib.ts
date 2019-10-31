@@ -29,6 +29,7 @@ export interface ShardBlock {
 
 export interface TestCase {
   script: string
+  libs: string[]
   preStateRoot: Buffer
   blocks: Buffer[]
   postStateRoot: Buffer
@@ -100,6 +101,7 @@ export const getImports = (env: EnvData) => {
 export function parseYaml (file: string): TestCase[] {
   const testCase = safeLoad(file)
   const scripts = testCase.beacon_state.execution_scripts
+  const libs = testCase.beacon_state.libraries || []
   const shardBlocks = testCase.shard_blocks
   const testCases = []
   for (let i = 0; i < scripts.length; i++) {
@@ -118,6 +120,7 @@ export function parseYaml (file: string): TestCase[] {
 
     testCases.push({
       script,
+      libs,
       preStateRoot,
       postStateRoot,
       blocks

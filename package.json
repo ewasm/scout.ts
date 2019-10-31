@@ -30,7 +30,8 @@
     "docs": "typedoc --out docs --mode modules --theme markdown --excludeNotExported src",
     "asbuild:untouched": "asc assembly/hello-world/index.ts -b build/hello-world-untouched.wasm -t build/hello-world-untouched.wat --sourceMap --validate --debug",
     "asbuild:optimized": "asc assembly/hello-world/index.ts -b build/hello-world-optimized.wasm -t build/hello-world-optimized.wat --sourceMap --validate --optimize",
-    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized"
+    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
+    "asbuild:lib": "asc assembly/lib/add.ts -b build/lib-add-optimized.wasm -t build/lib-add-optimized.wat --sourceMap --validate --optimize"
   },
   "author": "s1na",
   "license": "Apache-2.0",
