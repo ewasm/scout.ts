@@ -110,7 +110,7 @@ export const getImports = (env: EnvData) => {
       debug_print32: (value: number) => console.log('debug_print32', value),
       debug_printMem: (ptr: number, length: number) => console.log('debug_printMem: ', ptr, length, memget(mem, ptr, length)),
       debug_printMemHex: (ptr: number, length: number) => {
-        console.log('debug_printMemHex: ', ptr, length, memget(mem, ptr, length).toString('hex'))
+        console.log('debug_printMemHex: ', ptr, length, memget(mem, ptr, length).toString('hex').match(/.{2}/g).reverse().join(""))
       },
       bignum_add256: (aOffset: number, bOffset: number, cOffset: number) => {
         const a = new BN(memget(mem, aOffset, 32))

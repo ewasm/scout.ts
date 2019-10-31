@@ -12,7 +12,7 @@
 */
 
 
-bn128_g1m_toMontgomery, bn128_g2m_toMontgomery, bn128_g1m_neg, bn128_ftm_one, bn128_pairingEq2 
+bn128_g1m_toMontgomery, bn128_g2m_toMontgomery, bn128_g1m_neg, bn128_ftm_one, bn128_pairingEq2
 
 //   (func $g1m_toMontgomery (export "g1m_toMontgomery")  (param $p0 i32) (param $p1 i32)
 @external("watimports", "$g1m_toMontgomery")
@@ -33,3 +33,19 @@ export declare function bn128_ftm_one(p0: i32): void;
 //   (func $bn128_pairingEq2 (export "bn128_pairingEq2") (type $t10) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32) (result i32)
 @external("watimports", "$bn128_pairingEq2")
 export declare function bn128_pairingEq2(p0: i32, p1: i32, p2: i32, p3: i32, p4: i32): i32;
+
+@external("watimports", "$bn128_pairingEq4")
+export declare function bn128_pairingEq4(p0: i32, p1: i32, p2: i32, p3: i32, p4: i32, p5: i32, p6: i32, p7: i32, p8: i32): i32;
+
+@external("watimports", "$bn128_g1m_timesScalar")
+export  declare function bn128_g1m_timesScalar(p0: i32, p1: i32, p2: i32, p3: i32): void;
+
+@external("watimports", "$bn128_g1m_add")
+export declare function bn128_g1m_add(p0: i32, p1: i32, p2: i32): void;
+
+@external("watimports", "$bn128_g1m_affine")
+export declare function bn128_g1m_affine(p0: i32, p1: i32): void;
+
+// This line causes a bug with the asc compiler
+// @external("watimports", "$int_gte")
+// export declare function int_gte(p0: i32, p1: i32): void;
