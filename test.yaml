@@ -2,7 +2,8 @@ beacon_state:
   execution_scripts:
     - build/hello-world-optimized.wasm
   libraries:
-    - build/lib-add-optimized.wasm
+    - name: "add"
+      file: build/lib-add-optimized.wasm
 shard_pre_state:
   exec_env_states:
     - "0000000000000000000000000000000000000000000000000000000000000001"

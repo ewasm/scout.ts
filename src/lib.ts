@@ -29,7 +29,7 @@ export interface ShardBlock {
 
 export interface TestCase {
   script: string
-  libs: string[]
+  libs: { [k: string]: string } // { name: file }
   preStateRoot: Buffer
   blocks: Buffer[]
   postStateRoot: Buffer
@@ -101,7 +101,9 @@ export const getImports = (env: EnvData) => {
 export function parseYaml (file: string): TestCase[] {
   const testCase = safeLoad(file)
   const scripts = testCase.beacon_state.execution_scripts
-  const libs = testCase.beacon_state.libraries || []
+  const libs = (testCase.beacon_state.libraries || []).reduce(
+    (a: { [k: string]: string }, v: { name: string, file: string }) => { a[v.name] = v.file; return a }, {}
+  )
   const shardBlocks = testCase.shard_blocks
   const testCases = []
   for (let i = 0; i < scripts.length; i++) {

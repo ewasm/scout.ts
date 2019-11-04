@@ -3,10 +3,10 @@ import * as env from '../env'
 /**
  * Examples for linking a library
  */
-@external("env", "incr")
+@external("add", "incr")
 export declare function incr(a: u32): u32
 
-@external("env", "add")
+@external("add", "add")
 export declare function add(a: u32, b: u32): u32
 
 /*
