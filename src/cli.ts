@@ -18,17 +18,20 @@ function main() {
   const testCases = parseYaml(yamlFile)
 
   for (const testCase of testCases) {
+    let preStateRoot = testCase.preStateRoot
+    let start = process.hrtime()
+    let t_end_start, t_begin_exec, t_end_exec
     const wasmFile = fs.readFileSync(testCase.script)
     const wasmModule = new WebAssembly.Module(wasmFile)
-    let preStateRoot = testCase.preStateRoot
     for (const block of testCase.blocks) {
       const instance = new WebAssembly.Instance(wasmModule, getImports({ preStateRoot, blockData: block }))
       setMemory(instance.exports.memory)
-      let t = process.hrtime()
+      t_end_start = process.hrtime(start)
+      t_begin_exec = process.hrtime()
       instance.exports.main()
-      t = process.hrtime(t)
-      console.log('benchmark took %d seconds and %d nanoseconds (%d ms)', t[0], t[1], t[1] / 1000000)
-      preStateRoot = getRes()
+      t_end_exec = process.hrtime(t_begin_exec)
+      console.log('benchmark startup took %d seconds and %d nanoseconds (%dms)', t_end_start[0], t_end_start[1], t_end_start[1] / 1000000)
+      console.log('benchmark execution took %d seconds and %d nanoseconds (%dms)', t_end_exec[0], t_end_exec[1], t_end_exec[1] / 1000000)
     }
     assert(testCase.postStateRoot.equals(getRes()), `expected ${testCase.postStateRoot.toString('hex')}, received ${getRes().toString('hex')}`)
   }
