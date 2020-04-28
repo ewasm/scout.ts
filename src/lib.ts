@@ -48,20 +48,20 @@ const MASK_384 = new BN('fffffffffffffffffffffffffffffffffffffffffffffffffffffff
 //var secp256k1_r_inv = new BN('bcb223fedc24a059d838091dd2253531', 16);
 //var secp256k1_r_squared = new BN('1000007a2000e90a1', 16);
 
-// 0x30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47
-var bn128_field_modulus = new BN('30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47', 16);
-var bn128_r_inv = new BN('9ede7d651eca6ac987d20782e4866389', 16);
-var bn128_r_squared = new BN('06d89f71cab8351f47ab1eff0a417ff6b5e71911d44501fbf32cfc5b538afa89', 16)
-
+var bls12_field_modulus = new BN('1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f6241eabfffeb153ffffb9feffffffffaaab', 16);
+//var bn128_r_inv = new BN('9ede7d651eca6ac987d20782e4866389', 16);
+var bls12_r_inv = new BN('ff286adb92d9d113e889f3fffcfffcfffd', 16);
+//var bn128_r_squared = new BN('06d89f71cab8351f47ab1eff0a417ff6b5e71911d44501fbf32cfc5b538afa89', 16)
+var bls12_r_squared = new BN('1824b159acc5056f998c4fefecbc4ff55884b7fa0003480200000001fffffffe', 16);
 
 //var field_modulus = secp256k1_field_modulus;
 //var r_inv = secp256k1_r_inv;
 //var r_squared = secp256k1_r_squared;
 
 
-var field_modulus = bn128_field_modulus;
-var r_inv = bn128_r_inv;
-var r_squared = bn128_r_squared;
+var field_modulus = bls12_field_modulus;
+var r_inv = bls12_r_inv;
+var r_squared = bls12_r_squared;
 
 
 function addmod(a: BN, b: BN): BN {
@@ -80,12 +80,28 @@ function submod(a: BN, b: BN): BN {
   return res
 }
 
+/*
 function mulmodmont(a: BN, b: BN): BN {
   var t = a.mul(b);
   var k0 = t.mul(r_inv).maskn(128);
   var res2 = k0.mul(field_modulus).add(t).shrn(128);
   var k1 = res2.mul(r_inv).maskn(128);
   var result = k1.mul(field_modulus).add(res2).shrn(128);
+  if (result.gt(field_modulus)) {
+    result = result.sub(field_modulus)
+  }
+  return result
+}
+*/
+
+function mulmodmont(a: BN, b: BN): BN {
+  var t = a.mul(b);
+  var k0 = t.mul(r_inv).maskn(128);
+  var res2 = k0.mul(field_modulus).add(t).shrn(128);
+  var k1 = res2.mul(r_inv).maskn(128);
+  var res3 = k1.mul(field_modulus).add(res2).shrn(128);
+  var k2 = res3.mul(r_inv).maskn(128);
+  var result = k2.mul(field_modulus).add(res3).shrn(128);
   if (result.gt(field_modulus)) {
     result = result.sub(field_modulus)
   }
