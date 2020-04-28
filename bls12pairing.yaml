@@ -1,7 +1,7 @@
 beacon_state:
   execution_scripts:
-    - assembly/bls12-pairing/out/main_with_websnark.wasm
-    #- assembly/bls12-pairing/out/main_with_websnark_bignum_hostfuncs.wasm
+    #- assembly/bls12-pairing/out/main_with_websnark.wasm
+    - assembly/bls12-pairing/out/main_with_websnark_bignum_hostfuncs.wasm
 shard_pre_state:
   exec_env_states:
     - "0000000000000000000000000000000000000000000000000000000000000000"
