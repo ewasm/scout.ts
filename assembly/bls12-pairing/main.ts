@@ -163,14 +163,16 @@ export function main(): i32 {
 
   // G1 point is 144 bytes
   let g1_gen = Uint8Array.wrap(input_data_buff, 0, 144);
+  
   bls12_g1m_toMontgomery((g1_gen.buffer as usize) + g1_gen.byteOffset, (g1_gen.buffer as usize) + g1_gen.byteOffset);
 
-  eth2_savePostStateRoot((g1_gen.buffer as usize) + g1_gen.byteOffset);
-  /* should return 160c53fd9087b35cf5ff769967fc1778c1a13b14c7954f1547e7d0f3cd6aaef040f4db21cc6eceed75fb0b9e417701127122e70cd593acba8efd18791a63228cce250757135f59dd945140502958ac51c05900ad3f8c1c0e6aa20850fc3ebc0bfdff02000000097602000cc40b00f4ebba58c7535798485f455752705358ce776dec56a2971a075c93e480fac35ef615
-  */
+  /*  ** test toMontgomery */
+  //eth2_savePostStateRoot((g1_gen.buffer as usize) + g1_gen.byteOffset);
+  // should return 160c53fd9087b35cf5ff769967fc1778c1a13b14c7954f1547e7d0f3cd6aaef040f4db21cc6eceed75fb0b9e417701127122e70cd593acba8efd18791a63228cce250757135f59dd945140502958ac51c05900ad3f8c1c0e6aa20850fc3ebc0bfdff02000000097602000cc40b00f4ebba58c7535798485f455752705358ce776dec56a2971a075c93e480fac35ef615
 
 
-  /*****  pairing test
+
+  /*****  pairing test **/
   // G2 point is 288 bytes
   let g2_gen = Uint8Array.wrap(input_data_buff, 144, 288);
   bls12_g2m_toMontgomery((g2_gen.buffer as usize) + g2_gen.byteOffset, (g2_gen.buffer as usize) + g2_gen.byteOffset);
@@ -217,7 +219,7 @@ export function main(): i32 {
   return_buf[0] = pairingEq2_result;
   eth2_savePostStateRoot(return_buf.buffer as usize);
 
-  *****/
+  /*****/
 
 
 

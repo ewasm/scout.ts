@@ -175,7 +175,7 @@ export const getImports = (env: EnvData) => {
         memset(mem, ptr, env.blockData.slice(offset, offset + length))
       },
       eth2_savePostStateRoot: (ptr: number) => {
-        //res = memget(mem, ptr, 32)
+        res = memget(mem, ptr, 32)
         console.log('eth2_savePostStateRoot:', memget(mem, ptr, 144).toString('hex'))
         
       },
@@ -196,7 +196,7 @@ export const getImports = (env: EnvData) => {
       bignum_mul384: (aOffset: number, bOffset: number, cOffset: number) => {
         console.log('bignum_mul384')
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES))
-        const b = new BN(memget(mem, bOffset, 32))
+        const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES))
         const c = a.mul(b).mod(TWO_POW384).toArrayLike(Buffer, 'be', BIGNUM_WIDTH_BYTES)
         memset(mem, cOffset, c)
         console.log('bignum_mul384 done')
