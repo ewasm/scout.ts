@@ -1,4 +1,4 @@
-import { bls12_g1m_toMontgomery, bls12_g2m_toMontgomery, bls12_g1m_fromMontgomery, bls12_g1m_timesScalar, bls12_g1m_affine, bls12_g1m_neg, bls12_ftm_one, bls12_pairingEq2 } from "./websnark_bls12";
+import { bls12_g1m_toMontgomery, bls12_g2m_toMontgomery, bls12_g2m_timesScalar, bls12_g2m_affine, bls12_g1m_fromMontgomery, bls12_g1m_timesScalar, bls12_g1m_affine, bls12_g1m_neg, bls12_ftm_one, bls12_pairingEq2 } from "./websnark_bls12";
 
 @external("env", "debug_printMemHex")
 export declare function debug_mem(pos: i32, len: i32): void;
@@ -161,20 +161,72 @@ export function main(): i32 {
   // 0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001
   // 0x010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 
+  // G1 point is 144 bytes
   let g1_gen = Uint8Array.wrap(input_data_buff, 0, 144);
+  bls12_g1m_toMontgomery((g1_gen.buffer as usize) + g1_gen.byteOffset, (g1_gen.buffer as usize) + g1_gen.byteOffset);
 
-  let scalar_arr = Array.create<u8>(8);
+  // G2 point is 288 bytes
+  let g2_gen = Uint8Array.wrap(input_data_buff, 144, 288);
+  bls12_g2m_toMontgomery((g2_gen.buffer as usize) + g2_gen.byteOffset, (g2_gen.buffer as usize) + g2_gen.byteOffset);
+
+  let scalar_37 = Array.create<u8>(8);
   //scalar_arr = [42, 0, 0, 0, 0, 0, 0, 0];
-  scalar_arr = [42, 0, 0, 0, 0, 0, 0, 0];
+  scalar_37 = [37, 0, 0, 0, 0, 0, 0, 0];
 
-  //let scalar_uintarr = Uint8Array.wrap(scalar_arr.buffer, 0, 8);
-  //g1_gen.buffer as usize
+  let scalar_27 = Array.create<u8>(8);
+  scalar_27 = [27, 0, 0, 0, 0, 0, 0, 0];
+
+  let scalar_999 = Array.create<u8>(8);
+  // 0x03e7
+  scalar_999 = [231, 3, 0, 0, 0, 0, 0, 0];
+
+
+
+  let g1_times_37 = new ArrayBuffer(SIZE_F*3);
+  let g1_times_999 = new ArrayBuffer(SIZE_F*3);
+
+  bls12_g1m_timesScalar((g1_gen.buffer as usize) + g1_gen.byteOffset, (scalar_37.buffer as usize), 8, g1_times_37 as usize);
+  bls12_g1m_affine(g1_times_37 as usize, g1_times_37 as usize);
+
+  bls12_g1m_timesScalar((g1_gen.buffer as usize) + g1_gen.byteOffset, (scalar_999.buffer as usize), 8, g1_times_999 as usize);
+  bls12_g1m_affine(g1_times_999 as usize, g1_times_999 as usize);
+
+  bls12_g1m_neg(g1_times_999 as usize, g1_times_999 as usize);
+
+  let g2_times_27 = new ArrayBuffer(SIZE_F*6);
+
+  bls12_g2m_timesScalar((g2_gen.buffer as usize) + g2_gen.byteOffset, (scalar_27.buffer as usize), 8, g2_times_27 as usize);
+  bls12_g2m_affine(g2_times_27 as usize, g2_times_27 as usize);
+
+
+  let pFq12One = new ArrayBuffer(SIZE_F*12);
+  bls12_ftm_one(pFq12One as usize);
+  //eth2_savePostStateRoot(pFq12One as usize + 144);
+
+
+  let pairingEq2_result = bls12_pairingEq2(g1_times_37 as usize, g2_times_27 as usize, g1_times_999 as usize, (g2_gen.buffer as usize) + g2_gen.byteOffset, pFq12One as usize);
+  //eth2_savePostStateRoot(pairingEq2_result as usize);
+
+  let return_buf = new Array<u32>(32);
+  return_buf[0] = pairingEq2_result;
+  eth2_savePostStateRoot(return_buf.buffer as usize);
+
+  
+
+
+
+
+
+
+  /* **** test g1_gen * 42
+  let scalar_42 = Array.create<u8>(8);
+  scalar_42 = [42, 0, 0, 0, 0, 0, 0, 0];
 
   let pG1_mul_result = new ArrayBuffer(SIZE_F*3);
 
   bls12_g1m_toMontgomery((g1_gen.buffer as usize) + g1_gen.byteOffset, (g1_gen.buffer as usize) + g1_gen.byteOffset);
 
-  bls12_g1m_timesScalar((g1_gen.buffer as usize) + g1_gen.byteOffset, (scalar_arr.buffer as usize), 8, pG1_mul_result as usize);
+  bls12_g1m_timesScalar((g1_gen.buffer as usize) + g1_gen.byteOffset, (scalar_42.buffer as usize), 8, pG1_mul_result as usize);
 
   let pG1_mul_affine = new ArrayBuffer(SIZE_F*3);
   bls12_g1m_affine(pG1_mul_result as usize, pG1_mul_affine as usize);
@@ -182,9 +234,7 @@ export function main(): i32 {
 
   //eth2_savePostStateRoot((pG1_mul_affine as usize));
   eth2_savePostStateRoot((pG1_mul_affine as usize) + 16);
-  //eth2_savePostStateRoot((pG1_mul_affine as usize) + 44);
-  //eth2_savePostStateRoot(scalar_arr.buffer as usize);
-
+  */
 
 
   /*

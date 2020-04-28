@@ -25004,7 +25004,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $g2m_affine (export "g2m_affine")  (param $p0 i32) (param $p1 i32)
+  (func $websnark_bls12/bls12_g2m_affine (export "g2m_affine")  (param $p0 i32) (param $p1 i32)
     (if $I0
       (call $g2m_isZero
         (local.get $p0))
@@ -25040,7 +25040,7 @@
           (i32.add
             (local.get $p1)
             (i32.const 192))))))
-  (func $g2m_timesScalar (export "g2m_timesScalar")  (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $websnark_bls12/bls12_g2m_timesScalar (export "g2m_timesScalar")  (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (local $l4 i32) (local $l5 i32)
     (call $g2m_copy
       (local.get $p0)
@@ -28362,7 +28362,7 @@
       (local.get $p1)))
   (func $bls12381_prepareG2 (export "bls12381_prepareG2")  (param $p0 i32) (param $p1 i32)
     (local $l2 i32) (local $l3 i32)
-    (call $g2m_affine
+    (call $websnark_bls12/bls12_g2m_affine
       (local.get $p0)
       (local.get $p1))
     (if $I0
@@ -28940,7 +28940,7 @@
     (call $ftm_eq
       (i32.const 282816)
       (local.get $p2)))
-  (func $bls12381_pairingEq2 (export "bls12381_pairingEq2")  (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32) (result i32)
+  (func $websnark_bls12/bls12_pairingEq2 (export "bls12381_pairingEq2")  (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32) (result i32)
     (call $websnark_bls12/bls12_ftm_one
       (i32.const 283968))
     (call $bls12381_prepareG1
