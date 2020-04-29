@@ -39,6 +39,8 @@ export interface EnvData {
   blockData: Buffer
 }
 
+let MulModMontCallCount = 0;
+
 
 //const TWO_POW256 = new BN('10000000000000000000000000000000000000000000000000000000000000000', 16);
 const MASK_256 = new BN('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', 16);
@@ -122,22 +124,34 @@ function mulmodmont(a: BN, b: BN): BN {
 
 
 function mulmodmont(a: BN, b: BN): BN {
+  MulModMontCallCount += 1
   var t = a.mul(b);
-  //console.log('result768:', t.toString(16));
+  //console.log('mulmodmont a:', a.toString(10));
+  //console.log('mulmodmont b:', b.toString(10));
+  //console.log('mulmodmont result768:', t.toString(10));
+
+  //console.log('t.mul(r_inv) (before mask):', t.mul(r_inv).toString(16))
 
   var k0 = t.mul(r_inv).maskn(192);
-  //console.log('k0:', k0.toString(16));
+  //console.log('k0 (after mask):', k0.toString(10));
+  //console.log('k0 times mod:', k0.mul(field_modulus).toString(16));
+  //console.log('k0 times mod plus res1:', k0.mul(field_modulus).add(t).toString(16));
 
   var res2 = k0.mul(field_modulus).add(t).shrn(192);
+  //console.log('got res2:', res2.toString(10));
   // var res2 = k0.mul(field_modulus).add(t).shrn(128);
-  //console.log('got res2:', res2.toString(16));
+
   var k1 = res2.mul(r_inv).maskn(192);
+  //console.log('k1:', k1.toString(10));
+  //console.log('k1 times mod:', k1.mul(field_modulus).toString(10));
+  //console.log('k1 times mod plus res2:', k1.mul(field_modulus).add(res2).toString(10));
+
   var result = k1.mul(field_modulus).add(res2).shrn(192);
 
   if (result.gt(field_modulus)) {
     result = result.sub(field_modulus)
   }
-  //console.log('returning result:', result.toString(16))
+  //console.log('returning result:', result.toString(10))
   return result
 }
 
@@ -177,7 +191,7 @@ export const getImports = (env: EnvData) => {
       eth2_savePostStateRoot: (ptr: number) => {
         res = memget(mem, ptr, 32)
         console.log('eth2_savePostStateRoot:', memget(mem, ptr, 144).toString('hex'))
-        
+        console.log('MulModMontCallCount:', MulModMontCallCount);
       },
       abort: () => { throw ('Wasm aborted') },
       debug_print32: (value: number) => console.log('debug_print32', value),
@@ -226,9 +240,12 @@ export const getImports = (env: EnvData) => {
       },
       // modular multiplication of two numbers in montgomery form (i.e. montgomery multiplication)
       bignum_f1m_mul: (aOffset: number, bOffset: number, rOffset: number) => {
-        console.log('bignum_f1m_mul.')
+        //console.log('bignum_f1m_mul.')
+
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le')
         const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES), 'le')
+        //console.log('bignum_f1m_mul. a:', a.toString(10));
+        //console.log('bignum_f1m_mul. b:', b.toString(10));
 
         var result = mulmodmont(a, b);
 
@@ -239,19 +256,19 @@ export const getImports = (env: EnvData) => {
         var result_le = result.toArrayLike(Buffer, 'le', BIGNUM_WIDTH_BYTES);
 
         memset(mem, rOffset, result_le)
-        console.log('bignum_f1m_mul done.')
+        //console.log('bignum_f1m_mul done. result: ', result.toString(10))
       },
       bignum_f1m_square: (inOffset: number, outOffset: number) => {
-        console.log('bignum_f1m_square')
+        //console.log('bignum_f1m_square')
         const in_param = new BN(memget(mem, inOffset, BIGNUM_WIDTH_BYTES), 'le');
+        //console.log('bignum_f1m_square. a:', in_param.toString(10));
         var result = mulmodmont(in_param, in_param);
-        console.log('bignum_f1m_square got mulmodmont result...')
+        //console.log('bignum_f1m_square done. result: ', result.toString(10))
         var result_le = result.toArrayLike(Buffer, 'le', BIGNUM_WIDTH_BYTES)
-        console.log('bignum_f1m_square calling memset...')
         memset(mem, outOffset, result_le)
-        console.log('bignum_f1m_square done.')
       },
       bignum_f1m_add: (aOffset: number, bOffset: number, outOffset: number) => {
+        //console.log('bignum_f1m_add')
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le');
         const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES), 'le');
         var result = addmod(a, b);
@@ -261,6 +278,7 @@ export const getImports = (env: EnvData) => {
         memset(mem, outOffset, result_le)
       },
       bignum_f1m_sub: (aOffset: number, bOffset: number, outOffset: number) => {
+        //console.log('bignum_f1m_sub')
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le');
         const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES), 'le');
         var result = submod(a, b);
@@ -279,15 +297,15 @@ export const getImports = (env: EnvData) => {
         console.log('bignum_f1m_toMontgomery done.')
       },
       bignum_f1m_fromMontgomery: (inOffset: number, outOffset: number) => {
-        console.log('bignum_f1m_fromMontgomery')
         const in_param = new BN(memget(mem, inOffset, BIGNUM_WIDTH_BYTES), 'le');
 
+        console.log('bignum_f1m_fromMontgomery a:', in_param.toString(10))
         var one = new BN('1', 16);
         var result = mulmodmont(in_param, one);
         var result_le = result.toArrayLike(Buffer, 'le', BIGNUM_WIDTH_BYTES)
 
         memset(mem, outOffset, result_le)
-        console.log('bignum_f1m_fromMontgomery done.')
+        console.log('bignum_f1m_fromMontgomery result:', result.toString(10));
       },
       bignum_int_add: (aOffset: number, bOffset: number, outOffset: number) => {
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le');
@@ -302,12 +320,14 @@ export const getImports = (env: EnvData) => {
         }
         //const result = resultFull.maskn(256);
         const result = resultFull.mod(TWO_POW384); // how ethereumjs-vm does it
+
         const result_le = result.toArrayLike(Buffer, 'le', BIGNUM_WIDTH_BYTES)
         memset(mem, outOffset, result_le)
 
         return carry
       },
       bignum_int_sub: (aOffset: number, bOffset: number, outOffset: number) => {
+        //console.log('bignum_int_sub')
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le')
         const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES), 'le')
 
