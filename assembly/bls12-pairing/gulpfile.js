@@ -17,8 +17,6 @@ const wabt = require("wabt")();
  */
 
 
-//const USE_BIGNUM_HOST_FUNCS = true;
-
 
 function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
     /*****
@@ -57,13 +55,23 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
 
 
     /****
-    * load websnark bn128 wat code
+    * load websnark bls12 wat code
     */
 
-    const blsWat = fs.readFileSync("src/bls12381.wat", "utf8");
+    // wasmsark bls module built with https://github.com/cdetrio/wasmsnark/tree/bls12-benchreport
+    const blsWasm = fs.readFileSync("src/bls12381.wasm", "binary");
+    var blsModule = wabt.readWasm(blsWasm, {readDebugNames: true});
+    blsModule.validate();
+    blsModule.resolveNames();
+    blsModule.generateNames()
+    blsModule.applyNames();
+    const blsWat = blsModule.toText({foldExprs: true});
+
+    // or read wat file directly (useful for inserting debug prints in the wasmsnark wat)
+    //const blsWat = fs.readFileSync("src/bls12381.wat", "utf8");
 
     /****
-    * prepare to merge websnark secp256k1 wasm and the assemblyscript wasm
+    * prepare to merge websnark BLS12 wasm and the assemblyscript wasm
     *
     * TODO: this merging is fragile, it assumes particular forms of the wat code
     * It may beak with different versions of wabt/wasm2wat, or asc
@@ -126,10 +134,7 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
         * insert bignum host function import statements
         */
 
-        const bignumf1mToMontImport = '(import "env" "bignum_f1m_toMontgomery" (func $main/bignum_f1m_toMontgomery (param i32 i32)))';
-        const bignumf1mFromMontImport = '(import "env" "bignum_f1m_fromMontgomery" (func $main/bignum_f1m_fromMontgomery (param i32 i32)))';
         const bignumf1mMulImport = '(import "env" "bignum_f1m_mul" (func $main/bignum_f1m_mul (param i32 i32 i32)))';
-        const bignumf1mSqrImport = '(import "env" "bignum_f1m_square" (func $main/bignum_f1m_square (param i32 i32)))';
         const bignumf1mAddImport = '(import "env" "bignum_f1m_add" (func $main/bignum_f1m_add (param i32 i32 i32)))';
         const bignumf1mSubImport = '(import "env" "bignum_f1m_sub" (func $main/bignum_f1m_sub (param i32 i32 i32)))';
         const bignumIntMulImport = '(import "env" "bignum_int_mul" (func $main/bignum_int_mul (param i32 i32 i32)))';
@@ -137,38 +142,8 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
         const bignumIntSubImport = '(import "env" "bignum_int_sub" (func $main/bignum_int_sub (param i32 i32 i32) (result i32)))';
         const bignumIntDivImport = '(import "env" "bignum_int_div" (func $main/bignum_int_div (param i32 i32 i32 i32)))';
 
-        const bignumImportStatements = [bignumf1mToMontImport, bignumf1mFromMontImport,
-                                        bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport, bignumf1mSqrImport,
+        const bignumImportStatements = [bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport,
                                         bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
-
-        /*
-        const bignumf1mFromMontImport = '(import "env" "bignum_f1m_fromMontgomery" (func $main/bignum_f1m_fromMontgomery (param i32 i32)))';
-        const bignumf1mMulImport = '(import "env" "bignum_f1m_mul" (func $main/bignum_f1m_mul (param i32 i32 i32)))';
-        const bignumIntAddImport = '(import "env" "bignum_int_add" (func $main/bignum_int_add (param i32 i32 i32) (result i32)))';
-        const bignumf1mSqrImport = '(import "env" "bignum_f1m_square" (func $main/bignum_f1m_square (param i32 i32)))';
-        const bignumf1mAddImport = '(import "env" "bignum_f1m_add" (func $main/bignum_f1m_add (param i32 i32 i32)))';
-        const bignumf1mSubImport = '(import "env" "bignum_f1m_sub" (func $main/bignum_f1m_sub (param i32 i32 i32)))';
-        const bignumIntMulImport = '(import "env" "bignum_int_mul" (func $main/bignum_int_mul (param i32 i32 i32)))';
-        const bignumIntDivImport = '(import "env" "bignum_int_div" (func $main/bignum_int_div (param i32 i32 i32 i32)))';
-        const bignumIntSubImport = '(import "env" "bignum_int_sub" (func $main/bignum_int_sub (param i32 i32 i32) (result i32)))';
-        //const bignumImportStatements = [bignumf1mMulImport, bignumIntAddImport, bignumf1mSqrImport];
-        const bignumImportStatements = [bignumf1mFromMontImport, bignumf1mMulImport, bignumIntAddImport, bignumf1mSqrImport, bignumf1mAddImport, bignumf1mSubImport, bignumIntMulImport, bignumIntDivImport, bignumIntSubImport];
-        //const bignumImportStatements = [bignumf1mFromMontImport, bignumIntAddImport, bignumf1mAddImport, bignumf1mSubImport, bignumIntMulImport, bignumIntDivImport, bignumIntSubImport];
-        */
-
-
-        /*
-        const bignumImportStatements = [
-                                        bignumf1mToMontImport, bignumf1mFromMontImport,
-                                        //bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport, bignumf1mSqrImport,
-                                        bignumf1mAddImport, bignumf1mSubImport,
-                                        bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
-        */
-
-        //const bignumImportStatements = [bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport, bignumf1mSqrImport];
-        //const bignumImportStatements = [bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
-
-        //const bignumImportStatements = [bignumIntMulImport, bignumIntAddImport, bignumIntSubImport];
 
 
         // find line number to insert at (after last import)
@@ -206,31 +181,13 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
         let blsUsingBignumFuncs = blsFuncsWat;
 
         blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_mul/g, "\(call \$main/bignum_f1m_mul");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_square/g, "\(call \$main/bignum_f1m_square");
         blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_add/g, "\(call \$main/bignum_f1m_add");
         blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_sub/g, "\(call \$main/bignum_f1m_sub");
-
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_toMontgomery/g, "\(call \$main/bignum_f1m_toMontgomery");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_fromMontgomery/g, "\(call \$main/bignum_f1m_fromMontgomery");
 
         blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_mul/g, "\(call \$main/bignum_int_mul");
         blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_add/g, "\(call \$main/bignum_int_add");
         blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_sub/g, "\(call \$main/bignum_int_sub");
         blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_div/g, "\(call \$main/bignum_int_div");
-
-
-        /*
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_toMontgomery/g, "\(call \$main/bignum_f1m_toMontgomery");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_fromMontgomery/g, "\(call \$main/bignum_f1m_fromMontgomery");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_mul/g, "\(call \$main/bignum_f1m_mul");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_add/g, "\(call \$main/bignum_f1m_add");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_square/g, "\(call \$main/bignum_f1m_square");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_sub/g, "\(call \$main/bignum_f1m_sub");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_add/g, "\(call \$main/bignum_int_add");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_sub/g, "\(call \$main/bignum_int_sub");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_mul/g, "\(call \$main/bignum_int_mul");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_div/g, "\(call \$main/bignum_int_div");
-        */
 
 
         blsFuncsWat = blsUsingBignumFuncs;
