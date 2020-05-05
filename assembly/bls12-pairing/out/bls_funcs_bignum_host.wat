@@ -1,846 +1,3 @@
-(module
- (type $FUNCSIG$vii (func (param i32 i32)))
- (type $FUNCSIG$viiii (func (param i32 i32 i32 i32)))
- (type $FUNCSIG$vi (func (param i32)))
- (type $FUNCSIG$iiiiii (func (param i32 i32 i32 i32 i32) (result i32)))
- (type $FUNCSIG$v (func))
- (type $FUNCSIG$i (func (result i32)))
- (type $FUNCSIG$viii (func (param i32 i32 i32)))
- (type $FUNCSIG$iii (func (param i32 i32) (result i32)))
- (type $FUNCSIG$ii (func (param i32) (result i32)))
- (type $FUNCSIG$iiii (func (param i32 i32 i32) (result i32)))
- (import "env" "eth2_blockDataSize" (func $main/eth2_blockDataSize (result i32)))
- (import "env" "eth2_blockDataCopy" (func $main/eth2_blockDataCopy (param i32 i32 i32)))
- (import "env" "eth2_loadPreStateRoot" (func $main/eth2_loadPreStateRoot (param i32)))
- (import "env" "eth2_savePostStateRoot" (func $main/eth2_savePostStateRoot (param i32)))
- (memory $0 8)
- (global $~lib/rt/stub/startOffset (mut i32) (i32.const 0))
- (global $~lib/rt/stub/offset (mut i32) (i32.const 0))
- (export "memory" (memory $0))
- (export "eth2_blockDataSize" (func $main/eth2_blockDataSize))
- (export "eth2_blockDataCopy" (func $main/eth2_blockDataCopy))
- (export "eth2_loadPreStateRoot" (func $main/eth2_loadPreStateRoot))
- (export "eth2_savePostStateRoot" (func $main/eth2_savePostStateRoot))
- (export "main" (func $main/main))
- (start $start)
- (func $~lib/rt/stub/maybeGrowMemory (; 12 ;) (type $FUNCSIG$vi) (param $0 i32)
-  (local $1 i32)
-  (local $2 i32)
-  local.get $0
-  memory.size
-  local.tee $2
-  i32.const 16
-  i32.shl
-  local.tee $1
-  i32.gt_u
-  if
-   local.get $2
-   local.get $0
-   local.get $1
-   i32.sub
-   i32.const 65535
-   i32.add
-   i32.const -65536
-   i32.and
-   i32.const 16
-   i32.shr_u
-   local.tee $1
-   local.get $2
-   local.get $1
-   i32.gt_s
-   select
-   memory.grow
-   i32.const 0
-   i32.lt_s
-   if
-    local.get $1
-    memory.grow
-    i32.const 0
-    i32.lt_s
-    if
-     unreachable
-    end
-   end
-  end
-  local.get $0
-  global.set $~lib/rt/stub/offset
- )
- (func $~lib/rt/stub/__alloc (; 13 ;) (type $FUNCSIG$iii) (param $0 i32) (param $1 i32) (result i32)
-  (local $2 i32)
-  (local $3 i32)
-  (local $4 i32)
-  local.get $0
-  i32.const 1073741808
-  i32.gt_u
-  if
-   unreachable
-  end
-  global.get $~lib/rt/stub/offset
-  i32.const 16
-  i32.add
-  local.tee $3
-  local.get $0
-  i32.const 15
-  i32.add
-  i32.const -16
-  i32.and
-  local.tee $2
-  i32.const 16
-  local.get $2
-  i32.const 16
-  i32.gt_u
-  select
-  local.tee $4
-  i32.add
-  call $~lib/rt/stub/maybeGrowMemory
-  local.get $3
-  i32.const 16
-  i32.sub
-  local.tee $2
-  local.get $4
-  i32.store
-  local.get $2
-  i32.const -1
-  i32.store offset=4
-  local.get $2
-  local.get $1
-  i32.store offset=8
-  local.get $2
-  local.get $0
-  i32.store offset=12
-  local.get $3
- )
- (func $~lib/memory/memory.fill (; 14 ;) (type $FUNCSIG$vii) (param $0 i32) (param $1 i32)
-  (local $2 i32)
-  block $~lib/util/memory/memset|inlined.0
-   local.get $1
-   i32.eqz
-   br_if $~lib/util/memory/memset|inlined.0
-   local.get $0
-   i32.const 0
-   i32.store8
-   local.get $0
-   local.get $1
-   i32.add
-   i32.const 1
-   i32.sub
-   i32.const 0
-   i32.store8
-   local.get $1
-   i32.const 2
-   i32.le_u
-   br_if $~lib/util/memory/memset|inlined.0
-   local.get $0
-   i32.const 1
-   i32.add
-   i32.const 0
-   i32.store8
-   local.get $0
-   i32.const 2
-   i32.add
-   i32.const 0
-   i32.store8
-   local.get $0
-   local.get $1
-   i32.add
-   local.tee $2
-   i32.const 2
-   i32.sub
-   i32.const 0
-   i32.store8
-   local.get $2
-   i32.const 3
-   i32.sub
-   i32.const 0
-   i32.store8
-   local.get $1
-   i32.const 6
-   i32.le_u
-   br_if $~lib/util/memory/memset|inlined.0
-   local.get $0
-   i32.const 3
-   i32.add
-   i32.const 0
-   i32.store8
-   local.get $0
-   local.get $1
-   i32.add
-   i32.const 4
-   i32.sub
-   i32.const 0
-   i32.store8
-   local.get $1
-   i32.const 8
-   i32.le_u
-   br_if $~lib/util/memory/memset|inlined.0
-   local.get $1
-   i32.const 0
-   local.get $0
-   i32.sub
-   i32.const 3
-   i32.and
-   local.tee $1
-   i32.sub
-   local.get $0
-   local.get $1
-   i32.add
-   local.tee $0
-   i32.const 0
-   i32.store
-   i32.const -4
-   i32.and
-   local.tee $1
-   local.get $0
-   i32.add
-   i32.const 4
-   i32.sub
-   i32.const 0
-   i32.store
-   local.get $1
-   i32.const 8
-   i32.le_u
-   br_if $~lib/util/memory/memset|inlined.0
-   local.get $0
-   i32.const 4
-   i32.add
-   i32.const 0
-   i32.store
-   local.get $0
-   i32.const 8
-   i32.add
-   i32.const 0
-   i32.store
-   local.get $0
-   local.get $1
-   i32.add
-   local.tee $2
-   i32.const 12
-   i32.sub
-   i32.const 0
-   i32.store
-   local.get $2
-   i32.const 8
-   i32.sub
-   i32.const 0
-   i32.store
-   local.get $1
-   i32.const 24
-   i32.le_u
-   br_if $~lib/util/memory/memset|inlined.0
-   local.get $0
-   i32.const 12
-   i32.add
-   i32.const 0
-   i32.store
-   local.get $0
-   i32.const 16
-   i32.add
-   i32.const 0
-   i32.store
-   local.get $0
-   i32.const 20
-   i32.add
-   i32.const 0
-   i32.store
-   local.get $0
-   i32.const 24
-   i32.add
-   i32.const 0
-   i32.store
-   local.get $0
-   local.get $1
-   i32.add
-   local.tee $2
-   i32.const 28
-   i32.sub
-   i32.const 0
-   i32.store
-   local.get $2
-   i32.const 24
-   i32.sub
-   i32.const 0
-   i32.store
-   local.get $2
-   i32.const 20
-   i32.sub
-   i32.const 0
-   i32.store
-   local.get $2
-   i32.const 16
-   i32.sub
-   i32.const 0
-   i32.store
-   local.get $0
-   i32.const 4
-   i32.and
-   i32.const 24
-   i32.add
-   local.tee $2
-   local.get $0
-   i32.add
-   local.set $0
-   local.get $1
-   local.get $2
-   i32.sub
-   local.set $1
-   loop $continue|0
-    local.get $1
-    i32.const 32
-    i32.ge_u
-    if
-     local.get $0
-     i64.const 0
-     i64.store
-     local.get $0
-     i32.const 8
-     i32.add
-     i64.const 0
-     i64.store
-     local.get $0
-     i32.const 16
-     i32.add
-     i64.const 0
-     i64.store
-     local.get $0
-     i32.const 24
-     i32.add
-     i64.const 0
-     i64.store
-     local.get $1
-     i32.const 32
-     i32.sub
-     local.set $1
-     local.get $0
-     i32.const 32
-     i32.add
-     local.set $0
-     br $continue|0
-    end
-   end
-  end
- )
- (func $~lib/arraybuffer/ArrayBuffer#constructor (; 15 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
-  (local $1 i32)
-  local.get $0
-  i32.const 1073741808
-  i32.gt_u
-  if
-   unreachable
-  end
-  local.get $0
-  i32.const 0
-  call $~lib/rt/stub/__alloc
-  local.tee $1
-  local.get $0
-  call $~lib/memory/memory.fill
-  local.get $1
- )
- (func $~lib/arraybuffer/ArrayBuffer#get:byteLength (; 16 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
-  local.get $0
-  i32.const 16
-  i32.sub
-  i32.load offset=12
- )
- (func $~lib/typedarray/Uint8Array.wrap (; 17 ;) (type $FUNCSIG$iiii) (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
-  (local $3 i32)
-  block $folding-inner0
-   local.get $1
-   local.get $0
-   call $~lib/arraybuffer/ArrayBuffer#get:byteLength
-   i32.ge_u
-   br_if $folding-inner0
-   local.get $2
-   i32.const 0
-   i32.lt_s
-   if
-    local.get $2
-    i32.const -1
-    i32.ne
-    br_if $folding-inner0
-    local.get $0
-    call $~lib/arraybuffer/ArrayBuffer#get:byteLength
-    i32.const -2147483648
-    i32.and
-    br_if $folding-inner0
-    local.get $0
-    call $~lib/arraybuffer/ArrayBuffer#get:byteLength
-    local.set $2
-   end
-   local.get $1
-   local.get $2
-   i32.add
-   local.get $0
-   call $~lib/arraybuffer/ArrayBuffer#get:byteLength
-   i32.gt_s
-   br_if $folding-inner0
-   i32.const 12
-   i32.const 3
-   call $~lib/rt/stub/__alloc
-   local.tee $3
-   local.get $0
-   i32.store
-   local.get $3
-   local.get $2
-   i32.store offset=8
-   local.get $3
-   local.get $0
-   local.get $1
-   i32.add
-   i32.store offset=4
-   local.get $3
-   return
-  end
-  unreachable
- )
- (func $~lib/arraybuffer/ArrayBufferView#get:byteOffset (; 18 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
-  local.get $0
-  i32.load offset=4
-  local.get $0
-  i32.load
-  i32.sub
- )
- (func $~lib/arraybuffer/ArrayBufferView#constructor (; 19 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
-  (local $1 i32)
-  i32.const 128
-  i32.const 0
-  call $~lib/rt/stub/__alloc
-  local.tee $1
-  i32.const 128
-  call $~lib/memory/memory.fill
-  local.get $0
-  i32.eqz
-  if
-   i32.const 12
-   i32.const 2
-   call $~lib/rt/stub/__alloc
-   local.set $0
-  end
-  local.get $0
-  i32.const 0
-  i32.store
-  local.get $0
-  i32.const 0
-  i32.store offset=4
-  local.get $0
-  i32.const 0
-  i32.store offset=8
-  local.get $0
-  i32.load
-  drop
-  local.get $0
-  local.get $1
-  i32.store
-  local.get $0
-  local.get $1
-  i32.store offset=4
-  local.get $0
-  i32.const 128
-  i32.store offset=8
-  local.get $0
- )
- (func $~lib/memory/memory.copy (; 20 ;) (type $FUNCSIG$viii) (param $0 i32) (param $1 i32) (param $2 i32)
-  (local $3 i32)
-  (local $4 i32)
-  block $~lib/util/memory/memmove|inlined.0
-   local.get $2
-   local.set $3
-   local.get $0
-   local.get $1
-   i32.eq
-   br_if $~lib/util/memory/memmove|inlined.0
-   local.get $0
-   local.get $1
-   i32.lt_u
-   if
-    local.get $1
-    i32.const 7
-    i32.and
-    local.get $0
-    i32.const 7
-    i32.and
-    i32.eq
-    if
-     loop $continue|0
-      local.get $0
-      i32.const 7
-      i32.and
-      if
-       local.get $3
-       i32.eqz
-       br_if $~lib/util/memory/memmove|inlined.0
-       local.get $3
-       i32.const 1
-       i32.sub
-       local.set $3
-       local.get $0
-       local.tee $2
-       i32.const 1
-       i32.add
-       local.set $0
-       local.get $1
-       local.tee $4
-       i32.const 1
-       i32.add
-       local.set $1
-       local.get $2
-       local.get $4
-       i32.load8_u
-       i32.store8
-       br $continue|0
-      end
-     end
-     loop $continue|1
-      local.get $3
-      i32.const 8
-      i32.lt_u
-      i32.eqz
-      if
-       local.get $0
-       local.get $1
-       i64.load
-       i64.store
-       local.get $3
-       i32.const 8
-       i32.sub
-       local.set $3
-       local.get $0
-       i32.const 8
-       i32.add
-       local.set $0
-       local.get $1
-       i32.const 8
-       i32.add
-       local.set $1
-       br $continue|1
-      end
-     end
-    end
-    loop $continue|2
-     local.get $3
-     if
-      local.get $0
-      local.tee $2
-      i32.const 1
-      i32.add
-      local.set $0
-      local.get $1
-      local.tee $4
-      i32.const 1
-      i32.add
-      local.set $1
-      local.get $2
-      local.get $4
-      i32.load8_u
-      i32.store8
-      local.get $3
-      i32.const 1
-      i32.sub
-      local.set $3
-      br $continue|2
-     end
-    end
-   else
-    local.get $1
-    i32.const 7
-    i32.and
-    local.get $0
-    i32.const 7
-    i32.and
-    i32.eq
-    if
-     loop $continue|3
-      local.get $0
-      local.get $3
-      i32.add
-      i32.const 7
-      i32.and
-      if
-       local.get $3
-       i32.eqz
-       br_if $~lib/util/memory/memmove|inlined.0
-       local.get $0
-       local.get $3
-       i32.const 1
-       i32.sub
-       local.tee $3
-       i32.add
-       local.get $1
-       local.get $3
-       i32.add
-       i32.load8_u
-       i32.store8
-       br $continue|3
-      end
-     end
-     loop $continue|4
-      local.get $3
-      i32.const 8
-      i32.lt_u
-      i32.eqz
-      if
-       local.get $0
-       local.get $3
-       i32.const 8
-       i32.sub
-       local.tee $3
-       i32.add
-       local.get $1
-       local.get $3
-       i32.add
-       i64.load
-       i64.store
-       br $continue|4
-      end
-     end
-    end
-    loop $continue|5
-     local.get $3
-     if
-      local.get $0
-      local.get $3
-      i32.const 1
-      i32.sub
-      local.tee $3
-      i32.add
-      local.get $1
-      local.get $3
-      i32.add
-      i32.load8_u
-      i32.store8
-      br $continue|5
-     end
-    end
-   end
-  end
- )
- (func $~lib/rt/stub/__realloc (; 21 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
-  (local $1 i32)
-  (local $2 i32)
-  local.get $0
-  i32.const 15
-  i32.and
-  i32.eqz
-  i32.const 0
-  local.get $0
-  select
-  i32.eqz
-  if
-   unreachable
-  end
-  local.get $0
-  i32.const 16
-  i32.sub
-  local.tee $2
-  i32.load
-  local.set $1
-  local.get $2
-  i32.load offset=4
-  i32.const -1
-  i32.ne
-  if
-   unreachable
-  end
-  i32.const 4
-  local.get $1
-  i32.gt_u
-  if
-   global.get $~lib/rt/stub/offset
-   local.get $0
-   local.get $1
-   i32.add
-   i32.eq
-   if
-    local.get $0
-    i32.const 16
-    i32.add
-    call $~lib/rt/stub/maybeGrowMemory
-    local.get $2
-    i32.const 16
-    i32.store
-   else
-    i32.const 16
-    local.get $1
-    i32.const 1
-    i32.shl
-    local.tee $1
-    i32.const 16
-    local.get $1
-    i32.gt_u
-    select
-    local.get $2
-    i32.load offset=8
-    call $~lib/rt/stub/__alloc
-    local.tee $1
-    local.get $0
-    local.get $2
-    i32.load offset=12
-    call $~lib/memory/memory.copy
-    local.get $1
-    local.tee $0
-    i32.const 16
-    i32.sub
-    local.set $2
-   end
-  else
-   global.get $~lib/rt/stub/offset
-   local.get $0
-   local.get $1
-   i32.add
-   i32.eq
-   if
-    local.get $0
-    i32.const 16
-    i32.add
-    global.set $~lib/rt/stub/offset
-    local.get $2
-    i32.const 16
-    i32.store
-   end
-  end
-  local.get $2
-  i32.const 4
-  i32.store offset=12
-  local.get $0
- )
- (func $~lib/array/ensureSize (; 22 ;) (type $FUNCSIG$vi) (param $0 i32)
-  (local $1 i32)
-  (local $2 i32)
-  (local $3 i32)
-  i32.const 1
-  local.get $0
-  i32.load offset=8
-  local.tee $2
-  i32.const 2
-  i32.shr_u
-  i32.gt_u
-  if
-   local.get $2
-   local.get $0
-   i32.load
-   local.tee $3
-   call $~lib/rt/stub/__realloc
-   local.tee $1
-   i32.add
-   i32.const 4
-   local.get $2
-   i32.sub
-   call $~lib/memory/memory.fill
-   local.get $1
-   local.get $3
-   i32.ne
-   if
-    local.get $0
-    local.get $1
-    i32.store
-    local.get $0
-    local.get $1
-    i32.store offset=4
-   end
-   local.get $0
-   i32.const 4
-   i32.store offset=8
-  end
- )
- (func $main/main (; 23 ;) (type $FUNCSIG$i) (result i32)
-  (local $0 i32)
-  (local $1 i32)
-  (local $2 i32)
-  (local $3 i32)
-  (local $4 i32)
-  call $main/eth2_blockDataSize
-  local.tee $1
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.tee $0
-  i32.const 0
-  local.get $1
-  call $main/eth2_blockDataCopy
-  local.get $0
-  i32.const 0
-  i32.const 144
-  call $~lib/typedarray/Uint8Array.wrap
-  local.set $1
-  local.get $0
-  i32.const 144
-  i32.const 288
-  call $~lib/typedarray/Uint8Array.wrap
-  local.set $2
-  local.get $0
-  i32.const 432
-  i32.const 144
-  call $~lib/typedarray/Uint8Array.wrap
-  local.set $3
-  local.get $0
-  i32.const 576
-  i32.const 288
-  call $~lib/typedarray/Uint8Array.wrap
-  local.set $0
-  i32.const 576
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.tee $4
-  call $websnark_bls12/bls12_ftm_one
-  local.get $1
-  i32.load
-  local.get $1
-  call $~lib/arraybuffer/ArrayBufferView#get:byteOffset
-  i32.add
-  local.get $2
-  i32.load
-  local.get $2
-  call $~lib/arraybuffer/ArrayBufferView#get:byteOffset
-  i32.add
-  local.get $3
-  i32.load
-  local.get $3
-  call $~lib/arraybuffer/ArrayBufferView#get:byteOffset
-  i32.add
-  local.get $0
-  i32.load
-  local.get $0
-  call $~lib/arraybuffer/ArrayBufferView#get:byteOffset
-  i32.add
-  local.get $4
-  call $websnark_bls12/bls12_pairingEq2
-  local.set $2
-  i32.const 16
-  i32.const 4
-  call $~lib/rt/stub/__alloc
-  call $~lib/arraybuffer/ArrayBufferView#constructor
-  local.tee $0
-  i32.const 0
-  i32.store offset=12
-  local.get $0
-  i32.const 32
-  i32.store offset=12
-  local.get $0
-  local.tee $1
-  call $~lib/array/ensureSize
-  local.get $0
-  i32.load offset=4
-  local.get $2
-  i32.store
-  i32.const 0
-  local.get $0
-  i32.load offset=12
-  i32.ge_s
-  if
-   local.get $1
-   i32.const 1
-   i32.store offset=12
-  end
-  local.get $0
-  i32.load
-  call $main/eth2_savePostStateRoot
-  i32.const 1
- )
- (func $start (; 24 ;) (type $FUNCSIG$v)
-  i32.const 512000
-  global.set $~lib/rt/stub/startOffset
-  i32.const 512000
-  global.set $~lib/rt/stub/offset
- )
- (func $null (; 25 ;) (type $FUNCSIG$v)
-  nop
- )
   (func $int_copy  (param $p0 i32) (param $p1 i32)
     (i64.store
       (local.get $p1)
@@ -5784,7 +4941,7 @@
       (local.get $p1)
       (local.get $l4)))
   (func $int_squareOld  (param $p0 i32) (param $p1 i32)
-    (call $int_mul
+    (call $main/bignum_int_mul
       (local.get $p0)
       (local.get $p0)
       (local.get $p1)))
@@ -6107,7 +5264,7 @@
           (local.get $l9)
           (i32.const 296))
         (drop
-          (call $int_sub
+          (call $main/bignum_int_sub
             (local.get $l4)
             (i32.sub
               (i32.const 296)
@@ -6154,12 +5311,12 @@
         (br_if $B0
           (call $int_isZero
             (local.get $l8)))
-        (call $int_div
+        (call $main/bignum_int_div
           (local.get $l5)
           (local.get $l8)
           (local.get $l6)
           (local.get $l7))
-        (call $int_mul
+        (call $main/bignum_int_mul
           (local.get $l6)
           (local.get $l4)
           (i32.const 632))
@@ -6175,7 +5332,7 @@
                     (local.get $l3))
                   (then
                     (drop
-                      (call $int_sub
+                      (call $main/bignum_int_sub
                         (i32.const 632)
                         (local.get $l3)
                         (local.get $l10)))
@@ -6183,7 +5340,7 @@
                       (i32.const 0)))
                   (else
                     (drop
-                      (call $int_sub
+                      (call $main/bignum_int_sub
                         (local.get $l3)
                         (i32.const 632)
                         (local.get $l10)))
@@ -6191,7 +5348,7 @@
                       (i32.const 1)))))
               (else
                 (drop
-                  (call $int_add
+                  (call $main/bignum_int_add
                     (i32.const 632)
                     (local.get $l3)
                     (local.get $l10)))
@@ -6202,7 +5359,7 @@
               (local.get $l12)
               (then
                 (drop
-                  (call $int_add
+                  (call $main/bignum_int_add
                     (i32.const 632)
                     (local.get $l3)
                     (local.get $l10)))
@@ -6215,7 +5372,7 @@
                     (i32.const 632))
                   (then
                     (drop
-                      (call $int_sub
+                      (call $main/bignum_int_sub
                         (local.get $l3)
                         (i32.const 632)
                         (local.get $l10)))
@@ -6223,7 +5380,7 @@
                       (i32.const 0)))
                   (else
                     (drop
-                      (call $int_sub
+                      (call $main/bignum_int_sub
                         (i32.const 632)
                         (local.get $l3)
                         (local.get $l10)))
@@ -6254,7 +5411,7 @@
       (local.get $l11)
       (then
         (drop
-          (call $int_sub
+          (call $main/bignum_int_sub
             (local.get $p1)
             (local.get $l3)
             (local.get $p2))))
@@ -6264,13 +5421,13 @@
           (local.get $p2)))))
   (func $f1m_add  (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (if $I0
-      (call $int_add
+      (call $main/bignum_int_add
         (local.get $p0)
         (local.get $p1)
         (local.get $p2))
       (then
         (drop
-          (call $int_sub
+          (call $main/bignum_int_sub
             (local.get $p2)
             (i32.const 776)
             (local.get $p2))))
@@ -6281,24 +5438,24 @@
             (i32.const 776))
           (then
             (drop
-              (call $int_sub
+              (call $main/bignum_int_sub
                 (local.get $p2)
                 (i32.const 776)
                 (local.get $p2))))))))
   (func $f1m_sub  (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (if $I0
-      (call $int_sub
+      (call $main/bignum_int_sub
         (local.get $p0)
         (local.get $p1)
         (local.get $p2))
       (then
         (drop
-          (call $int_add
+          (call $main/bignum_int_add
             (local.get $p2)
             (i32.const 776)
             (local.get $p2))))))
   (func $f1m_neg  (param $p0 i32) (param $p1 i32)
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.const 968)
       (local.get $p0)
       (local.get $p1)))
@@ -8634,7 +7791,7 @@
       (i64.shr_u
         (local.get $l3)
         (i64.const 32)))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 1304)
       (i32.add
         (local.get $p0)
@@ -12977,7 +12134,7 @@
         (local.get $l3))
       (then
         (drop
-          (call $int_sub
+          (call $main/bignum_int_sub
             (local.get $p2)
             (i32.const 776)
             (local.get $p2))))
@@ -12988,7 +12145,7 @@
             (i32.const 776))
           (then
             (drop
-              (call $int_sub
+              (call $main/bignum_int_sub
                 (local.get $p2)
                 (i32.const 776)
                 (local.get $p2))))))))
@@ -17193,7 +16350,7 @@
         (local.get $l5))
       (then
         (drop
-          (call $int_sub
+          (call $main/bignum_int_sub
             (local.get $p1)
             (i32.const 776)
             (local.get $p1))))
@@ -17204,22 +16361,22 @@
             (i32.const 776))
           (then
             (drop
-              (call $int_sub
+              (call $main/bignum_int_sub
                 (local.get $p1)
                 (i32.const 776)
                 (local.get $p1))))))))
   (func $f1m_square  (param $p0 i32) (param $p1 i32)
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p0)
       (local.get $p0)
       (local.get $p1)))
   (func $f1m_toMontgomery  (param $p0 i32) (param $p1 i32)
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p0)
       (i32.const 872)
       (local.get $p1)))
   (func $f1m_fromMontgomery  (param $p0 i32) (param $p1 i32)
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p0)
       (i32.const 2456)
       (local.get $p1)))
@@ -17268,15 +16425,15 @@
             (call $f1m_one
               (i32.const 2552)))
           (else
-            (call $f1m_mul
+            (call $main/bignum_f1m_mul
               (i32.const 2552)
               (i32.const 872)
               (i32.const 2552))))
-        (call $f1m_mul
+        (call $main/bignum_f1m_mul
           (local.get $l3)
           (i32.const 2552)
           (i32.const 2600))
-        (call $f1m_add
+        (call $main/bignum_f1m_add
           (local.get $p2)
           (i32.const 2600)
           (local.get $p2))
@@ -17329,15 +16486,15 @@
         (call $f1m_one
           (i32.const 2552)))
       (else
-        (call $f1m_mul
+        (call $main/bignum_f1m_mul
           (i32.const 2552)
           (i32.const 872)
           (i32.const 2552))))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.const 2600)
       (i32.const 2552)
       (i32.const 2600))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (local.get $p2)
       (i32.const 2600)
       (local.get $p2)))
@@ -17349,7 +16506,7 @@
     (call $f1m_toMontgomery
       (i32.const 2648)
       (i32.const 2648))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p0)
       (i32.const 2648)
       (local.get $p3)))
@@ -17385,7 +16542,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 128)))
-            (call $f1m_mul
+            (call $main/bignum_f1m_mul
               (i32.const 2696)
               (local.get $p3)
               (local.get $p3))))
@@ -17401,7 +16558,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 64)))
-            (call $f1m_mul
+            (call $main/bignum_f1m_mul
               (i32.const 2696)
               (local.get $p3)
               (local.get $p3))))
@@ -17417,7 +16574,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 32)))
-            (call $f1m_mul
+            (call $main/bignum_f1m_mul
               (i32.const 2696)
               (local.get $p3)
               (local.get $p3))))
@@ -17433,7 +16590,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 16)))
-            (call $f1m_mul
+            (call $main/bignum_f1m_mul
               (i32.const 2696)
               (local.get $p3)
               (local.get $p3))))
@@ -17449,7 +16606,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 8)))
-            (call $f1m_mul
+            (call $main/bignum_f1m_mul
               (i32.const 2696)
               (local.get $p3)
               (local.get $p3))))
@@ -17465,7 +16622,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 4)))
-            (call $f1m_mul
+            (call $main/bignum_f1m_mul
               (i32.const 2696)
               (local.get $p3)
               (local.get $p3))))
@@ -17481,7 +16638,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 2)))
-            (call $f1m_mul
+            (call $main/bignum_f1m_mul
               (i32.const 2696)
               (local.get $p3)
               (local.get $p3))))
@@ -17497,7 +16654,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 1)))
-            (call $f1m_mul
+            (call $main/bignum_f1m_mul
               (i32.const 2696)
               (local.get $p3)
               (local.get $p3))))
@@ -17581,11 +16738,11 @@
         (call $f1m_square
           (i32.const 2936)
           (i32.const 2744))
-        (call $f1m_mul
+        (call $main/bignum_f1m_mul
           (i32.const 2792)
           (i32.const 2744)
           (i32.const 2792))
-        (call $f1m_mul
+        (call $main/bignum_f1m_mul
           (i32.const 2840)
           (i32.const 2936)
           (i32.const 2840))
@@ -17618,13 +16775,13 @@
       (i32.const 920)))
   (func $frm_add  (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (if $I0
-      (call $int_add
+      (call $main/bignum_int_add
         (local.get $p0)
         (local.get $p1)
         (local.get $p2))
       (then
         (drop
-          (call $int_sub
+          (call $main/bignum_int_sub
             (local.get $p2)
             (i32.const 3032)
             (local.get $p2))))
@@ -17635,19 +16792,19 @@
             (i32.const 3032))
           (then
             (drop
-              (call $int_sub
+              (call $main/bignum_int_sub
                 (local.get $p2)
                 (i32.const 3032)
                 (local.get $p2))))))))
   (func $frm_sub  (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (if $I0
-      (call $int_sub
+      (call $main/bignum_int_sub
         (local.get $p0)
         (local.get $p1)
         (local.get $p2))
       (then
         (drop
-          (call $int_add
+          (call $main/bignum_int_add
             (local.get $p2)
             (i32.const 3032)
             (local.get $p2))))))
@@ -20735,7 +19892,7 @@
         (local.get $l3))
       (then
         (drop
-          (call $int_sub
+          (call $main/bignum_int_sub
             (local.get $p2)
             (i32.const 3032)
             (local.get $p2))))
@@ -20746,7 +19903,7 @@
             (i32.const 3032))
           (then
             (drop
-              (call $int_sub
+              (call $main/bignum_int_sub
                 (local.get $p2)
                 (i32.const 3032)
                 (local.get $p2))))))))
@@ -22863,7 +22020,7 @@
         (local.get $l5))
       (then
         (drop
-          (call $int_sub
+          (call $main/bignum_int_sub
             (local.get $p1)
             (i32.const 3032)
             (local.get $p1))))
@@ -22874,7 +22031,7 @@
             (i32.const 3032))
           (then
             (drop
-              (call $int_sub
+              (call $main/bignum_int_sub
                 (local.get $p1)
                 (i32.const 3032)
                 (local.get $p1))))))))
@@ -23372,29 +22529,29 @@
     (call $f1m_square
       (local.get $l3)
       (i32.const 4360))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p0)
       (i32.const 4360)
       (i32.const 4408))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p1)
       (i32.const 4312)
       (i32.const 4456))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $l2)
       (i32.const 4312)
       (i32.const 4504))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $l3)
       (i32.const 4360)
       (i32.const 4552))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p0)
         (i32.const 48))
       (i32.const 4552)
       (i32.const 4600))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p1)
         (i32.const 48))
@@ -23434,37 +22591,37 @@
     (call $f1m_square
       (i32.const 4744)
       (i32.const 4792))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (local.get $p0)
       (i32.const 4744)
       (i32.const 4840))
     (call $f1m_square
       (i32.const 4840)
       (i32.const 4840))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.const 4840)
       (i32.const 4696)
       (i32.const 4840))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.const 4840)
       (i32.const 4792)
       (i32.const 4840))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 4840)
       (i32.const 4840)
       (i32.const 4840))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 4696)
       (i32.const 4696)
       (i32.const 4888))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 4888)
       (i32.const 4696)
       (i32.const 4888))
     (call $f1m_square
       (i32.const 4888)
       (i32.const 4936))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p0)
         (i32.const 48))
@@ -23472,33 +22629,33 @@
         (local.get $p0)
         (i32.const 96))
       (i32.const 4984))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 4840)
       (i32.const 4840)
       (local.get $p1))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.const 4936)
       (local.get $p1)
       (local.get $p1))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 4792)
       (i32.const 4792)
       (i32.const 5032))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 5032)
       (i32.const 5032)
       (i32.const 5032))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 5032)
       (i32.const 5032)
       (i32.const 5032))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.const 4840)
       (local.get $p1)
       (i32.add
         (local.get $p1)
         (i32.const 48)))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p1)
         (i32.const 48))
@@ -23506,7 +22663,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 48)))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.add
         (local.get $p1)
         (i32.const 48))
@@ -23514,7 +22671,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 48)))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 4984)
       (i32.const 4984)
       (i32.add
@@ -23552,29 +22709,29 @@
     (call $f1m_square
       (local.get $l4)
       (i32.const 5128))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p0)
       (i32.const 5128)
       (i32.const 5176))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p1)
       (i32.const 5080)
       (i32.const 5224))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $l3)
       (i32.const 5080)
       (i32.const 5272))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $l4)
       (i32.const 5128)
       (i32.const 5320))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p0)
         (i32.const 48))
       (i32.const 5320)
       (i32.const 5368))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p1)
         (i32.const 48))
@@ -23594,63 +22751,63 @@
               (local.get $p0)
               (local.get $p2))
             (return)))))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.const 5224)
       (i32.const 5176)
       (i32.const 5464))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.const 5416)
       (i32.const 5368)
       (i32.const 5512))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 5464)
       (i32.const 5464)
       (i32.const 5560))
     (call $f1m_square
       (i32.const 5560)
       (i32.const 5560))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.const 5464)
       (i32.const 5560)
       (i32.const 5608))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 5512)
       (i32.const 5512)
       (i32.const 5656))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.const 5176)
       (i32.const 5560)
       (i32.const 5752))
     (call $f1m_square
       (i32.const 5656)
       (i32.const 5704))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 5752)
       (i32.const 5752)
       (i32.const 5800))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.const 5704)
       (i32.const 5608)
       (local.get $p2))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (local.get $p2)
       (i32.const 5800)
       (local.get $p2))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.const 5368)
       (i32.const 5608)
       (i32.const 5848))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 5848)
       (i32.const 5848)
       (i32.const 5848))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.const 5752)
       (local.get $p2)
       (i32.add
         (local.get $p2)
         (i32.const 48)))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p2)
         (i32.const 48))
@@ -23658,7 +22815,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 48)))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.add
         (local.get $p2)
         (i32.const 48))
@@ -23666,7 +22823,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 48)))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (local.get $l3)
       (local.get $l4)
       (i32.add
@@ -23679,7 +22836,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 96)))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.add
         (local.get $p2)
         (i32.const 96))
@@ -23687,7 +22844,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 96)))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.add
         (local.get $p2)
         (i32.const 96))
@@ -23695,7 +22852,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 96)))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p2)
         (i32.const 96))
@@ -23781,15 +22938,15 @@
         (call $f1m_square
           (i32.const 6040)
           (i32.const 6088))
-        (call $f1m_mul
+        (call $main/bignum_f1m_mul
           (i32.const 6040)
           (i32.const 6088)
           (i32.const 6136))
-        (call $f1m_mul
+        (call $main/bignum_f1m_mul
           (local.get $p0)
           (i32.const 6088)
           (local.get $p1))
-        (call $f1m_mul
+        (call $main/bignum_f1m_mul
           (i32.add
             (local.get $p0)
             (i32.const 48))
@@ -24987,11 +24144,11 @@
         (local.get $p1)
         (i32.const 48))))
   (func $f2m_mul  (param $p0 i32) (param $p1 i32) (param $p2 i32)
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p0)
       (local.get $p1)
       (i32.const 83960))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p0)
         (i32.const 48))
@@ -24999,36 +24156,36 @@
         (local.get $p1)
         (i32.const 48))
       (i32.const 84008))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (local.get $p0)
       (i32.add
         (local.get $p0)
         (i32.const 48))
       (i32.const 84056))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (local.get $p1)
       (i32.add
         (local.get $p1)
         (i32.const 48))
       (i32.const 84104))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.const 84056)
       (i32.const 84104)
       (i32.const 84056))
     (call $f1m_neg
       (i32.const 84008)
       (local.get $p2))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 83960)
       (local.get $p2)
       (local.get $p2))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 83960)
       (i32.const 84008)
       (i32.add
         (local.get $p2)
         (i32.const 48)))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.const 84056)
       (i32.add
         (local.get $p2)
@@ -25037,11 +24194,11 @@
         (local.get $p2)
         (i32.const 48))))
   (func $f2m_mul1  (param $p0 i32) (param $p1 i32) (param $p2 i32)
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p0)
       (local.get $p1)
       (local.get $p2))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p0)
         (i32.const 48))
@@ -25050,13 +24207,13 @@
         (local.get $p2)
         (i32.const 48))))
   (func $f2m_square  (param $p0 i32) (param $p1 i32)
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p0)
       (i32.add
         (local.get $p0)
         (i32.const 48))
       (i32.const 84152))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (local.get $p0)
       (i32.add
         (local.get $p0)
@@ -25067,37 +24224,37 @@
         (local.get $p0)
         (i32.const 48))
       (i32.const 84248))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (local.get $p0)
       (i32.const 84248)
       (i32.const 84248))
     (call $f1m_neg
       (i32.const 84152)
       (i32.const 84296))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 84296)
       (i32.const 84152)
       (i32.const 84296))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.const 84200)
       (i32.const 84248)
       (local.get $p1))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (local.get $p1)
       (i32.const 84296)
       (local.get $p1))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 84152)
       (i32.const 84152)
       (i32.add
         (local.get $p1)
         (i32.const 48))))
   (func $f2m_add  (param $p0 i32) (param $p1 i32) (param $p2 i32)
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (local.get $p0)
       (local.get $p1)
       (local.get $p2))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.add
         (local.get $p0)
         (i32.const 48))
@@ -25108,11 +24265,11 @@
         (local.get $p2)
         (i32.const 48))))
   (func $f2m_sub  (param $p0 i32) (param $p1 i32) (param $p2 i32)
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (local.get $p0)
       (local.get $p1)
       (local.get $p2))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.add
         (local.get $p0)
         (i32.const 48))
@@ -25190,18 +24347,18 @@
     (call $f1m_neg
       (i32.const 84392)
       (i32.const 84440))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (i32.const 84344)
       (i32.const 84440)
       (i32.const 84440))
     (call $f1m_inverse
       (i32.const 84440)
       (i32.const 84488))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p0)
       (i32.const 84488)
       (local.get $p1))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p0)
         (i32.const 48))
@@ -26496,13 +25653,13 @@
     (call $int_copy
       (local.get $p0)
       (i32.const 239480))
-    (call $f1m_sub
+    (call $main/bignum_f1m_sub
       (local.get $p0)
       (i32.add
         (local.get $p0)
         (i32.const 48))
       (local.get $p1))
-    (call $f1m_add
+    (call $main/bignum_f1m_add
       (i32.const 239480)
       (i32.add
         (local.get $p0)
@@ -27853,13 +27010,13 @@
       (i32.const 247560)
       (local.get $p4)))
   (func $f166  (param $p0 i32) (param $p1 i32) (param $p2 i32)
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (local.get $p1)
       (i32.add
         (local.get $p0)
         (i32.const 48))
       (i32.const 248232))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p1)
         (i32.const 48))
@@ -27867,13 +27024,13 @@
         (local.get $p0)
         (i32.const 48))
       (i32.const 248280))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p1)
         (i32.const 96))
       (local.get $p0)
       (i32.const 248328))
-    (call $f1m_mul
+    (call $main/bignum_f1m_mul
       (i32.add
         (local.get $p1)
         (i32.const 144))
@@ -30304,5 +29461,3 @@
   (data $d102 (i32.const 274824) "\d1\9a\5c\a5]X/>\83\81\c1\86=!\94B27b\8b\c8D(8\18>\10\19\fd*\ad\92\b9\f0|\acONy\1d\c8^\82}\fc\92\d5\0b\da\0f\a3Z\a2\a7\cf{|~\92*\c1\de\17\dc\f1\beNk\d8\8d\08/\a7\d4t\da\87 \ca\d1\1d\bc\ce\96fY\a2-\d2\87\fd\bb\ed~+\0e")
   (data $d103 (i32.const 276744) "\10u\f5]\b5\b9\bc\c0$\fb\8b\e60\86\f9%\89\f4\d5\fb\c8\fb\06D\a0\91!\d1\91\84/\8ei\80o\0aeq\9d>\80\abL\1d\01/l\22\19\91H\17G|\f6g\d7\92\85\d8\1b\88?\af\1d\16\d2\ee\9e\e4g\1a\18\b2\aeix\8c\b7\e5\bc{?\04\14\93S\f6\ae\1ap\f27%\f6s*-b\e9\10\c9\f1\af\d4\a9\ca\9241\83b\19=\a8\be\c2>/.s\aa/\b0\9f\e7\c7\a4\e1\1b\96\d7\7fcIlEw\81\e8\dc\8a\e8\08\17\9996z?\de56\9cu1|\9f\1d\9c\b0 \a8N\c2\13\9e\fa}W\03\a4Gi\c5?\b7\ce\5c\fc\dc\b6\c1\a4\a6\bcfp6\81\bd\1bu'\c6\0b\ef\a3\18\04\10\e0\f9\a9q\9b\bfI\17\0b\b6}\09\91\12Q\1c\8f0\e5\c6E\83I\c2\d7\ad\9d\b1#\88m,\95V\d5\edL\00\92\95\f1>\c0>\eckL\ad\e6L\04 \ad\1f\0a\8d\94\15\cd\091]\c5\d0\0b?,\c0FO39W\c04\ebbZ;\a5v\16\1dA8Er44F\d0Z\1bz\12)\01[\c8\c5t\a4a^\96\ef\86(\8e\fc\8dC\12\9fE\ef/S\96\12\04\c1\cdiq\ee@*\b2K\b7\8e\a6@\9c\0bMh\f4\90\87\11%\1f\c0\d4\c8\93\c2kY\12\12a'\7f\83d\10\e4\dd$\bf\10\fb\7f\07\f3\01+\cd\0bW\9f\c4\93F7L\f2[\0c\1a\b6:\c7\9b5\a5\0d5\dd\ac\d7\e4\93\0dg\d2V\b6\1an\b8\99\90\d3\0d+\8e\97H\812\19\88\0ek8\14\f4\13\b1\a4\9a\0dc\e2\dc\a0\07\183u\93\bb\e7'\a9oFI\adh\aaG\e3\f4\eao\10\d6\d0\0a\1c\0f\0f:\ff\83\eer\c8\5c\83`\a6\b9CN\07\9a\ee\cf\e9\f5\df\aa\c0\a9\ad\de\c7\8c\8ei0,?5\abv7\07\d1C:\dc\ba\17\85\84\17\a9\14\8d?\a1\bacs\d0\07E}?{\97\d4\93\01\ee\89\0a\1cjI\c0\a9\bd\e1\b7%\c8\dc\b5\1d\ee\02\00\00\00\00")
   (data $d104 (i32.const 278056) "\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\01\00\00\00\00\00\00\00\00\01\00\00\01\00\ff\00\01")
-
-)

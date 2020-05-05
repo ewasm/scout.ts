@@ -40,19 +40,46 @@ export function main(): i32 {
   // 0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001
   // 0x010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 
-  // G1 point is 144 bytes
-  let g1_gen = Uint8Array.wrap(input_data_buff, 0, 144);
-  
-  bls12_g1m_toMontgomery((g1_gen.buffer as usize) + g1_gen.byteOffset, (g1_gen.buffer as usize) + g1_gen.byteOffset);
 
-  /*  ** test toMontgomery */
-  //eth2_savePostStateRoot((g1_gen.buffer as usize) + g1_gen.byteOffset);
-  // should return 160c53fd9087b35cf5ff769967fc1778c1a13b14c7954f1547e7d0f3cd6aaef040f4db21cc6eceed75fb0b9e417701127122e70cd593acba8efd18791a63228cce250757135f59dd945140502958ac51c05900ad3f8c1c0e6aa20850fc3ebc0bfdff02000000097602000cc40b00f4ebba58c7535798485f455752705358ce776dec56a2971a075c93e480fac35ef615
+  // G1 point is 144 bytes
+  let g1_times_37 = Uint8Array.wrap(input_data_buff, 0, 144);
+  //bls12_g1m_toMontgomery((g1_times_37.buffer as usize) + g1_times_37.byteOffset, (g1_times_37.buffer as usize) + g1_times_37.byteOffset);
+
+  let g2_times_27 = Uint8Array.wrap(input_data_buff, 144, 288);
+  //bls12_g2m_toMontgomery((g2_times_27.buffer as usize) + g2_times_27.byteOffset, (g2_times_27.buffer as usize) + g2_times_27.byteOffset);
+
+  //debug_mem((g1_times_37.buffer as usize) + g1_times_37.byteOffset, 144);
+  //debug_mem((g2_times_27.buffer as usize) + g2_times_27.byteOffset as usize, 288);
+  
+  // G1 point is 144 bytes
+  let g1_times_999 = Uint8Array.wrap(input_data_buff, 432, 144);
+  //bls12_g1m_toMontgomery((g1_times_999.buffer as usize) + g1_times_999.byteOffset, (g1_times_999.buffer as usize) + g1_times_999.byteOffset);
+
+
+  let g2_gen = Uint8Array.wrap(input_data_buff, 576, 288);
+  //bls12_g2m_toMontgomery((g2_gen.buffer as usize) + g2_gen.byteOffset, (g2_gen.buffer as usize) + g2_gen.byteOffset);
+
+
+  let pFq12One = new ArrayBuffer(SIZE_F*12);
+  bls12_ftm_one(pFq12One as usize);
+  //eth2_savePostStateRoot(pFq12One as usize + 144);
+
+
+  let pairingEq2_result = bls12_pairingEq2((g1_times_37.buffer as usize) + g1_times_37.byteOffset, (g2_times_27.buffer as usize) + g2_times_27.byteOffset, (g1_times_999.buffer as usize) + g1_times_999.byteOffset, (g2_gen.buffer as usize) + g2_gen.byteOffset, pFq12One as usize);
+
+  let return_buf = new Array<u32>(32);
+  return_buf[0] = pairingEq2_result;
+  eth2_savePostStateRoot(return_buf.buffer as usize);
 
 
 
   /*****  pairing test **/
   // G2 point is 288 bytes
+  /*
+  let g1_gen = Uint8Array.wrap(input_data_buff, 0, 144);
+  bls12_g1m_toMontgomery((g1_gen.buffer as usize) + g1_gen.byteOffset, (g1_gen.buffer as usize) + g1_gen.byteOffset);
+
+
   let g2_gen = Uint8Array.wrap(input_data_buff, 144, 288);
   bls12_g2m_toMontgomery((g2_gen.buffer as usize) + g2_gen.byteOffset, (g2_gen.buffer as usize) + g2_gen.byteOffset);
 
@@ -91,12 +118,15 @@ export function main(): i32 {
   //eth2_savePostStateRoot(pFq12One as usize + 144);
 
 
+  debug_mem(g1_times_999 as usize, 144);
+  debug_mem((g2_gen.buffer as usize) + g2_gen.byteOffset as usize, 288);
+
   let pairingEq2_result = bls12_pairingEq2(g1_times_37 as usize, g2_times_27 as usize, g1_times_999 as usize, (g2_gen.buffer as usize) + g2_gen.byteOffset, pFq12One as usize);
 
   let return_buf = new Array<u32>(32);
   return_buf[0] = pairingEq2_result;
   eth2_savePostStateRoot(return_buf.buffer as usize);
-
+  */
   /*****/
 
 

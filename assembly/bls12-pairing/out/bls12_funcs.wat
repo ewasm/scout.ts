@@ -28349,12 +28349,12 @@
       (local.get $p1)
       (local.get $p1)))
   (func $bls12381_prepareG1  (param $p0 i32) (param $p1 i32)
-    (call $websnark_bls12/bls12_g1m_affine
+    (call $g1m_copy
       (local.get $p0)
       (local.get $p1)))
   (func $bls12381_prepareG2  (param $p0 i32) (param $p1 i32)
     (local $l2 i32) (local $l3 i32)
-    (call $websnark_bls12/bls12_g2m_affine
+    (call $g2m_copy
       (local.get $p0)
       (local.get $p1))
     (if $I0
