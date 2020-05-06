@@ -107,6 +107,8 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
     const blsFuncsNoClosingParen = blsFuncsClosed.replace(/(\(data \$d\d+ \(i32.const \d+\) \".*\"\))\)/g, "$1");
 
 
+    // ** These renamings are for calling websnark functions from the assemblyscript code
+    // ** These are NOT the renamings for bignum host functions (those are further below)
     // bn128_g1m_toMontgomery, bn128_g2m_toMontgomery, bn128_g1m_neg, bn128_ftm_one, bn128_pairingEq2 
     // awkward, but we can't control the func name that assemblyscript generates
     // so we have to change the websnark func names to match what AS expects
@@ -125,136 +127,163 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
     let blsFuncsWat = blsFuncsRenamed;
 
     // for debugging
-    fs.writeFileSync("out/bls12_funcs.wat", blsFuncsWat);
+    //fs.writeFileSync("out/bls12_funcs.wat", blsFuncsWat);
+
+
+    function doBignumInserts(bls_funcs_wat, main_lines) {
+      /****
+      * insert bignum host function import statements
+      */
+
+      const bignumf1mMulImport = '(import "env" "bignum_f1m_mul" (func $main/bignum_f1m_mul (param i32 i32 i32)))';
+      const bignumf1mAddImport = '(import "env" "bignum_f1m_add" (func $main/bignum_f1m_add (param i32 i32 i32)))';
+      const bignumf1mSubImport = '(import "env" "bignum_f1m_sub" (func $main/bignum_f1m_sub (param i32 i32 i32)))';
+      const bignumIntMulImport = '(import "env" "bignum_int_mul" (func $main/bignum_int_mul (param i32 i32 i32)))';
+      const bignumIntAddImport = '(import "env" "bignum_int_add" (func $main/bignum_int_add (param i32 i32 i32) (result i32)))';
+      const bignumIntSubImport = '(import "env" "bignum_int_sub" (func $main/bignum_int_sub (param i32 i32 i32) (result i32)))';
+      const bignumIntDivImport = '(import "env" "bignum_int_div" (func $main/bignum_int_div (param i32 i32 i32 i32)))';
+
+      const bignumImportStatements = [bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport,
+                                      bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
+
+
+      // find line number to insert at (after last import)
+      let foundLastImport = false;
+      let foundFirstImport = false;
+      let line_i = 0;
+      while (!foundLastImport) {
+        console.log("checking line_i="+line_i+" for an import:", main_lines[line_i]);
+        if (main_lines[line_i].includes('(import') == true) {
+          console.log("found import statement. checking next line..");
+          foundFirstImport = true;
+          // splice on mainLines will delete a line. use same `i` to search the next line
+        } else if (foundFirstImport == true) {
+          // no import statement is on this line.
+          // if one was already found before, assume the previous line was the last import
+          foundLastImport = true;
+        }
+        line_i++;
+      }
+      const lastImportLine = line_i - 1;
+
+      console.log('last import:', main_lines[lastImportLine]);
+      main_lines.splice(lastImportLine, 0, ...bignumImportStatements);
+
+
+      /****
+      * replace websnark calls to bignum funcs with calls to host funcs
+      */
+
+      // example function declaration: (func $f1m_mul (export "f1m_mul")  (param $p0 i32) (param $p1 i32) (param $p2 i32)
+
+      // TODO: automate check that replacing `(call $f1m_mul` works.
+      //  e.g. check that `(call $f1m_mul` is found 39 times, and that `$f1m_mul` is found 40 times (one more for the function declaration)
+
+      let blsUsingBignumFuncs = bls_funcs_wat;
+
+      blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_mul/g, "\(call \$main/bignum_f1m_mul");
+      blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_add/g, "\(call \$main/bignum_f1m_add");
+      blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_sub/g, "\(call \$main/bignum_f1m_sub");
+
+      blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_mul/g, "\(call \$main/bignum_int_mul");
+      blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_add/g, "\(call \$main/bignum_int_add");
+      blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_sub/g, "\(call \$main/bignum_int_sub");
+      blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_div/g, "\(call \$main/bignum_int_div");
+
+
+      bls_funcs_wat = blsUsingBignumFuncs;
+
+      // for debugging
+      //fs.writeFileSync("out/bls_funcs_bignum_host.wat", blsFuncsWat);
+
+      return { 'blsFuncsWithBignums': bls_funcs_wat, 'AssemblyScriptLines': main_lines };
+    }
+
+
+
+    function finishMergingWebsnark(bls_funcs_wat, main_lines) {
+      console.log('finishMergingWebsnark main_lines:', main_lines);
+      /****
+      * insert websnark code
+      */
+
+      // closing paren is second to last line
+      let closing_paren_ix_before_websnark_merge = main_lines.length - 2;
+
+      const blsLines = bls_funcs_wat.split("\n");
+      main_lines.splice(closing_paren_ix_before_websnark_merge, 0, ...blsLines );
+      console.log('mainLines with websnark_bls12 inserted:', main_lines.length);
+
+
+      /****
+      * delete import statements generated by assemblyscript
+      */
+
+      console.log("searching for import statements to delete...");
+
+      var foundImport = false;
+      let i = 0;
+      let i_max = 40;
+      while (i < i_max) {
+        console.log(main_lines[i]);
+        if (main_lines[i].includes('import "watimports"') == true) {
+          console.log("found import statement!! deleting it...");
+          main_lines.splice(i, 1);
+          foundImport = true;
+          // splice on mainLines will delete a line. use same `i` to search the next line
+        } else {
+          // go to next line
+          i = i + 1;
+        }
+      }
+
+      if (!foundImport) {
+        console.log("ERROR!! Couldn't find assemblyscript import statement(s)! wat parsing will probably fail.");
+      }
+
+      console.log('mainLines length after deleting import statements:', main_lines.length);
+
+      var merged_wat = main_lines.join("\n");
+
+      // write merged wat for debugging purposes
+      //fs.writeFileSync("out/main_with_websnark_merged.wat", merged_wat);
+
+      return merged_wat;
+    }
+
+
+    function parseMergedWatAndWriteWasmFile(merged_wat, wasm_file_name) {
+      // convert wat to binary using wabt
+      var features = {'mutable_globals':false};
+      // wabt.parseWat reads from a string (merged_wat). The filename is fake (main_with_websnark.wat), not sure what its purpose is.
+      var myModule = wabt.parseWat("main_with_websnark.wat", merged_wat, features);
+      console.log('parsed merged wat..');
+      myModule.resolveNames();
+      console.log('names resolved...');
+      myModule.validate();
+      console.log('myModule validated!!');
+      let binary_result = myModule.toBinary({ write_debug_names: true });
+
+      // write binary wasm file
+      fs.writeFileSync(wasm_file_name, binary_result.buffer);
+    }
+
 
 
     if (useBignumHostFuncs) {
-
-        /****
-        * insert bignum host function import statements
-        */
-
-        const bignumf1mMulImport = '(import "env" "bignum_f1m_mul" (func $main/bignum_f1m_mul (param i32 i32 i32)))';
-        const bignumf1mAddImport = '(import "env" "bignum_f1m_add" (func $main/bignum_f1m_add (param i32 i32 i32)))';
-        const bignumf1mSubImport = '(import "env" "bignum_f1m_sub" (func $main/bignum_f1m_sub (param i32 i32 i32)))';
-        const bignumIntMulImport = '(import "env" "bignum_int_mul" (func $main/bignum_int_mul (param i32 i32 i32)))';
-        const bignumIntAddImport = '(import "env" "bignum_int_add" (func $main/bignum_int_add (param i32 i32 i32) (result i32)))';
-        const bignumIntSubImport = '(import "env" "bignum_int_sub" (func $main/bignum_int_sub (param i32 i32 i32) (result i32)))';
-        const bignumIntDivImport = '(import "env" "bignum_int_div" (func $main/bignum_int_div (param i32 i32 i32 i32)))';
-
-        const bignumImportStatements = [bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport,
-                                        bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
-
-
-        // find line number to insert at (after last import)
-        var foundLastImport = false;
-        var foundFirstImport = false;
-        let line_i = 0;
-        while (!foundLastImport) {
-          console.log("checking line_i="+line_i+" for an import:", mainLines[line_i]);
-          if (mainLines[line_i].includes('(import') == true) {
-            console.log("found import statement. checking next line..");
-            foundFirstImport = true;
-            // splice on mainLines will delete a line. use same `i` to search the next line
-          } else if (foundFirstImport == true) {
-            // no import statement is on this line.
-            // if one was already found before, assume the previous line was the last import
-            foundLastImport = true;
-          }
-          line_i++;
-        }
-        const lastImportLine = line_i - 1;
-
-        console.log('last import:', mainLines[lastImportLine]);
-        mainLines.splice(lastImportLine, 0, ...bignumImportStatements);
-
-
-        /****
-        * replace websnark calls to bignum funcs with calls to host funcs
-        */
-
-        // example function declaration: (func $f1m_mul (export "f1m_mul")  (param $p0 i32) (param $p1 i32) (param $p2 i32)
-
-        // TODO: automate check that replacing `(call $f1m_mul` works.
-        //  e.g. check that `(call $f1m_mul` is found 39 times, and that `$f1m_mul` is found 40 times (one more for the function declaration)
-
-        let blsUsingBignumFuncs = blsFuncsWat;
-
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_mul/g, "\(call \$main/bignum_f1m_mul");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_add/g, "\(call \$main/bignum_f1m_add");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_sub/g, "\(call \$main/bignum_f1m_sub");
-
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_mul/g, "\(call \$main/bignum_int_mul");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_add/g, "\(call \$main/bignum_int_add");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_sub/g, "\(call \$main/bignum_int_sub");
-        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_div/g, "\(call \$main/bignum_int_div");
-
-
-        blsFuncsWat = blsUsingBignumFuncs;
-
-        // for debugging
-        fs.writeFileSync("out/bls_funcs_bignum_host.wat", blsFuncsWat);
+      // insert bignum host func calls into websnark
+      let { blsFuncsWithBignums, AssemblyScriptLines } = doBignumInserts(blsFuncsWat, mainLines);
+      // then merge with assemblyscript
+      const mergedWat = finishMergingWebsnark(blsFuncsWithBignums, AssemblyScriptLines);
+      parseMergedWatAndWriteWasmFile(mergedWat, "out/"+finalFileName);
+    } else {
+      // merge websnark + assemblyscript without any bignum host funcs
+      const mergedWat = finishMergingWebsnark(blsFuncsWat, mainLines);
+      parseMergedWatAndWriteWasmFile(mergedWat, "out/"+finalFileName);
     }
 
 
-    /****
-    * insert websnark code
-    */
 
-    // closing paren is second to last line
-    let closing_paren_ix_before_websnark_merge = mainLines.length - 2;
-
-    const blsLines = blsFuncsWat.split("\n");
-    mainLines.splice(closing_paren_ix_before_websnark_merge, 0, ...blsLines );
-    console.log('mainLines with websnark_bls12 inserted:', mainLines.length);
-
-
-    /****
-    * delete import statements generated by assemblyscript
-    */
-
-    console.log("searching for import statements to delete...");
-
-    var foundImport = false;
-    let i = 0;
-    let i_max = 40;
-    while (i < i_max) {
-      console.log(mainLines[i]);
-      if (mainLines[i].includes('import "watimports"') == true) {
-        console.log("found import statement!! deleting it...");
-        mainLines.splice(i, 1);
-        foundImport = true;
-        // splice on mainLines will delete a line. use same `i` to search the next line
-      } else {
-        // go to next line
-        i = i + 1;
-      }
-    }
-
-    if (!foundImport) {
-      console.log("ERROR!! Couldn't find assemblyscript import statement(s)! wat parsing will probably fail.");
-    }
-
-    console.log('mainLines length after deleting import statements:', mainLines.length);
-
-    var merged_wat = mainLines.join("\n");
-
-    // write merged wat for debugging purposes
-    fs.writeFileSync("out/main_with_websnark_merged.wat", merged_wat);
-
-
-    // convert wat to binary using wabt
-    var features = {'mutable_globals':false};
-    var myModule = wabt.parseWat("main_with_websnark.wat", merged_wat, features);
-    console.log('parsed merged wat..');
-    myModule.resolveNames();
-    console.log('names resolved...');
-    myModule.validate();
-    console.log('myModule validated!!');
-    let binary_result = myModule.toBinary({ write_debug_names: true });
-
-    // write binary wasm file
-    fs.writeFileSync("out/"+finalFileName, binary_result.buffer);
 }
 
 
