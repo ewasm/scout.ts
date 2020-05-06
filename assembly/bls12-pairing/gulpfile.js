@@ -17,6 +17,40 @@ const wabt = require("wabt")();
  */
 
 
+const BignumHostFuncImports = {
+  'f1m_mul': '(import "env" "bignum_f1m_mul" (func $main/bignum_f1m_mul (param i32 i32 i32)))',
+  'f1m_add': '(import "env" "bignum_f1m_add" (func $main/bignum_f1m_add (param i32 i32 i32)))',
+  'f1m_sub': '(import "env" "bignum_f1m_sub" (func $main/bignum_f1m_sub (param i32 i32 i32)))',
+  'int_mul': '(import "env" "bignum_int_mul" (func $main/bignum_int_mul (param i32 i32 i32)))',
+  'int_add': '(import "env" "bignum_int_add" (func $main/bignum_int_add (param i32 i32 i32) (result i32)))',
+  'int_sub': '(import "env" "bignum_int_sub" (func $main/bignum_int_sub (param i32 i32 i32) (result i32)))',
+  'int_div': '(import "env" "bignum_int_div" (func $main/bignum_int_div (param i32 i32 i32 i32)))'
+};
+
+/*
+const bignumf1mMulImport = '(import "env" "bignum_f1m_mul" (func $main/bignum_f1m_mul (param i32 i32 i32)))';
+const bignumf1mAddImport = '(import "env" "bignum_f1m_add" (func $main/bignum_f1m_add (param i32 i32 i32)))';
+const bignumf1mSubImport = '(import "env" "bignum_f1m_sub" (func $main/bignum_f1m_sub (param i32 i32 i32)))';
+const bignumIntMulImport = '(import "env" "bignum_int_mul" (func $main/bignum_int_mul (param i32 i32 i32)))';
+const bignumIntAddImport = '(import "env" "bignum_int_add" (func $main/bignum_int_add (param i32 i32 i32) (result i32)))';
+const bignumIntSubImport = '(import "env" "bignum_int_sub" (func $main/bignum_int_sub (param i32 i32 i32) (result i32)))';
+const bignumIntDivImport = '(import "env" "bignum_int_div" (func $main/bignum_int_div (param i32 i32 i32 i32)))';
+*/
+
+const BignumSpectrum = [
+  ['f1m_mul'],
+  ['f1m_mul', 'f1m_add'],
+  ['f1m_mul', 'f1m_add', 'f1m_sub'],
+  ['f1m_mul', 'f1m_add', 'f1m_sub', 'int_mul'],
+  ['f1m_mul', 'f1m_add', 'f1m_sub', 'int_mul', 'int_add'],
+  ['f1m_mul', 'f1m_add', 'f1m_sub', 'int_mul', 'int_add', 'int_sub'],
+  ['f1m_mul', 'f1m_add', 'f1m_sub', 'int_mul', 'int_add', 'int_sub', 'int_div']
+];
+
+
+
+
+
 
 function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
     /*****
@@ -130,11 +164,12 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
     //fs.writeFileSync("out/bls12_funcs.wat", blsFuncsWat);
 
 
-    function doBignumInserts(bls_funcs_wat, main_lines) {
+    function doBignumInserts(bignum_func_list, bls_funcs_wat, main_lines) {
       /****
       * insert bignum host function import statements
       */
 
+      /*
       const bignumf1mMulImport = '(import "env" "bignum_f1m_mul" (func $main/bignum_f1m_mul (param i32 i32 i32)))';
       const bignumf1mAddImport = '(import "env" "bignum_f1m_add" (func $main/bignum_f1m_add (param i32 i32 i32)))';
       const bignumf1mSubImport = '(import "env" "bignum_f1m_sub" (func $main/bignum_f1m_sub (param i32 i32 i32)))';
@@ -145,6 +180,10 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
 
       const bignumImportStatements = [bignumf1mMulImport, bignumf1mAddImport, bignumf1mSubImport,
                                       bignumIntMulImport, bignumIntAddImport, bignumIntSubImport, bignumIntDivImport];
+      */
+
+
+      const bignumImportStatements = bignum_func_list.map(bignum_func => BignumHostFuncImports[bignum_func]);
 
 
       // find line number to insert at (after last import)
@@ -181,6 +220,14 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
 
       let blsUsingBignumFuncs = bls_funcs_wat;
 
+      bignum_func_list.forEach(bignum_func => {
+        //let find_regex = /\(call \$f1m_mul/g
+        const find_regex = new RegExp('\\(call \$' + bignum_func + "", "g");
+        const replacement_str = '\(call \$main/bignum_' + bignum_func;
+        blsUsingBignumFuncs = blsUsingBignumFuncs.replace(find_regex, replacement_str);
+      });
+
+      /*
       blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_mul/g, "\(call \$main/bignum_f1m_mul");
       blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_add/g, "\(call \$main/bignum_f1m_add");
       blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$f1m_sub/g, "\(call \$main/bignum_f1m_sub");
@@ -189,7 +236,7 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
       blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_add/g, "\(call \$main/bignum_int_add");
       blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_sub/g, "\(call \$main/bignum_int_sub");
       blsUsingBignumFuncs = blsUsingBignumFuncs.replace(/\(call \$int_div/g, "\(call \$main/bignum_int_div");
-
+      */
 
       bls_funcs_wat = blsUsingBignumFuncs;
 
@@ -221,7 +268,7 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
 
       console.log("searching for import statements to delete...");
 
-      var foundImport = false;
+      let foundImport = false;
       let i = 0;
       let i_max = 40;
       while (i < i_max) {
@@ -243,7 +290,7 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
 
       console.log('mainLines length after deleting import statements:', main_lines.length);
 
-      var merged_wat = main_lines.join("\n");
+      const merged_wat = main_lines.join("\n");
 
       // write merged wat for debugging purposes
       //fs.writeFileSync("out/main_with_websnark_merged.wat", merged_wat);
@@ -254,15 +301,15 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
 
     function parseMergedWatAndWriteWasmFile(merged_wat, wasm_file_name) {
       // convert wat to binary using wabt
-      var features = {'mutable_globals':false};
+      const features = {'mutable_globals':false};
       // wabt.parseWat reads from a string (merged_wat). The filename is fake (main_with_websnark.wat), not sure what its purpose is.
-      var myModule = wabt.parseWat("main_with_websnark.wat", merged_wat, features);
+      const myModule = wabt.parseWat("main_with_websnark.wat", merged_wat, features);
       console.log('parsed merged wat..');
       myModule.resolveNames();
       console.log('names resolved...');
       myModule.validate();
       console.log('myModule validated!!');
-      let binary_result = myModule.toBinary({ write_debug_names: true });
+      const binary_result = myModule.toBinary({ write_debug_names: true });
 
       // write binary wasm file
       fs.writeFileSync(wasm_file_name, binary_result.buffer);
@@ -271,15 +318,32 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
 
 
     if (useBignumHostFuncs) {
-      // insert bignum host func calls into websnark
-      let { blsFuncsWithBignums, AssemblyScriptLines } = doBignumInserts(blsFuncsWat, mainLines);
-      // then merge with assemblyscript
-      const mergedWat = finishMergingWebsnark(blsFuncsWithBignums, AssemblyScriptLines);
-      parseMergedWatAndWriteWasmFile(mergedWat, "out/"+finalFileName);
+
+      BignumSpectrum.forEach(bignum_func_combo => {
+
+        let mainLinesCopy = Array.from(mainLines);
+
+        // insert bignum host func calls into websnark
+        let { blsFuncsWithBignums, AssemblyScriptLines } = doBignumInserts(bignum_func_combo, blsFuncsWat, mainLinesCopy);
+        // then merge with assemblyscript
+        const mergedWat = finishMergingWebsnark(blsFuncsWithBignums, AssemblyScriptLines);
+
+        const host_func_file_name = "out/" + finalFileName + "-" + bignum_func_combo.join("-") + ".wasm";
+
+        parseMergedWatAndWriteWasmFile(mergedWat, host_func_file_name);
+
+        if (bignum_func_combo.length == BignumHostFuncImports.length) {
+          // save a copy of the "all host funcs" version using the standard file name
+          parseMergedWatAndWriteWasmFile(mergedWat, "out/" + finalFileName + ".wasm");
+        }
+
+      })
+
     } else {
+      const no_host_file_name = "out/" + finalFileName + ".wasm";
       // merge websnark + assemblyscript without any bignum host funcs
       const mergedWat = finishMergingWebsnark(blsFuncsWat, mainLines);
-      parseMergedWatAndWriteWasmFile(mergedWat, "out/"+finalFileName);
+      parseMergedWatAndWriteWasmFile(mergedWat, no_host_file_name);
     }
 
 
@@ -338,8 +402,8 @@ function build(callback) {
     //console.log('wabt:', wabt);
 
     // TODO: enable bignum_hostfuncs
-    mergeAndWriteWasm(true, 'main_with_websnark_bignum_hostfuncs.wasm')
-    mergeAndWriteWasm(false, 'main_with_websnark.wasm')
+    mergeAndWriteWasm(true, 'main_with_websnark_bignum_hostfuncs')
+    mergeAndWriteWasm(false, 'main_with_websnark')
 
     console.log('done merging wat codes.');
 
