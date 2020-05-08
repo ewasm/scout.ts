@@ -114,7 +114,7 @@ export const getImports = (env: EnvData) => {
       },
       // modular multiplication of two numbers in montgomery form (i.e. montgomery multiplication)
       bignum_f1m_mul: (aOffset: number, bOffset: number, rOffset: number) => {
-        //console.log('bignum_f1m_mul.')
+        console.log('bignum_f1m_mul.')
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le')
         const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES), 'le')
 
@@ -124,7 +124,7 @@ export const getImports = (env: EnvData) => {
         memset(mem, rOffset, result_le)
       },
       bignum_f1m_add: (aOffset: number, bOffset: number, outOffset: number) => {
-        console.log('bignum_f1m_add.')
+        //console.log('bignum_f1m_add.')
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le');
         const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES), 'le');
         var result = addmod(a, b);

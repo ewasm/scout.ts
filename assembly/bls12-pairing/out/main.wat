@@ -404,7 +404,6 @@
   (local $9 i32)
   (local $10 i32)
   (local $11 i32)
-  (local $12 i32)
   call $main/eth2_blockDataSize
   local.tee $1
   call $~lib/arraybuffer/ArrayBuffer#constructor
@@ -425,7 +424,7 @@
   local.set $11
   i32.const 288
   call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $12
+  local.set $10
   i32.const 288
   call $~lib/arraybuffer/ArrayBuffer#constructor
   drop
@@ -444,7 +443,7 @@
   local.get $0
   call $~lib/arraybuffer/ArrayBufferView#get:byteOffset
   i32.add
-  local.get $12
+  local.get $10
   call $websnark_bls12/bls12_f6m_toMontgomery
   i32.const 288
   call $~lib/arraybuffer/ArrayBuffer#constructor
@@ -452,6 +451,9 @@
   i32.const 288
   call $~lib/arraybuffer/ArrayBuffer#constructor
   local.set $1
+  i32.const 288
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  local.set $2
   i32.const 288
   call $~lib/arraybuffer/ArrayBuffer#constructor
   local.set $3
@@ -470,25 +472,23 @@
   i32.const 288
   call $~lib/arraybuffer/ArrayBuffer#constructor
   local.set $8
-  i32.const 288
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $9
-  i32.const 288
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $2
   local.get $11
-  local.get $12
+  local.get $10
   local.get $0
   call $websnark_bls12/bls12_f6m_mul
-  local.get $11
+  local.get $10
   local.get $0
   local.get $1
   call $websnark_bls12/bls12_f6m_mul
   local.get $0
   local.get $1
+  local.get $2
+  call $websnark_bls12/bls12_f6m_mul
+  local.get $1
+  local.get $2
   local.get $3
   call $websnark_bls12/bls12_f6m_mul
-  local.get $1
+  local.get $2
   local.get $3
   local.get $4
   call $websnark_bls12/bls12_f6m_mul
@@ -510,35 +510,55 @@
   call $websnark_bls12/bls12_f6m_mul
   local.get $7
   local.get $8
-  local.get $9
-  call $websnark_bls12/bls12_f6m_mul
-  local.get $8
-  local.get $9
-  local.get $2
-  call $websnark_bls12/bls12_f6m_mul
-  local.get $9
-  local.get $2
   local.get $0
   call $websnark_bls12/bls12_f6m_mul
-  local.get $2
+  local.get $8
   local.get $0
   local.get $1
   call $websnark_bls12/bls12_f6m_mul
   loop $loop|0
-   local.get $10
-   i32.const 459
+   local.get $9
+   i32.const 405
    i32.lt_s
    if
-    local.get $10
-    i32.const 7
+    local.get $9
+    i32.const 13
     i32.rem_s
+    i32.const 5
+    i32.lt_s
     if
-     local.get $10
-     i32.const 7
+     local.get $0
+     local.get $1
+     local.get $2
+     call $websnark_bls12/bls12_f6m_mul
+     local.get $1
+     local.get $2
+     local.get $3
+     call $websnark_bls12/bls12_f6m_mul
+     local.get $2
+     local.get $3
+     local.get $4
+     call $websnark_bls12/bls12_f6m_mul
+    else
+     local.get $9
+     i32.const 13
      i32.rem_s
-     i32.const 2
-     i32.eq
+     i32.const 5
+     i32.ge_s
+     if (result i32)
+      local.get $9
+      i32.const 13
+      i32.rem_s
+      i32.const 9
+      i32.lt_s
+     else
+      i32.const 0
+     end
      if
+      local.get $3
+      local.get $4
+      local.get $5
+      call $websnark_bls12/bls12_f6m_mul
       local.get $4
       local.get $5
       local.get $6
@@ -547,50 +567,29 @@
       local.get $6
       local.get $7
       call $websnark_bls12/bls12_f6m_mul
+     else
       local.get $6
       local.get $7
       local.get $8
       call $websnark_bls12/bls12_f6m_mul
-     else
       local.get $7
       local.get $8
-      local.get $9
-      call $websnark_bls12/bls12_f6m_mul
-      local.get $8
-      local.get $9
-      local.get $2
-      call $websnark_bls12/bls12_f6m_mul
-      local.get $9
-      local.get $2
       local.get $0
       call $websnark_bls12/bls12_f6m_mul
+      local.get $8
+      local.get $0
+      local.get $1
+      call $websnark_bls12/bls12_f6m_mul
      end
-    else
-     local.get $0
-     local.get $1
-     local.get $3
-     call $websnark_bls12/bls12_f6m_mul
-     local.get $1
-     local.get $3
-     local.get $4
-     call $websnark_bls12/bls12_f6m_mul
-     local.get $3
-     local.get $4
-     local.get $5
-     call $websnark_bls12/bls12_f6m_mul
     end
-    local.get $2
-    local.get $0
-    local.get $1
-    call $websnark_bls12/bls12_f6m_mul
-    local.get $10
+    local.get $9
     i32.const 1
     i32.add
-    local.set $10
+    local.set $9
     br $loop|0
    end
   end
-  local.get $2
+  local.get $0
   call $main/eth2_savePostStateRoot
   i32.const 1
  )

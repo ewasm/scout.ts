@@ -69,19 +69,54 @@ export function main(): i32 {
   let f6_point1_res3 = new ArrayBuffer(SIZE_F6);
   let f6_point1_res4 = new ArrayBuffer(SIZE_F6);
   let f6_point1_res5 = new ArrayBuffer(SIZE_F6);
+  
   let f6_point1_res6 = new ArrayBuffer(SIZE_F6);
   let f6_point1_res7 = new ArrayBuffer(SIZE_F6);
   let f6_point1_res8 = new ArrayBuffer(SIZE_F6);
   let f6_point1_res9 = new ArrayBuffer(SIZE_F6);
-  let f6_point1_res10 = new ArrayBuffer(SIZE_F6);
+  //let f6_point1_res10 = new ArrayBuffer(SIZE_F6);
 
 
   // 2 calls
   bls12_f6m_mul(f6_point1_mont_form as usize, f6_point2_mont_form as usize, f6_point1_res1 as usize);
-  bls12_f6m_mul(f6_point1_mont_form as usize, f6_point1_res1 as usize, f6_point1_res2 as usize);
-  //bls12_f6m_mul(f6_point1_res1 as usize, f6_point1_res2 as usize, f6_point1_res3 as usize);
-  //bls12_f6m_mul(f6_point1_res2 as usize, f6_point1_res3 as usize, f6_point1_res4 as usize);
-  //bls12_f6m_mul(f6_point1_res3 as usize, f6_point1_res4 as usize, f6_point1_res5 as usize);
+  bls12_f6m_mul(f6_point2_mont_form as usize, f6_point1_res1 as usize, f6_point1_res2 as usize);
+
+  bls12_f6m_mul(f6_point1_res1 as usize, f6_point1_res2 as usize, f6_point1_res3 as usize);
+  bls12_f6m_mul(f6_point1_res2 as usize, f6_point1_res3 as usize, f6_point1_res4 as usize);
+  bls12_f6m_mul(f6_point1_res3 as usize, f6_point1_res4 as usize, f6_point1_res5 as usize);
+
+  bls12_f6m_mul(f6_point1_res4 as usize, f6_point1_res5 as usize, f6_point1_res6 as usize);
+  bls12_f6m_mul(f6_point1_res5 as usize, f6_point1_res6 as usize, f6_point1_res7 as usize);
+  bls12_f6m_mul(f6_point1_res6 as usize, f6_point1_res7 as usize, f6_point1_res8 as usize);
+
+  bls12_f6m_mul(f6_point1_res7 as usize, f6_point1_res8 as usize, f6_point1_res9 as usize);
+  bls12_f6m_mul(f6_point1_res8 as usize, f6_point1_res9 as usize, f6_point1_res1 as usize);
+  bls12_f6m_mul(f6_point1_res9 as usize, f6_point1_res1 as usize, f6_point1_res2 as usize);
+
+
+  for (let i = 0; i < 135*3; i++) {
+      if (i % 13 < 5) {
+        bls12_f6m_mul(f6_point1_res1 as usize, f6_point1_res2 as usize, f6_point1_res3 as usize);
+        bls12_f6m_mul(f6_point1_res2 as usize, f6_point1_res3 as usize, f6_point1_res4 as usize);
+        bls12_f6m_mul(f6_point1_res3 as usize, f6_point1_res4 as usize, f6_point1_res5 as usize);
+      } else if (i % 13 >= 5 && i % 13 < 9) {
+        bls12_f6m_mul(f6_point1_res4 as usize, f6_point1_res5 as usize, f6_point1_res6 as usize);
+        bls12_f6m_mul(f6_point1_res5 as usize, f6_point1_res6 as usize, f6_point1_res7 as usize);
+        bls12_f6m_mul(f6_point1_res6 as usize, f6_point1_res7 as usize, f6_point1_res8 as usize);
+      } else {
+        bls12_f6m_mul(f6_point1_res7 as usize, f6_point1_res8 as usize, f6_point1_res9 as usize);
+        bls12_f6m_mul(f6_point1_res8 as usize, f6_point1_res9 as usize, f6_point1_res1 as usize);
+        bls12_f6m_mul(f6_point1_res9 as usize, f6_point1_res1 as usize, f6_point1_res2 as usize);
+      }
+  }
+  eth2_savePostStateRoot(f6_point1_res1 as usize);
+
+
+
+
+
+
+
 
   /*
   bls12_f6m_mul(f6_point1_mont_form as usize, f6_point2_mont_form as usize, f6_point1_res4 as usize);
@@ -119,6 +154,8 @@ export function main(): i32 {
   }
   */
 
+
+  /*
   bls12_f6m_mul(f6_point1_res1 as usize, f6_point1_res2 as usize, f6_point1_res3 as usize);
   bls12_f6m_mul(f6_point1_res2 as usize, f6_point1_res3 as usize, f6_point1_res4 as usize);
   bls12_f6m_mul(f6_point1_res3 as usize, f6_point1_res4 as usize, f6_point1_res5 as usize);
@@ -132,7 +169,7 @@ export function main(): i32 {
   bls12_f6m_mul(f6_point1_res10 as usize, f6_point1_res1 as usize, f6_point1_res2 as usize);
 
 
-  for (let i = 0; i < 153*3; i++) {
+  for (let i = 0; i < 131*3; i++) {
       if (i % 7 == 0) {
         bls12_f6m_mul(f6_point1_res1 as usize, f6_point1_res2 as usize, f6_point1_res3 as usize);
         bls12_f6m_mul(f6_point1_res2 as usize, f6_point1_res3 as usize, f6_point1_res4 as usize);
@@ -149,17 +186,24 @@ export function main(): i32 {
 
       bls12_f6m_mul(f6_point1_res10 as usize, f6_point1_res1 as usize, f6_point1_res2 as usize);
   }
-
+  eth2_savePostStateRoot(f6_point1_res10 as usize);
+  */
 
 
   /*
-  for (let i = 0; i < 306; i++) {
+  for (let i = 0; i < 135; i++) {
+      bls12_f6m_mul(f6_point1_res4 as usize, f6_point1_res5 as usize, f6_point1_res1 as usize);
+      bls12_f6m_mul(f6_point1_res5 as usize, f6_point1_res1 as usize, f6_point1_res2 as usize);
+      bls12_f6m_mul(f6_point1_res1 as usize, f6_point1_res2 as usize, f6_point1_res3 as usize);
+      bls12_f6m_mul(f6_point1_res2 as usize, f6_point1_res3 as usize, f6_point1_res4 as usize);
+      bls12_f6m_mul(f6_point1_res3 as usize, f6_point1_res4 as usize, f6_point1_res5 as usize);
       bls12_f6m_mul(f6_point1_res4 as usize, f6_point1_res5 as usize, f6_point1_res1 as usize);
       bls12_f6m_mul(f6_point1_res5 as usize, f6_point1_res1 as usize, f6_point1_res2 as usize);
       bls12_f6m_mul(f6_point1_res1 as usize, f6_point1_res2 as usize, f6_point1_res3 as usize);
       bls12_f6m_mul(f6_point1_res2 as usize, f6_point1_res3 as usize, f6_point1_res4 as usize);
       bls12_f6m_mul(f6_point1_res3 as usize, f6_point1_res4 as usize, f6_point1_res5 as usize);
   }
+  eth2_savePostStateRoot(f6_point1_res5 as usize);
   */
 
 
@@ -170,7 +214,7 @@ export function main(): i32 {
   //bls12_f6m_mul(f6_point1_res5 as usize, f6_point1_res1 as usize, f6_point1_res2 as usize);
   //bls12_f6m_mul(f6_point1_res1 as usize, f6_point1_res2 as usize, f6_point1_res3 as usize);
 
-  eth2_savePostStateRoot(f6_point1_res10 as usize);
+  
 
 
 
