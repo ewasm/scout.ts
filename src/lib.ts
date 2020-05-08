@@ -107,7 +107,33 @@ export const getImports = (env: EnvData) => {
         console.log('eth2_savePostStateRoot:', memget(mem, ptr, 288).toString('hex'))
       },
       abort: () => { throw ('Wasm aborted') },
-      debug_print32: (value: number) => console.log('debug_print32: ', value),
+      debug_print32: (value: number) => {
+        if (value == 221) {
+          console.log('f2m_mul input points:')
+        } else if (value == 222) {
+          console.log('f2m_mul output result:');
+        } else if (value == 661) {
+          console.log('f6m_mul input points:')
+        } else if (value == 662) {
+          console.log('f6m_mul output result:')
+        } else if (value == 33) {
+          console.log('f6m_mul output result in montgomery form:')
+        } else if (value == 55) {
+          console.log('f6m_mul output result in normal form:')
+        } else if (value == 77) {
+          console.log('f6m_mul input point1 in montgomery form:')
+        } else if (value == 78) {
+          console.log('f6m_mul input point2 in montgomery form:')
+        } else {
+          console.log('debug_print32:', value);
+        }
+      },
+      debug_print_f2: (ptr: number) => {
+        console.log('debug_print_f2:', memget(mem, ptr, 144).toString('hex'))
+      },
+      debug_print_f6: (ptr: number) => {
+        console.log('debug_print_f6:', memget(mem, ptr, 288).toString('hex'))
+      },
       debug_printMem: (ptr: number, length: number) => console.log('debug_printMem: ', ptr, length, memget(mem, ptr, length)),
       debug_printMemHex: (ptr: number, length: number) => {
         console.log('debug_printMemHex: ', ptr, length, memget(mem, ptr, length).toString('hex'))

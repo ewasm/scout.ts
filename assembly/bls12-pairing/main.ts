@@ -3,8 +3,14 @@ import { bls12_g1m_toMontgomery, bls12_g2m_toMontgomery, bls12_g2m_timesScalar, 
 //@external("env", "debug_printMemHex")
 //export declare function debug_mem(pos: i32, len: i32): void;
 
-//@external("env", "debug_print32")
-//export declare function debug_print32(pos: i32): void;
+@external("env", "debug_print_f2")
+export declare function debug_print_f2(pos: i32): void;
+
+@external("env", "debug_print_f6")
+export declare function debug_print_f6(pos: i32): void;
+
+@external("env", "debug_print32")
+export declare function debug_print32(pos: i32): void;
 
 @external("env", "eth2_blockDataSize")
 export declare function eth2_blockDataSize(): i32;
@@ -55,15 +61,26 @@ export function main(): i32 {
   bls12_f6m_toMontgomery((f6_point1.buffer as usize) + f6_point1.byteOffset, f6_point1_mont_form as usize);
   bls12_f6m_toMontgomery((f6_point2.buffer as usize) + f6_point2.byteOffset, f6_point2_mont_form as usize);
 
-  /*  *** to test just one f1m_mul ***
+  debug_print32(77);
+  debug_print_f6(f6_point1_mont_form as usize);
+
+  debug_print32(78);
+  debug_print_f6(f6_point2_mont_form as usize);
+
+  /*  *** to test just one f1m_mul ***/
   bls12_f6m_mul(f6_point1_mont_form as usize, f6_point2_mont_form as usize, f6_result_mont_form as usize);
+  debug_print32(33);
+  debug_print_f6(f6_result_mont_form as usize);
   bls12_f6m_fromMontgomery(f6_result_mont_form as usize, f6_result_norm_form as usize);
+  debug_print32(55);
+  debug_print_f6(f6_result_norm_form as usize);
   eth2_savePostStateRoot(f6_result_norm_form as usize);
   // should return 8ae161a0dcb13fde29e7c870ad9613aa67ebf8cc8b37375ee963eb37c7ddc66d401599ddb71db2edf686bb1651a24e0e5fdf0d90a16cf0abdb2ebaed3c1f032dd26ec8c6f021b267dc39488729ab7b8bb5e0b17e38a8d53eb0eff6ec0b25820e5c0dd6a08f1721b0dc78f2b498fc98ba812d4391716e64ce9bde5d772de26ead91cdd7f106a03bdf9cabd8fd7c24261040e69eb4784eaa562b084c6684d300a2f20e22dd82b28b9096b169a96be58c3c325a04668b8606ca86fa282b19b88515a043fa1147415928c079dcfae1156457cd89f4a03f7fcd5116fb71ecf3bea972c78e8e5391c9deecea40f2376ab3740b1a9c0d9e0feaf29b30eea3fe21386223c5fb3d35d5b54f9338ec1ac1cf3d936a924d7df2f4acb9b69508d77673a41c05
-  */
+
 
 
   /* *** to do the whole loop *** */
+  /*
   let f6_point1_res1 = new ArrayBuffer(SIZE_F6);
   let f6_point1_res2 = new ArrayBuffer(SIZE_F6);
   let f6_point1_res3 = new ArrayBuffer(SIZE_F6);
@@ -110,7 +127,7 @@ export function main(): i32 {
       }
   }
   eth2_savePostStateRoot(f6_point1_res1 as usize);
-
+  */
 
 
 

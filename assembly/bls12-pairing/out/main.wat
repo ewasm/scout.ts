@@ -16,23 +16,30 @@
  (import "watimports" "$g1m_neg" (func $websnark_bls12/bls12_g1m_neg (param i32 i32)))
  (import "watimports" "$ftm_one" (func $websnark_bls12/bls12_ftm_one (param i32)))
  (import "watimports" "$bls12_pairingEq2" (func $websnark_bls12/bls12_pairingEq2 (param i32 i32 i32 i32 i32) (result i32)))
+ (import "env" "debug_print_f2" (func $main/debug_print_f2 (param i32)))
+ (import "env" "debug_print_f6" (func $main/debug_print_f6 (param i32)))
+ (import "env" "debug_print32" (func $main/debug_print32 (param i32)))
  (import "env" "eth2_blockDataSize" (func $main/eth2_blockDataSize (result i32)))
  (import "env" "eth2_blockDataCopy" (func $main/eth2_blockDataCopy (param i32 i32 i32)))
  (import "env" "eth2_loadPreStateRoot" (func $main/eth2_loadPreStateRoot (param i32)))
  (import "env" "eth2_savePostStateRoot" (func $main/eth2_savePostStateRoot (param i32)))
  (import "watimports" "$f6m_toMontgomery" (func $websnark_bls12/bls12_f6m_toMontgomery (param i32 i32)))
  (import "watimports" "$f6m_mul" (func $websnark_bls12/bls12_f6m_mul (param i32 i32 i32)))
+ (import "watimports" "$f6m_fromMontgomery" (func $websnark_bls12/bls12_f6m_fromMontgomery (param i32 i32)))
  (memory $0 8)
  (global $~lib/rt/stub/startOffset (mut i32) (i32.const 0))
  (global $~lib/rt/stub/offset (mut i32) (i32.const 0))
  (export "memory" (memory $0))
+ (export "debug_print_f2" (func $main/debug_print_f2))
+ (export "debug_print_f6" (func $main/debug_print_f6))
+ (export "debug_print32" (func $main/debug_print32))
  (export "eth2_blockDataSize" (func $main/eth2_blockDataSize))
  (export "eth2_blockDataCopy" (func $main/eth2_blockDataCopy))
  (export "eth2_loadPreStateRoot" (func $main/eth2_loadPreStateRoot))
  (export "eth2_savePostStateRoot" (func $main/eth2_savePostStateRoot))
  (export "main" (func $main/main))
  (start $start)
- (func $~lib/rt/stub/maybeGrowMemory (; 14 ;) (type $FUNCSIG$vi) (param $0 i32)
+ (func $~lib/rt/stub/maybeGrowMemory (; 18 ;) (type $FUNCSIG$vi) (param $0 i32)
   (local $1 i32)
   (local $2 i32)
   local.get $0
@@ -74,7 +81,7 @@
   local.get $0
   global.set $~lib/rt/stub/offset
  )
- (func $~lib/rt/stub/__alloc (; 15 ;) (type $FUNCSIG$iii) (param $0 i32) (param $1 i32) (result i32)
+ (func $~lib/rt/stub/__alloc (; 19 ;) (type $FUNCSIG$iii) (param $0 i32) (param $1 i32) (result i32)
   (local $2 i32)
   (local $3 i32)
   (local $4 i32)
@@ -119,7 +126,7 @@
   i32.store offset=12
   local.get $3
  )
- (func $~lib/memory/memory.fill (; 16 ;) (type $FUNCSIG$vii) (param $0 i32) (param $1 i32)
+ (func $~lib/memory/memory.fill (; 20 ;) (type $FUNCSIG$vii) (param $0 i32) (param $1 i32)
   (local $2 i32)
   block $~lib/util/memory/memset|inlined.0
    local.get $1
@@ -328,7 +335,7 @@
    end
   end
  )
- (func $~lib/arraybuffer/ArrayBuffer#constructor (; 17 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/arraybuffer/ArrayBuffer#constructor (; 21 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   (local $1 i32)
   local.get $0
   i32.const 1073741808
@@ -344,13 +351,13 @@
   call $~lib/memory/memory.fill
   local.get $1
  )
- (func $~lib/arraybuffer/ArrayBuffer#get:byteLength (; 18 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/arraybuffer/ArrayBuffer#get:byteLength (; 22 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   local.get $0
   i32.const 16
   i32.sub
   i32.load offset=12
  )
- (func $~lib/typedarray/Uint8Array.wrap (; 19 ;) (type $FUNCSIG$iii) (param $0 i32) (param $1 i32) (result i32)
+ (func $~lib/typedarray/Uint8Array.wrap (; 23 ;) (type $FUNCSIG$iii) (param $0 i32) (param $1 i32) (result i32)
   (local $2 i32)
   block $folding-inner0
    local.get $1
@@ -384,26 +391,20 @@
   end
   unreachable
  )
- (func $~lib/arraybuffer/ArrayBufferView#get:byteOffset (; 20 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/arraybuffer/ArrayBufferView#get:byteOffset (; 24 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   local.get $0
   i32.load offset=4
   local.get $0
   i32.load
   i32.sub
  )
- (func $main/main (; 21 ;) (type $FUNCSIG$i) (result i32)
+ (func $main/main (; 25 ;) (type $FUNCSIG$i) (result i32)
   (local $0 i32)
   (local $1 i32)
   (local $2 i32)
   (local $3 i32)
   (local $4 i32)
   (local $5 i32)
-  (local $6 i32)
-  (local $7 i32)
-  (local $8 i32)
-  (local $9 i32)
-  (local $10 i32)
-  (local $11 i32)
   call $main/eth2_blockDataSize
   local.tee $1
   call $~lib/arraybuffer/ArrayBuffer#constructor
@@ -414,37 +415,11 @@
   local.get $0
   i32.const 0
   call $~lib/typedarray/Uint8Array.wrap
-  local.set $1
+  local.set $4
   local.get $0
   i32.const 288
   call $~lib/typedarray/Uint8Array.wrap
-  local.set $0
-  i32.const 288
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $11
-  i32.const 288
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $10
-  i32.const 288
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  drop
-  i32.const 288
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  drop
-  local.get $1
-  i32.load
-  local.get $1
-  call $~lib/arraybuffer/ArrayBufferView#get:byteOffset
-  i32.add
-  local.get $11
-  call $websnark_bls12/bls12_f6m_toMontgomery
-  local.get $0
-  i32.load
-  local.get $0
-  call $~lib/arraybuffer/ArrayBufferView#get:byteOffset
-  i32.add
-  local.get $10
-  call $websnark_bls12/bls12_f6m_toMontgomery
+  local.set $5
   i32.const 288
   call $~lib/arraybuffer/ArrayBuffer#constructor
   local.set $0
@@ -457,149 +432,54 @@
   i32.const 288
   call $~lib/arraybuffer/ArrayBuffer#constructor
   local.set $3
-  i32.const 288
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $4
-  i32.const 288
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $5
-  i32.const 288
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $6
-  i32.const 288
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $7
-  i32.const 288
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $8
-  local.get $11
-  local.get $10
+  local.get $4
+  i32.load
+  local.get $4
+  call $~lib/arraybuffer/ArrayBufferView#get:byteOffset
+  i32.add
   local.get $0
-  call $websnark_bls12/bls12_f6m_mul
-  local.get $10
-  local.get $0
+  call $websnark_bls12/bls12_f6m_toMontgomery
+  local.get $5
+  i32.load
+  local.get $5
+  call $~lib/arraybuffer/ArrayBufferView#get:byteOffset
+  i32.add
   local.get $1
-  call $websnark_bls12/bls12_f6m_mul
+  call $websnark_bls12/bls12_f6m_toMontgomery
+  i32.const 77
+  call $main/debug_print32
+  local.get $0
+  call $main/debug_print_f6
+  i32.const 78
+  call $main/debug_print32
+  local.get $1
+  call $main/debug_print_f6
   local.get $0
   local.get $1
   local.get $2
   call $websnark_bls12/bls12_f6m_mul
-  local.get $1
+  i32.const 33
+  call $main/debug_print32
+  local.get $2
+  call $main/debug_print_f6
   local.get $2
   local.get $3
-  call $websnark_bls12/bls12_f6m_mul
-  local.get $2
+  call $websnark_bls12/bls12_f6m_fromMontgomery
+  i32.const 55
+  call $main/debug_print32
   local.get $3
-  local.get $4
-  call $websnark_bls12/bls12_f6m_mul
+  call $main/debug_print_f6
   local.get $3
-  local.get $4
-  local.get $5
-  call $websnark_bls12/bls12_f6m_mul
-  local.get $4
-  local.get $5
-  local.get $6
-  call $websnark_bls12/bls12_f6m_mul
-  local.get $5
-  local.get $6
-  local.get $7
-  call $websnark_bls12/bls12_f6m_mul
-  local.get $6
-  local.get $7
-  local.get $8
-  call $websnark_bls12/bls12_f6m_mul
-  local.get $7
-  local.get $8
-  local.get $0
-  call $websnark_bls12/bls12_f6m_mul
-  local.get $8
-  local.get $0
-  local.get $1
-  call $websnark_bls12/bls12_f6m_mul
-  loop $loop|0
-   local.get $9
-   i32.const 405
-   i32.lt_s
-   if
-    local.get $9
-    i32.const 13
-    i32.rem_s
-    i32.const 5
-    i32.lt_s
-    if
-     local.get $0
-     local.get $1
-     local.get $2
-     call $websnark_bls12/bls12_f6m_mul
-     local.get $1
-     local.get $2
-     local.get $3
-     call $websnark_bls12/bls12_f6m_mul
-     local.get $2
-     local.get $3
-     local.get $4
-     call $websnark_bls12/bls12_f6m_mul
-    else
-     local.get $9
-     i32.const 13
-     i32.rem_s
-     i32.const 5
-     i32.ge_s
-     if (result i32)
-      local.get $9
-      i32.const 13
-      i32.rem_s
-      i32.const 9
-      i32.lt_s
-     else
-      i32.const 0
-     end
-     if
-      local.get $3
-      local.get $4
-      local.get $5
-      call $websnark_bls12/bls12_f6m_mul
-      local.get $4
-      local.get $5
-      local.get $6
-      call $websnark_bls12/bls12_f6m_mul
-      local.get $5
-      local.get $6
-      local.get $7
-      call $websnark_bls12/bls12_f6m_mul
-     else
-      local.get $6
-      local.get $7
-      local.get $8
-      call $websnark_bls12/bls12_f6m_mul
-      local.get $7
-      local.get $8
-      local.get $0
-      call $websnark_bls12/bls12_f6m_mul
-      local.get $8
-      local.get $0
-      local.get $1
-      call $websnark_bls12/bls12_f6m_mul
-     end
-    end
-    local.get $9
-    i32.const 1
-    i32.add
-    local.set $9
-    br $loop|0
-   end
-  end
-  local.get $0
   call $main/eth2_savePostStateRoot
   i32.const 1
  )
- (func $start (; 22 ;) (type $FUNCSIG$v)
+ (func $start (; 26 ;) (type $FUNCSIG$v)
   i32.const 512000
   global.set $~lib/rt/stub/startOffset
   i32.const 512000
   global.set $~lib/rt/stub/offset
  )
- (func $null (; 23 ;) (type $FUNCSIG$v)
+ (func $null (; 27 ;) (type $FUNCSIG$v)
   nop
  )
 )

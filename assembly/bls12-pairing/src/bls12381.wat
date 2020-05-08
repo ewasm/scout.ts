@@ -14,7 +14,7 @@
   (type $t12 (func (param i32 i32 i32 i32 i32 i32 i32 i32 i32) (result i32)))
   (type $t13 (func (param i32 i32 i32 i32 i32 i32 i32 i32 i32 i32 i32) (result i32)))
   (import "env" "memory" (memory $env.memory 1000))
-  (func $int_copy (export "int_copy") (export "f1m_copy") (export "frm_copy") (export "fr_copy") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $int_copy (type $t0) (param $p0 i32) (param $p1 i32)
     (i64.store
       (local.get $p1)
       (i64.load
@@ -39,7 +39,7 @@
       (local.get $p1)
       (i64.load offset=40
         (local.get $p0))))
-  (func $int_zero (export "int_zero") (export "f1m_zero") (export "frm_zero") (export "fr_zero") (type $t1) (param $p0 i32)
+  (func $int_zero (type $t1) (param $p0 i32)
     (i64.store
       (local.get $p0)
       (i64.const 0))
@@ -58,7 +58,7 @@
     (i64.store offset=40
       (local.get $p0)
       (i64.const 0)))
-  (func $int_isZero (export "int_isZero") (export "f1m_isZero") (export "frm_isZero") (export "fr_isZero") (type $t2) (param $p0 i32) (result i32)
+  (func $int_isZero (type $t2) (param $p0 i32) (result i32)
     (if $I0
       (i64.eqz
         (i64.load offset=40
@@ -105,7 +105,7 @@
           (i32.const 0))))
     (return
       (i32.const 0)))
-  (func $int_one (export "int_one") (type $t1) (param $p0 i32)
+  (func $int_one (type $t1) (param $p0 i32)
     (i64.store
       (local.get $p0)
       (i64.const 1))
@@ -124,7 +124,7 @@
     (i64.store offset=40
       (local.get $p0)
       (i64.const 0)))
-  (func $int_eq (export "int_eq") (export "f1m_eq") (export "frm_eq") (export "fr_eq") (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
+  (func $int_eq (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
     (if $I0
       (i64.eq
         (i64.load offset=40
@@ -183,7 +183,7 @@
           (i32.const 0))))
     (return
       (i32.const 0)))
-  (func $int_gte (export "int_gte") (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
+  (func $int_gte (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
     (if $I0
       (i64.lt_u
         (i64.load offset=40
@@ -292,7 +292,7 @@
                                                   (local.get $p1))))))))))))))))))))))))
     (return
       (i32.const 0)))
-  (func $int_add (export "int_add") (type $t4) (param $p0 i32) (param $p1 i32) (param $p2 i32) (result i32)
+  (func $int_add (type $t4) (param $p0 i32) (param $p1 i32) (param $p2 i32) (result i32)
     (local $l3 i64)
     (local.set $l3
       (i64.add
@@ -450,7 +450,7 @@
       (i64.shr_u
         (local.get $l3)
         (i64.const 32))))
-  (func $int_sub (export "int_sub") (type $t4) (param $p0 i32) (param $p1 i32) (param $p2 i32) (result i32)
+  (func $int_sub (type $t4) (param $p0 i32) (param $p1 i32) (param $p2 i32) (result i32)
     (local $l3 i64)
     (local.set $l3
       (i64.sub
@@ -632,7 +632,7 @@
       (i64.shr_s
         (local.get $l3)
         (i64.const 32))))
-  (func $int_mul (export "int_mul") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $int_mul (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i64) (local $l4 i64) (local $l5 i64) (local $l6 i64) (local $l7 i64) (local $l8 i64) (local $l9 i64) (local $l10 i64) (local $l11 i64) (local $l12 i64) (local $l13 i64) (local $l14 i64) (local $l15 i64) (local $l16 i64) (local $l17 i64) (local $l18 i64) (local $l19 i64) (local $l20 i64) (local $l21 i64) (local $l22 i64) (local $l23 i64) (local $l24 i64) (local $l25 i64) (local $l26 i64) (local $l27 i64) (local $l28 i64)
     (local.set $l3
       (i64.add
@@ -2862,7 +2862,7 @@
     (i64.store32 offset=92
       (local.get $p2)
       (local.get $l4)))
-  (func $int_square (export "int_square") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $int_square (type $t0) (param $p0 i32) (param $p1 i32)
     (local $l2 i64) (local $l3 i64) (local $l4 i64) (local $l5 i64) (local $l6 i64) (local $l7 i64) (local $l8 i64) (local $l9 i64) (local $l10 i64) (local $l11 i64) (local $l12 i64) (local $l13 i64) (local $l14 i64) (local $l15 i64) (local $l16 i64) (local $l17 i64)
     (local.set $l2
       (i64.const 0))
@@ -4956,7 +4956,7 @@
     (i64.store32 offset=92
       (local.get $p1)
       (local.get $l4)))
-  (func $int_squareOld (export "int_squareOld") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $int_squareOld (type $t0) (param $p0 i32) (param $p1 i32)
     (call $int_mul
       (local.get $p0)
       (local.get $p0)
@@ -5141,7 +5141,7 @@
             (local.get $l2)
             (i64.const 32)))
         (br $L1))))
-  (func $int_div (export "int_div") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $int_div (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (local $l4 i32) (local $l5 i32) (local $l6 i32) (local $l7 i32) (local $l8 i64) (local $l9 i64) (local $l10 i32)
     (if $I0
       (local.get $p2)
@@ -5292,7 +5292,7 @@
             (local.get $l10))
           (local.get $l9))
         (br $L6))))
-  (func $int_inverseMod (export "int_inverseMod") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $int_inverseMod (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i32) (local $l4 i32) (local $l5 i32) (local $l6 i32) (local $l7 i32) (local $l8 i32) (local $l9 i32) (local $l10 i32) (local $l11 i32) (local $l12 i32) (local $l13 i32)
     (local.set $l3
       (i32.const 344))
@@ -5435,7 +5435,7 @@
         (call $int_copy
           (local.get $l3)
           (local.get $p2)))))
-  (func $f1m_add (export "f1m_add") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $f1m_add (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (if $I0
       (call $int_add
         (local.get $p0)
@@ -5458,7 +5458,7 @@
                 (local.get $p2)
                 (i32.const 776)
                 (local.get $p2))))))))
-  (func $f1m_sub (export "f1m_sub") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $f1m_sub (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (if $I0
       (call $int_sub
         (local.get $p0)
@@ -5470,12 +5470,12 @@
             (local.get $p2)
             (i32.const 776)
             (local.get $p2))))))
-  (func $f1m_neg (export "f1m_neg") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f1m_neg (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_sub
       (i32.const 968)
       (local.get $p0)
       (local.get $p1)))
-  (func $f1m_mReduct (export "f1m_mReduct") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f1m_mReduct (type $t0) (param $p0 i32) (param $p1 i32)
     (local $l2 i64) (local $l3 i64) (local $l4 i64)
     (local.set $l2
       (i64.const 4294770685))
@@ -7813,7 +7813,7 @@
         (local.get $p0)
         (i32.const 48))
       (local.get $p1)))
-  (func $f1m_mul (export "f1m_mul") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $f1m_mul (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i64) (local $l4 i64) (local $l5 i64) (local $l6 i64) (local $l7 i64) (local $l8 i64) (local $l9 i64) (local $l10 i64) (local $l11 i64) (local $l12 i64) (local $l13 i64) (local $l14 i64) (local $l15 i64) (local $l16 i64) (local $l17 i64) (local $l18 i64) (local $l19 i64) (local $l20 i64) (local $l21 i64) (local $l22 i64) (local $l23 i64) (local $l24 i64) (local $l25 i64) (local $l26 i64) (local $l27 i64) (local $l28 i64) (local $l29 i64) (local $l30 i64) (local $l31 i64) (local $l32 i64) (local $l33 i64) (local $l34 i64) (local $l35 i64) (local $l36 i64) (local $l37 i64) (local $l38 i64) (local $l39 i64) (local $l40 i64) (local $l41 i64) (local $l42 i64) (local $l43 i64) (local $l44 i64) (local $l45 i64) (local $l46 i64) (local $l47 i64) (local $l48 i64) (local $l49 i64) (local $l50 i64) (local $l51 i64) (local $l52 i64) (local $l53 i64)
     (local.set $l5
       (i64.const 4294770685))
@@ -12165,7 +12165,7 @@
                 (local.get $p2)
                 (i32.const 776)
                 (local.get $p2))))))))
-  (func $f1m_square (export "f1m_square") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f1m_squareNew (type $t0) (param $p0 i32) (param $p1 i32)
     (local $l2 i64) (local $l3 i64) (local $l4 i64) (local $l5 i64) (local $l6 i64) (local $l7 i64) (local $l8 i64) (local $l9 i64) (local $l10 i64) (local $l11 i64) (local $l12 i64) (local $l13 i64) (local $l14 i64) (local $l15 i64) (local $l16 i64) (local $l17 i64) (local $l18 i64) (local $l19 i64) (local $l20 i64) (local $l21 i64) (local $l22 i64) (local $l23 i64) (local $l24 i64) (local $l25 i64) (local $l26 i64) (local $l27 i64) (local $l28 i64) (local $l29 i64) (local $l30 i64) (local $l31 i64) (local $l32 i64) (local $l33 i64) (local $l34 i64) (local $l35 i64) (local $l36 i64) (local $l37 i64) (local $l38 i64) (local $l39 i64) (local $l40 i64) (local $l41 i64) (local $l42 i64)
     (local.set $l6
       (i64.const 4294770685))
@@ -16381,22 +16381,22 @@
                 (local.get $p1)
                 (i32.const 776)
                 (local.get $p1))))))))
-  (func $f1m_squareOld (export "f1m_squareOld") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f1m_square (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_mul
       (local.get $p0)
       (local.get $p0)
       (local.get $p1)))
-  (func $f1m_toMontgomery (export "f1m_toMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f1m_toMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_mul
       (local.get $p0)
       (i32.const 872)
       (local.get $p1)))
-  (func $f1m_fromMontgomery (export "f1m_fromMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f1m_fromMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_mul
       (local.get $p0)
       (i32.const 2456)
       (local.get $p1)))
-  (func $f1m_isNegative (export "f1m_isNegative") (type $t2) (param $p0 i32) (result i32)
+  (func $f1m_isNegative (type $t2) (param $p0 i32) (result i32)
     (call $f1m_fromMontgomery
       (local.get $p0)
       (i32.const 2504))
@@ -16404,7 +16404,7 @@
       (i32.load
         (i32.const 2504))
       (i32.const 1)))
-  (func $f1m_inverse (export "f1m_inverse") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f1m_inverse (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_fromMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -16415,11 +16415,11 @@
     (call $f1m_toMontgomery
       (local.get $p1)
       (local.get $p1)))
-  (func $f1m_one (export "f1m_one") (type $t1) (param $p0 i32)
+  (func $f1m_one (type $t1) (param $p0 i32)
     (call $int_copy
       (i32.const 920)
       (local.get $p0)))
-  (func $f1m_load (export "f1m_load") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $f1m_load (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i32) (local $l4 i32) (local $l5 i32) (local $l6 i32)
     (call $int_zero
       (local.get $p2))
@@ -16514,7 +16514,7 @@
       (local.get $p2)
       (i32.const 2600)
       (local.get $p2)))
-  (func $f1m_timesScalar (export "f1m_timesScalar") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $f1m_timesScalar (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (call $f1m_load
       (local.get $p1)
       (local.get $p2)
@@ -16526,7 +16526,7 @@
       (local.get $p0)
       (i32.const 2648)
       (local.get $p3)))
-  (func $f1m_exp (export "f1m_exp") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $f1m_exp (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (local $l4 i32) (local $l5 i32)
     (call $int_copy
       (local.get $p0)
@@ -16678,7 +16678,7 @@
           (i32.eqz
             (local.get $l4)))
         (br $L1))))
-  (func $f1m_sqrt (export "f1m_sqrt") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f1m_sqrt (type $t0) (param $p0 i32) (param $p1 i32)
     (local $l2 i32) (local $l3 i32) (local $l4 i32)
     (if $I0
       (call $int_isZero
@@ -16774,7 +16774,7 @@
         (call $int_copy
           (i32.const 2840)
           (local.get $p1)))))
-  (func $f1m_isSquare (export "f1m_isSquare") (type $t2) (param $p0 i32) (result i32)
+  (func $f1m_isSquare (type $t2) (param $p0 i32) (result i32)
     (if $I0
       (call $int_isZero
         (local.get $p0))
@@ -16789,7 +16789,7 @@
     (call $int_eq
       (i32.const 2984)
       (i32.const 920)))
-  (func $frm_add (export "frm_add") (export "fr_add") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $frm_add (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (if $I0
       (call $int_add
         (local.get $p0)
@@ -16812,7 +16812,7 @@
                 (local.get $p2)
                 (i32.const 3032)
                 (local.get $p2))))))))
-  (func $frm_sub (export "frm_sub") (export "fr_sub") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $frm_sub (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (if $I0
       (call $int_sub
         (local.get $p0)
@@ -16824,12 +16824,12 @@
             (local.get $p2)
             (i32.const 3032)
             (local.get $p2))))))
-  (func $frm_neg (export "frm_neg") (export "fr_neg") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $frm_neg (type $t0) (param $p0 i32) (param $p1 i32)
     (call $frm_sub
       (i32.const 3160)
       (local.get $p0)
       (local.get $p1)))
-  (func $frm_mReduct (export "frm_mReduct") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $frm_mReduct (type $t0) (param $p0 i32) (param $p1 i32)
     (local $l2 i64) (local $l3 i64) (local $l4 i64)
     (local.set $l2
       (i64.const 4294967295))
@@ -17911,7 +17911,7 @@
         (local.get $p0)
         (i32.const 32))
       (local.get $p1)))
-  (func $frm_mul (export "frm_mul") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $frm_mul (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i64) (local $l4 i64) (local $l5 i64) (local $l6 i64) (local $l7 i64) (local $l8 i64) (local $l9 i64) (local $l10 i64) (local $l11 i64) (local $l12 i64) (local $l13 i64) (local $l14 i64) (local $l15 i64) (local $l16 i64) (local $l17 i64) (local $l18 i64) (local $l19 i64) (local $l20 i64) (local $l21 i64) (local $l22 i64) (local $l23 i64) (local $l24 i64) (local $l25 i64) (local $l26 i64) (local $l27 i64) (local $l28 i64) (local $l29 i64) (local $l30 i64) (local $l31 i64) (local $l32 i64) (local $l33 i64) (local $l34 i64) (local $l35 i64) (local $l36 i64) (local $l37 i64)
     (local.set $l5
       (i64.const 4294967295))
@@ -19923,7 +19923,7 @@
                 (local.get $p2)
                 (i32.const 3032)
                 (local.get $p2))))))))
-  (func $frm_square (export "frm_square") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $frm_squareNew (type $t0) (param $p0 i32) (param $p1 i32)
     (local $l2 i64) (local $l3 i64) (local $l4 i64) (local $l5 i64) (local $l6 i64) (local $l7 i64) (local $l8 i64) (local $l9 i64) (local $l10 i64) (local $l11 i64) (local $l12 i64) (local $l13 i64) (local $l14 i64) (local $l15 i64) (local $l16 i64) (local $l17 i64) (local $l18 i64) (local $l19 i64) (local $l20 i64) (local $l21 i64) (local $l22 i64) (local $l23 i64) (local $l24 i64) (local $l25 i64) (local $l26 i64) (local $l27 i64) (local $l28 i64) (local $l29 i64) (local $l30 i64)
     (local.set $l6
       (i64.const 4294967295))
@@ -22051,22 +22051,22 @@
                 (local.get $p1)
                 (i32.const 3032)
                 (local.get $p1))))))))
-  (func $frm_squareOld (export "frm_squareOld") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $frm_square (type $t0) (param $p0 i32) (param $p1 i32)
     (call $frm_mul
       (local.get $p0)
       (local.get $p0)
       (local.get $p1)))
-  (func $frm_toMontgomery (export "frm_toMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $frm_toMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $frm_mul
       (local.get $p0)
       (i32.const 3096)
       (local.get $p1)))
-  (func $frm_fromMontgomery (export "frm_fromMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $frm_fromMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $frm_mul
       (local.get $p0)
       (i32.const 3896)
       (local.get $p1)))
-  (func $frm_isNegative (export "frm_isNegative") (type $t2) (param $p0 i32) (result i32)
+  (func $frm_isNegative (type $t2) (param $p0 i32) (result i32)
     (call $frm_fromMontgomery
       (local.get $p0)
       (i32.const 3928))
@@ -22074,7 +22074,7 @@
       (i32.load
         (i32.const 3928))
       (i32.const 1)))
-  (func $frm_inverse (export "frm_inverse") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $frm_inverse (type $t0) (param $p0 i32) (param $p1 i32)
     (call $frm_fromMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -22085,11 +22085,11 @@
     (call $frm_toMontgomery
       (local.get $p1)
       (local.get $p1)))
-  (func $frm_one (export "frm_one") (export "fr_one") (type $t1) (param $p0 i32)
+  (func $frm_one (type $t1) (param $p0 i32)
     (call $int_copy
       (i32.const 3128)
       (local.get $p0)))
-  (func $frm_load (export "frm_load") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $frm_load (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i32) (local $l4 i32) (local $l5 i32) (local $l6 i32)
     (call $int_zero
       (local.get $p2))
@@ -22184,7 +22184,7 @@
       (local.get $p2)
       (i32.const 3992)
       (local.get $p2)))
-  (func $frm_timesScalar (export "frm_timesScalar") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $frm_timesScalar (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (call $frm_load
       (local.get $p1)
       (local.get $p2)
@@ -22196,7 +22196,7 @@
       (local.get $p0)
       (i32.const 4024)
       (local.get $p3)))
-  (func $frm_exp (export "frm_exp") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $frm_exp (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (local $l4 i32) (local $l5 i32)
     (call $int_copy
       (local.get $p0)
@@ -22348,7 +22348,7 @@
           (i32.eqz
             (local.get $l4)))
         (br $L1))))
-  (func $frm_sqrt (export "frm_sqrt") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $frm_sqrt (type $t0) (param $p0 i32) (param $p1 i32)
     (local $l2 i32) (local $l3 i32) (local $l4 i32)
     (if $I0
       (call $int_isZero
@@ -22444,7 +22444,7 @@
         (call $int_copy
           (i32.const 4152)
           (local.get $p1)))))
-  (func $frm_isSquare (export "frm_isSquare") (type $t2) (param $p0 i32) (result i32)
+  (func $frm_isSquare (type $t2) (param $p0 i32) (result i32)
     (if $I0
       (call $int_isZero
         (local.get $p0))
@@ -22459,7 +22459,7 @@
     (call $int_eq
       (i32.const 4248)
       (i32.const 3128)))
-  (func $fr_mul (export "fr_mul") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $fr_mul (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $frm_mul
       (local.get $p0)
       (local.get $p1)
@@ -22468,26 +22468,26 @@
       (i32.const 4280)
       (i32.const 3096)
       (local.get $p2)))
-  (func $fr_square (export "fr_square") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $fr_square (type $t0) (param $p0 i32) (param $p1 i32)
     (call $fr_mul
       (local.get $p0)
       (local.get $p0)
       (local.get $p1)))
-  (func $fr_inverse (export "fr_inverse") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $fr_inverse (type $t0) (param $p0 i32) (param $p1 i32)
     (call $int_inverseMod
       (local.get $p0)
       (i32.const 3032)
       (local.get $p1)))
-  (func $fr_isNegative (export "fr_isNegative") (type $t2) (param $p0 i32) (result i32)
+  (func $fr_isNegative (type $t2) (param $p0 i32) (result i32)
     (call $int_gte
       (local.get $p0)
       (i32.const 3224)))
-  (func $g1m_isZero (export "g1m_isZero") (type $t2) (param $p0 i32) (result i32)
+  (func $g1m_isZero (type $t2) (param $p0 i32) (result i32)
     (call $int_isZero
       (i32.add
         (local.get $p0)
         (i32.const 96))))
-  (func $g1m_zero (export "g1m_zero") (type $t1) (param $p0 i32)
+  (func $g1m_zero (type $t1) (param $p0 i32)
     (call $int_zero
       (local.get $p0))
     (call $f1m_one
@@ -22498,7 +22498,7 @@
       (i32.add
         (local.get $p0)
         (i32.const 96))))
-  (func $g1m_copy (export "g1m_copy") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g1m_copy (type $t0) (param $p0 i32) (param $p1 i32)
     (call $int_copy
       (local.get $p0)
       (local.get $p1))
@@ -22516,7 +22516,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 96))))
-  (func $g1m_eq (export "g1m_eq") (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
+  (func $g1m_eq (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
     (local $l2 i32) (local $l3 i32)
     (local.set $l2
       (i32.add
@@ -22587,7 +22587,7 @@
               (i32.const 1))))))
     (return
       (i32.const 0)))
-  (func $g1m_double (export "g1m_double") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g1m_double (type $t0) (param $p0 i32) (param $p1 i32)
     (if $I0
       (call $g1m_isZero
         (local.get $p0))
@@ -22693,7 +22693,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 96))))
-  (func $g1m_add (export "g1m_add") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $g1m_add (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i32) (local $l4 i32)
     (local.set $l3
       (i32.add
@@ -22876,7 +22876,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 96))))
-  (func $g1m_neg (export "g1m_neg") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g1m_neg (type $t0) (param $p0 i32) (param $p1 i32)
     (call $int_copy
       (local.get $p0)
       (local.get $p1))
@@ -22894,7 +22894,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 96))))
-  (func $g1m_sub (export "g1m_sub") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $g1m_sub (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $g1m_neg
       (local.get $p1)
       (i32.const 5896))
@@ -22902,7 +22902,7 @@
       (local.get $p0)
       (i32.const 5896)
       (local.get $p2)))
-  (func $g1m_fromMontgomery (export "g1m_fromMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g1m_fromMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_fromMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -22920,7 +22920,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 96))))
-  (func $g1m_toMontgomery (export "g1m_toMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g1m_toMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_toMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -22938,7 +22938,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 96))))
-  (func $g1m_affine (export "g1m_affine") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g1m_affine (type $t0) (param $p0 i32) (param $p1 i32)
     (if $I0
       (call $g1m_isZero
         (local.get $p0))
@@ -22974,7 +22974,7 @@
           (i32.add
             (local.get $p1)
             (i32.const 96))))))
-  (func $g1m_timesScalar (export "g1m_timesScalar") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $g1m_timesScalar (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (local $l4 i32) (local $l5 i32)
     (call $g1m_copy
       (local.get $p0)
@@ -23376,7 +23376,7 @@
             (local.get $l4)
             (i32.const 1)))
         (br $L1))))
-  (func $g1m_multiexp (export "g1m_multiexp") (type $t9) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32)
+  (func $g1m_multiexp (type $t9) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32)
     (local $l5 i32) (local $l6 i32) (local $l7 i32) (local $l8 i32)
     (local.set $l5
       (local.get $p0))
@@ -23528,7 +23528,7 @@
             (local.get $l3)
             (i32.const 1)))
         (br $L1))))
-  (func $g1m_multiexp2 (export "g1m_multiexp2") (type $t9) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32)
+  (func $g1m_multiexp2 (type $t9) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32)
     (local $l5 i32) (local $l6 i32) (local $l7 i32) (local $l8 i32)
     (call $f73
       (i32.const 44392)
@@ -23780,7 +23780,7 @@
             (local.get $l3)
             (i32.const 1)))
         (br $L1))))
-  (func $fft_copyNInterleaved (export "fft_copyNInterleaved") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $fft_copyNInterleaved (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i32) (local $l4 i32) (local $l5 i32)
     (local.set $l3
       (local.get $p0))
@@ -23810,7 +23810,7 @@
             (local.get $l4)
             (i32.const 64)))
         (br $L1))))
-  (func $fft_fromMontgomeryN (export "fft_fromMontgomeryN") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $fft_fromMontgomeryN (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i32) (local $l4 i32) (local $l5 i32)
     (local.set $l3
       (local.get $p0))
@@ -23840,7 +23840,7 @@
             (local.get $l4)
             (i32.const 32)))
         (br $L1))))
-  (func $fft_toMontgomeryN (export "fft_toMontgomeryN") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $fft_toMontgomeryN (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i32) (local $l4 i32) (local $l5 i32)
     (local.set $l3
       (local.get $p0))
@@ -23979,7 +23979,7 @@
       (then
         (unreachable)))
     (local.get $l1))
-  (func $fft_fft (export "fft_fft") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $fft_fft (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i32)
     (local.set $l3
       (call $f83
@@ -23988,7 +23988,7 @@
       (local.get $p0)
       (local.get $l3)
       (local.get $p2)))
-  (func $fft_ifft (export "fft_ifft") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $fft_ifft (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i32)
     (local.set $l3
       (call $f83
@@ -24000,7 +24000,7 @@
     (call $f82
       (local.get $p0)
       (local.get $l3)))
-  (func $fft_mulN (export "fft_mulN") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $fft_mulN (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (local $l4 i32) (local $l5 i32) (local $l6 i32) (local $l7 i32)
     (local.set $l4
       (local.get $p0))
@@ -24037,7 +24037,7 @@
             (local.get $l6)
             (i32.const 32)))
         (br $L1))))
-  (func $pol_zero (export "pol_zero") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $pol_zero (type $t0) (param $p0 i32) (param $p1 i32)
     (local $l2 i32) (local $l3 i32)
     (local.set $l3
       (local.get $p0))
@@ -24060,7 +24060,7 @@
             (local.get $l3)
             (i32.const 32)))
         (br $L1))))
-  (func $pol_constructLC (export "pol_constructLC") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $pol_constructLC (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (local $l4 i32) (local $l5 i32) (local $l6 i32) (local $l7 i32) (local $l8 i32) (local $l9 i32)
     (local.set $l4
       (i32.const 0))
@@ -24126,7 +24126,7 @@
             (local.get $l4)
             (i32.const 1)))
         (br $L1))))
-  (func $f2m_isZero (export "f2m_isZero") (type $t2) (param $p0 i32) (result i32)
+  (func $f2m_isZero (type $t2) (param $p0 i32) (result i32)
     (i32.and
       (call $int_isZero
         (local.get $p0))
@@ -24134,21 +24134,21 @@
         (i32.add
           (local.get $p0)
           (i32.const 48)))))
-  (func $f2m_zero (export "f2m_zero") (type $t1) (param $p0 i32)
+  (func $f2m_zero (type $t1) (param $p0 i32)
     (call $int_zero
       (local.get $p0))
     (call $int_zero
       (i32.add
         (local.get $p0)
         (i32.const 48))))
-  (func $f2m_one (export "f2m_one") (type $t1) (param $p0 i32)
+  (func $f2m_one (type $t1) (param $p0 i32)
     (call $f1m_one
       (local.get $p0))
     (call $int_zero
       (i32.add
         (local.get $p0)
         (i32.const 48))))
-  (func $f2m_copy (export "f2m_copy") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f2m_copy (type $t0) (param $p0 i32) (param $p1 i32)
     (call $int_copy
       (local.get $p0)
       (local.get $p1))
@@ -24159,7 +24159,10 @@
       (i32.add
         (local.get $p1)
         (i32.const 48))))
-  (func $f2m_mul (export "f2m_mul") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $f2m_mul (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+    (call $main/debug_print32 (i32.const 221))
+    (call $main/debug_print_f2 (local.get $p0))
+    (call $main/debug_print_f2 (local.get $p1))
     (call $f1m_mul
       (local.get $p0)
       (local.get $p1)
@@ -24208,8 +24211,11 @@
         (i32.const 48))
       (i32.add
         (local.get $p2)
-        (i32.const 48))))
-  (func $f2m_mul1 (export "f2m_mul1") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+        (i32.const 48)))
+    (call $main/debug_print32 (i32.const 222))
+    (call $main/debug_print_f2 (local.get $p2))
+  )
+  (func $f2m_mul1 (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f1m_mul
       (local.get $p0)
       (local.get $p1)
@@ -24222,7 +24228,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 48))))
-  (func $f2m_square (export "f2m_square") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f2m_square (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_mul
       (local.get $p0)
       (i32.add
@@ -24265,7 +24271,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 48))))
-  (func $f2m_add (export "f2m_add") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $f2m_add (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f1m_add
       (local.get $p0)
       (local.get $p1)
@@ -24280,7 +24286,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 48))))
-  (func $f2m_sub (export "f2m_sub") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $f2m_sub (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f1m_sub
       (local.get $p0)
       (local.get $p1)
@@ -24295,7 +24301,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 48))))
-  (func $f2m_neg (export "f2m_neg") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f2m_neg (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_neg
       (local.get $p0)
       (local.get $p1))
@@ -24306,7 +24312,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 48))))
-  (func $f2m_conjugate (export "f2m_conjugate") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f2m_conjugate (type $t0) (param $p0 i32) (param $p1 i32)
     (call $int_copy
       (local.get $p0)
       (local.get $p1))
@@ -24317,7 +24323,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 48))))
-  (func $f2m_toMontgomery (export "f2m_toMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f2m_toMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_toMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -24328,7 +24334,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 48))))
-  (func $f2m_fromMontgomery (export "f2m_fromMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f2m_fromMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_fromMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -24339,7 +24345,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 48))))
-  (func $f2m_eq (export "f2m_eq") (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
+  (func $f2m_eq (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
     (i32.and
       (call $int_eq
         (local.get $p0)
@@ -24351,7 +24357,7 @@
         (i32.add
           (local.get $p1)
           (i32.const 48)))))
-  (func $f2m_inverse (export "f2m_inverse") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f2m_inverse (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f1m_square
       (local.get $p0)
       (i32.const 84344))
@@ -24389,7 +24395,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 48))))
-  (func $f2m_timesScalar (export "f2m_timesScalar") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $f2m_timesScalar (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (call $f1m_timesScalar
       (local.get $p0)
       (local.get $p1)
@@ -24404,7 +24410,7 @@
       (i32.add
         (local.get $p3)
         (i32.const 48))))
-  (func $f2m_exp (export "f2m_exp") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $f2m_exp (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (local $l4 i32) (local $l5 i32)
     (call $f2m_copy
       (local.get $p0)
@@ -24556,12 +24562,12 @@
           (i32.eqz
             (local.get $l4)))
         (br $L1))))
-  (func $g2m_isZero (export "g2m_isZero") (type $t2) (param $p0 i32) (result i32)
+  (func $g2m_isZero (type $t2) (param $p0 i32) (result i32)
     (call $f2m_isZero
       (i32.add
         (local.get $p0)
         (i32.const 192))))
-  (func $g2m_zero (export "g2m_zero") (type $t1) (param $p0 i32)
+  (func $g2m_zero (type $t1) (param $p0 i32)
     (call $f2m_zero
       (local.get $p0))
     (call $f2m_one
@@ -24572,7 +24578,7 @@
       (i32.add
         (local.get $p0)
         (i32.const 192))))
-  (func $g2m_copy (export "g2m_copy") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g2m_copy (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_copy
       (local.get $p0)
       (local.get $p1))
@@ -24590,7 +24596,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $g2m_eq (export "g2m_eq") (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
+  (func $g2m_eq (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
     (local $l2 i32) (local $l3 i32)
     (local.set $l2
       (i32.add
@@ -24661,7 +24667,7 @@
               (i32.const 1))))))
     (return
       (i32.const 0)))
-  (func $g2m_double (export "g2m_double") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g2m_double (type $t0) (param $p0 i32) (param $p1 i32)
     (if $I0
       (call $g2m_isZero
         (local.get $p0))
@@ -24767,7 +24773,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $g2m_add (export "g2m_add") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $g2m_add (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i32) (local $l4 i32)
     (local.set $l3
       (i32.add
@@ -24950,7 +24956,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 192))))
-  (func $g2m_neg (export "g2m_neg") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g2m_neg (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_copy
       (local.get $p0)
       (local.get $p1))
@@ -24968,7 +24974,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $g2m_sub (export "g2m_sub") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $g2m_sub (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $g2m_neg
       (local.get $p1)
       (i32.const 87800))
@@ -24976,7 +24982,7 @@
       (local.get $p0)
       (i32.const 87800)
       (local.get $p2)))
-  (func $g2m_fromMontgomery (export "g2m_fromMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g2m_fromMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_fromMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -24994,7 +25000,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $g2m_toMontgomery (export "g2m_toMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g2m_toMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_toMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -25012,7 +25018,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $g2m_affine (export "g2m_affine") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $g2m_affine (type $t0) (param $p0 i32) (param $p1 i32)
     (if $I0
       (call $g2m_isZero
         (local.get $p0))
@@ -25048,7 +25054,7 @@
           (i32.add
             (local.get $p1)
             (i32.const 192))))))
-  (func $g2m_timesScalar (export "g2m_timesScalar") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $g2m_timesScalar (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (local $l4 i32) (local $l5 i32)
     (call $g2m_copy
       (local.get $p0)
@@ -25450,7 +25456,7 @@
             (local.get $l4)
             (i32.const 1)))
         (br $L1))))
-  (func $g2m_multiexp (export "g2m_multiexp") (type $t9) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32)
+  (func $g2m_multiexp (type $t9) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32)
     (local $l5 i32) (local $l6 i32) (local $l7 i32) (local $l8 i32)
     (local.set $l5
       (local.get $p0))
@@ -25602,7 +25608,7 @@
             (local.get $l3)
             (i32.const 1)))
         (br $L1))))
-  (func $g2m_multiexp2 (export "g2m_multiexp2") (type $t9) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32)
+  (func $g2m_multiexp2 (type $t9) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32)
     (local $l5 i32) (local $l6 i32) (local $l7 i32) (local $l8 i32)
     (call $f126
       (i32.const 163736)
@@ -25683,7 +25689,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 48))))
-  (func $f6m_isZero (export "f6m_isZero") (type $t2) (param $p0 i32) (result i32)
+  (func $f6m_isZero (type $t2) (param $p0 i32) (result i32)
     (i32.and
       (i32.and
         (call $f2m_isZero
@@ -25696,7 +25702,7 @@
         (i32.add
           (local.get $p0)
           (i32.const 192)))))
-  (func $f6m_zero (export "f6m_zero") (type $t1) (param $p0 i32)
+  (func $f6m_zero (type $t1) (param $p0 i32)
     (call $f2m_zero
       (local.get $p0))
     (call $f2m_zero
@@ -25707,7 +25713,7 @@
       (i32.add
         (local.get $p0)
         (i32.const 192))))
-  (func $f6m_one (export "f6m_one") (type $t1) (param $p0 i32)
+  (func $f6m_one (type $t1) (param $p0 i32)
     (call $f2m_one
       (local.get $p0))
     (call $f2m_zero
@@ -25718,7 +25724,7 @@
       (i32.add
         (local.get $p0)
         (i32.const 192))))
-  (func $f6m_copy (export "f6m_copy") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f6m_copy (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_copy
       (local.get $p0)
       (local.get $p1))
@@ -25736,7 +25742,10 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $f6m_mul (export "f6m_mul") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $f6m_mul (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+    (call $main/debug_print32 (i32.const 661))
+    (call $main/debug_print_f6 (local.get $p0))
+    (call $main/debug_print_f6 (local.get $p1))
     (call $f2m_mul
       (local.get $p0)
       (local.get $p1)
@@ -25870,8 +25879,11 @@
       (i32.const 239624)
       (i32.add
         (local.get $p2)
-        (i32.const 192))))
-  (func $f6m_square (export "f6m_square") (type $t0) (param $p0 i32) (param $p1 i32)
+        (i32.const 192)))
+    (call $main/debug_print32 (i32.const 662))
+    (call $main/debug_print_f6 (local.get $p2))
+  )
+  (func $f6m_square (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_square
       (local.get $p0)
       (i32.const 240776))
@@ -25967,7 +25979,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $f6m_add (export "f6m_add") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $f6m_add (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f2m_add
       (local.get $p0)
       (local.get $p1)
@@ -25992,7 +26004,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 192))))
-  (func $f6m_sub (export "f6m_sub") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $f6m_sub (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f2m_sub
       (local.get $p0)
       (local.get $p1)
@@ -26017,7 +26029,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 192))))
-  (func $f6m_neg (export "f6m_neg") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f6m_neg (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_neg
       (local.get $p0)
       (local.get $p1))
@@ -26035,7 +26047,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $f6m_toMontgomery (export "f6m_toMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f6m_toMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_toMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -26053,7 +26065,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $f6m_fromMontgomery (export "f6m_fromMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f6m_fromMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_fromMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -26071,7 +26083,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $f6m_eq (export "f6m_eq") (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
+  (func $f6m_eq (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
     (i32.and
       (i32.and
         (call $f2m_eq
@@ -26091,7 +26103,7 @@
         (i32.add
           (local.get $p1)
           (i32.const 192)))))
-  (func $f6m_inverse (export "f6m_inverse") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $f6m_inverse (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_square
       (local.get $p0)
       (i32.const 241448))
@@ -26189,7 +26201,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $f6m_timesScalar (export "f6m_timesScalar") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $f6m_timesScalar (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (call $f2m_timesScalar
       (local.get $p0)
       (local.get $p1)
@@ -26213,7 +26225,7 @@
       (i32.add
         (local.get $p3)
         (i32.const 192))))
-  (func $f6m_exp (export "f6m_exp") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $f6m_exp (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (local $l4 i32) (local $l5 i32)
     (call $f6m_copy
       (local.get $p0)
@@ -26386,7 +26398,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 96))))
-  (func $ftm_isZero (export "ftm_isZero") (type $t2) (param $p0 i32) (result i32)
+  (func $ftm_isZero (type $t2) (param $p0 i32) (result i32)
     (i32.and
       (call $f6m_isZero
         (local.get $p0))
@@ -26394,21 +26406,21 @@
         (i32.add
           (local.get $p0)
           (i32.const 288)))))
-  (func $ftm_zero (export "ftm_zero") (type $t1) (param $p0 i32)
+  (func $ftm_zero (type $t1) (param $p0 i32)
     (call $f6m_zero
       (local.get $p0))
     (call $f6m_zero
       (i32.add
         (local.get $p0)
         (i32.const 288))))
-  (func $ftm_one (export "ftm_one") (type $t1) (param $p0 i32)
+  (func $ftm_one (type $t1) (param $p0 i32)
     (call $f6m_one
       (local.get $p0))
     (call $f6m_zero
       (i32.add
         (local.get $p0)
         (i32.const 288))))
-  (func $ftm_copy (export "ftm_copy") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $ftm_copy (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f6m_copy
       (local.get $p0)
       (local.get $p1))
@@ -26419,7 +26431,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 288))))
-  (func $ftm_mul (export "ftm_mul") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $ftm_mul (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f6m_mul
       (local.get $p0)
       (local.get $p1)
@@ -26469,7 +26481,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 288))))
-  (func $ftm_mul1 (export "ftm_mul1") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $ftm_mul1 (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f6m_mul
       (local.get $p0)
       (local.get $p1)
@@ -26482,7 +26494,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 288))))
-  (func $ftm_square (export "ftm_square") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $ftm_square (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f6m_mul
       (local.get $p0)
       (i32.add
@@ -26525,7 +26537,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 288))))
-  (func $ftm_add (export "ftm_add") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $ftm_add (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f6m_add
       (local.get $p0)
       (local.get $p1)
@@ -26540,7 +26552,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 288))))
-  (func $ftm_sub (export "ftm_sub") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $ftm_sub (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f6m_sub
       (local.get $p0)
       (local.get $p1)
@@ -26555,7 +26567,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 288))))
-  (func $ftm_neg (export "ftm_neg") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $ftm_neg (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f6m_neg
       (local.get $p0)
       (local.get $p1))
@@ -26566,7 +26578,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 288))))
-  (func $ftm_conjugate (export "ftm_conjugate") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $ftm_conjugate (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f6m_copy
       (local.get $p0)
       (local.get $p1))
@@ -26577,7 +26589,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 288))))
-  (func $ftm_toMontgomery (export "ftm_toMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $ftm_toMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f6m_toMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -26588,7 +26600,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 288))))
-  (func $ftm_fromMontgomery (export "ftm_fromMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $ftm_fromMontgomery (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f6m_fromMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -26599,7 +26611,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 288))))
-  (func $ftm_eq (export "ftm_eq") (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
+  (func $ftm_eq (type $t3) (param $p0 i32) (param $p1 i32) (result i32)
     (i32.and
       (call $f6m_eq
         (local.get $p0)
@@ -26611,7 +26623,7 @@
         (i32.add
           (local.get $p1)
           (i32.const 288)))))
-  (func $ftm_inverse (export "ftm_inverse") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $ftm_inverse (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f6m_square
       (local.get $p0)
       (i32.const 245192))
@@ -26649,7 +26661,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 288))))
-  (func $ftm_timesScalar (export "ftm_timesScalar") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $ftm_timesScalar (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (call $f6m_timesScalar
       (local.get $p0)
       (local.get $p1)
@@ -26664,7 +26676,7 @@
       (i32.add
         (local.get $p3)
         (i32.const 288))))
-  (func $ftm_exp (export "ftm_exp") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $ftm_exp (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (local $l4 i32) (local $l5 i32)
     (call $ftm_copy
       (local.get $p0)
@@ -26816,7 +26828,7 @@
           (i32.eqz
             (local.get $l4)))
         (br $L1))))
-  (func $f6m_mul1 (export "f6m_mul1") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $f6m_mul1 (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f2m_add
       (local.get $p0)
       (i32.add
@@ -26868,7 +26880,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 96))))
-  (func $f6m_mul01 (export "f6m_mul01") (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $f6m_mul01 (type $t8) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (call $f2m_mul
       (local.get $p0)
       (local.get $p1)
@@ -26966,7 +26978,7 @@
       (i32.add
         (local.get $p3)
         (i32.const 192))))
-  (func $ftm_mul014 (export "ftm_mul014") (type $t9) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32)
+  (func $ftm_mul014 (type $t9) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32)
     (call $f6m_mul01
       (local.get $p0)
       (local.get $p1)
@@ -27060,7 +27072,7 @@
       (i32.const 248328)
       (i32.const 248232)
       (local.get $p2)))
-  (func $bls12381__frobeniusMap0 (export "bls12381__frobeniusMap0") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__frobeniusMap0 (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_mul
       (local.get $p0)
       (i32.const 269160)
@@ -27105,7 +27117,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 480))))
-  (func $bls12381__frobeniusMap1 (export "bls12381__frobeniusMap1") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__frobeniusMap1 (type $t0) (param $p0 i32) (param $p1 i32)
     (call $int_copy
       (local.get $p0)
       (local.get $p1))
@@ -27230,7 +27242,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 480))))
-  (func $bls12381__frobeniusMap2 (export "bls12381__frobeniusMap2") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__frobeniusMap2 (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_mul
       (local.get $p0)
       (i32.const 270312)
@@ -27275,7 +27287,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 480))))
-  (func $bls12381__frobeniusMap3 (export "bls12381__frobeniusMap3") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__frobeniusMap3 (type $t0) (param $p0 i32) (param $p1 i32)
     (call $int_copy
       (local.get $p0)
       (local.get $p1))
@@ -27400,7 +27412,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 480))))
-  (func $bls12381__frobeniusMap4 (export "bls12381__frobeniusMap4") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__frobeniusMap4 (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_mul
       (local.get $p0)
       (i32.const 271464)
@@ -27445,7 +27457,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 480))))
-  (func $bls12381__frobeniusMap5 (export "bls12381__frobeniusMap5") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__frobeniusMap5 (type $t0) (param $p0 i32) (param $p1 i32)
     (call $int_copy
       (local.get $p0)
       (local.get $p1))
@@ -27570,7 +27582,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 480))))
-  (func $bls12381__frobeniusMap6 (export "bls12381__frobeniusMap6") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__frobeniusMap6 (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_mul
       (local.get $p0)
       (i32.const 272616)
@@ -27615,7 +27627,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 480))))
-  (func $bls12381__frobeniusMap7 (export "bls12381__frobeniusMap7") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__frobeniusMap7 (type $t0) (param $p0 i32) (param $p1 i32)
     (call $int_copy
       (local.get $p0)
       (local.get $p1))
@@ -27740,7 +27752,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 480))))
-  (func $bls12381__frobeniusMap8 (export "bls12381__frobeniusMap8") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__frobeniusMap8 (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_mul
       (local.get $p0)
       (i32.const 273768)
@@ -27785,7 +27797,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 480))))
-  (func $bls12381__frobeniusMap9 (export "bls12381__frobeniusMap9") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__frobeniusMap9 (type $t0) (param $p0 i32) (param $p1 i32)
     (call $int_copy
       (local.get $p0)
       (local.get $p1))
@@ -28364,11 +28376,11 @@
       (local.get $p1)
       (local.get $p1)
       (local.get $p1)))
-  (func $bls12381_prepareG1 (export "bls12381_prepareG1") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381_prepareG1 (type $t0) (param $p0 i32) (param $p1 i32)
     (call $g1m_affine
       (local.get $p0)
       (local.get $p1)))
-  (func $bls12381_prepareG2 (export "bls12381_prepareG2") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381_prepareG2 (type $t0) (param $p0 i32) (param $p1 i32)
     (local $l2 i32) (local $l3 i32)
     (call $g2m_affine
       (local.get $p0)
@@ -28416,7 +28428,7 @@
             (local.get $l3)
             (i32.const 1)))
         (br $L2))))
-  (func $bls12381_millerLoop (export "bls12381_millerLoop") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $bls12381_millerLoop (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (local $l3 i32) (local $l4 i32)
     (call $ftm_one
       (local.get $p2))
@@ -28477,13 +28489,13 @@
     (call $ftm_conjugate
       (local.get $p2)
       (local.get $p2)))
-  (func $bls12381_finalExponentiationOld (export "bls12381_finalExponentiationOld") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381_finalExponentiationOld (type $t0) (param $p0 i32) (param $p1 i32)
     (call $ftm_exp
       (local.get $p0)
       (i32.const 276744)
       (i32.const 544)
       (local.get $p1)))
-  (func $bls12381__cyclotomicSquare (export "bls12381__cyclotomicSquare") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__cyclotomicSquare (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_mul
       (local.get $p0)
       (i32.add
@@ -28762,7 +28774,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 480))))
-  (func $bls12381__cyclotomicExp_w0 (export "bls12381__cyclotomicExp_w0") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381__cyclotomicExp_w0 (type $t0) (param $p0 i32) (param $p1 i32)
     (local $l2 i32) (local $l3 i32)
     (call $ftm_conjugate
       (local.get $p0)
@@ -28825,7 +28837,7 @@
     (call $ftm_conjugate
       (local.get $p1)
       (local.get $p1)))
-  (func $bls12381_finalExponentiation (export "bls12381_finalExponentiation") (type $t0) (param $p0 i32) (param $p1 i32)
+  (func $bls12381_finalExponentiation (type $t0) (param $p0 i32) (param $p1 i32)
     (call $bls12381__frobeniusMap6
       (local.get $p0)
       (i32.const 278704))
@@ -28925,7 +28937,7 @@
       (i32.const 280432)
       (i32.const 281008)
       (local.get $p1)))
-  (func $bls12381_pairingEq1 (export "bls12381_pairingEq1") (type $t4) (param $p0 i32) (param $p1 i32) (param $p2 i32) (result i32)
+  (func $bls12381_pairingEq1 (type $t4) (param $p0 i32) (param $p1 i32) (param $p2 i32) (result i32)
     (call $ftm_one
       (i32.const 282736))
     (call $bls12381_prepareG1
@@ -28948,7 +28960,7 @@
     (call $ftm_eq
       (i32.const 282736)
       (local.get $p2)))
-  (func $bls12381_pairingEq2 (export "bls12381_pairingEq2") (type $t10) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32) (result i32)
+  (func $bls12381_pairingEq2 (type $t10) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32) (result i32)
     (call $ftm_one
       (i32.const 283888))
     (call $bls12381_prepareG1
@@ -28985,7 +28997,7 @@
     (call $ftm_eq
       (i32.const 283888)
       (local.get $p4)))
-  (func $bls12381_pairingEq3 (export "bls12381_pairingEq3") (type $t11) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32) (param $p5 i32) (param $p6 i32) (result i32)
+  (func $bls12381_pairingEq3 (type $t11) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32) (param $p5 i32) (param $p6 i32) (result i32)
     (call $ftm_one
       (i32.const 285040))
     (call $bls12381_prepareG1
@@ -29036,7 +29048,7 @@
     (call $ftm_eq
       (i32.const 285040)
       (local.get $p6)))
-  (func $bls12381_pairingEq4 (export "bls12381_pairingEq4") (type $t12) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32) (param $p5 i32) (param $p6 i32) (param $p7 i32) (param $p8 i32) (result i32)
+  (func $bls12381_pairingEq4 (type $t12) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32) (param $p5 i32) (param $p6 i32) (param $p7 i32) (param $p8 i32) (result i32)
     (call $ftm_one
       (i32.const 286192))
     (call $bls12381_prepareG1
@@ -29101,7 +29113,7 @@
     (call $ftm_eq
       (i32.const 286192)
       (local.get $p8)))
-  (func $bls12381_pairingEq5 (export "bls12381_pairingEq5") (type $t13) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32) (param $p5 i32) (param $p6 i32) (param $p7 i32) (param $p8 i32) (param $p9 i32) (param $p10 i32) (result i32)
+  (func $bls12381_pairingEq5 (type $t13) (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32) (param $p5 i32) (param $p6 i32) (param $p7 i32) (param $p8 i32) (param $p9 i32) (param $p10 i32) (result i32)
     (call $ftm_one
       (i32.const 287344))
     (call $bls12381_prepareG1
@@ -29180,7 +29192,7 @@
     (call $ftm_eq
       (i32.const 287344)
       (local.get $p10)))
-  (func $bls12381_pairing (export "bls12381_pairing") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $bls12381_pairing (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $bls12381_prepareG1
       (local.get $p0)
       (i32.const 248424))
@@ -29194,6 +29206,184 @@
     (call $bls12381_finalExponentiation
       (i32.const 288496)
       (local.get $p2)))
+  (export "int_copy" (func $int_copy))
+  (export "int_zero" (func $int_zero))
+  (export "int_one" (func $int_one))
+  (export "int_isZero" (func $int_isZero))
+  (export "int_eq" (func $int_eq))
+  (export "int_gte" (func $int_gte))
+  (export "int_add" (func $int_add))
+  (export "int_sub" (func $int_sub))
+  (export "int_mul" (func $int_mul))
+  (export "int_square" (func $int_square))
+  (export "int_squareOld" (func $int_squareOld))
+  (export "int_div" (func $int_div))
+  (export "int_inverseMod" (func $int_inverseMod))
+  (export "f1m_add" (func $f1m_add))
+  (export "f1m_sub" (func $f1m_sub))
+  (export "f1m_neg" (func $f1m_neg))
+  (export "f1m_isNegative" (func $f1m_isNegative))
+  (export "f1m_mReduct" (func $f1m_mReduct))
+  (export "f1m_mul" (func $f1m_mul))
+  (export "f1m_squareNew" (func $f1m_squareNew))
+  (export "f1m_square" (func $f1m_square))
+  (export "f1m_fromMontgomery" (func $f1m_fromMontgomery))
+  (export "f1m_toMontgomery" (func $f1m_toMontgomery))
+  (export "f1m_inverse" (func $f1m_inverse))
+  (export "f1m_copy" (func $int_copy))
+  (export "f1m_zero" (func $int_zero))
+  (export "f1m_isZero" (func $int_isZero))
+  (export "f1m_eq" (func $int_eq))
+  (export "f1m_one" (func $f1m_one))
+  (export "f1m_load" (func $f1m_load))
+  (export "f1m_timesScalar" (func $f1m_timesScalar))
+  (export "f1m_exp" (func $f1m_exp))
+  (export "f1m_sqrt" (func $f1m_sqrt))
+  (export "f1m_isSquare" (func $f1m_isSquare))
+  (export "frm_add" (func $frm_add))
+  (export "frm_sub" (func $frm_sub))
+  (export "frm_neg" (func $frm_neg))
+  (export "frm_isNegative" (func $frm_isNegative))
+  (export "frm_mReduct" (func $frm_mReduct))
+  (export "frm_mul" (func $frm_mul))
+  (export "frm_squareNew" (func $frm_squareNew))
+  (export "frm_square" (func $frm_square))
+  (export "frm_fromMontgomery" (func $frm_fromMontgomery))
+  (export "frm_toMontgomery" (func $frm_toMontgomery))
+  (export "frm_inverse" (func $frm_inverse))
+  (export "frm_copy" (func $int_copy))
+  (export "frm_zero" (func $int_zero))
+  (export "frm_isZero" (func $int_isZero))
+  (export "frm_eq" (func $int_eq))
+  (export "frm_one" (func $frm_one))
+  (export "frm_load" (func $frm_load))
+  (export "frm_timesScalar" (func $frm_timesScalar))
+  (export "frm_exp" (func $frm_exp))
+  (export "frm_sqrt" (func $frm_sqrt))
+  (export "frm_isSquare" (func $frm_isSquare))
+  (export "fr_add" (func $frm_add))
+  (export "fr_sub" (func $frm_sub))
+  (export "fr_neg" (func $frm_neg))
+  (export "fr_mul" (func $fr_mul))
+  (export "fr_square" (func $fr_square))
+  (export "fr_inverse" (func $fr_inverse))
+  (export "fr_isNegative" (func $fr_isNegative))
+  (export "fr_copy" (func $int_copy))
+  (export "fr_zero" (func $int_zero))
+  (export "fr_one" (func $frm_one))
+  (export "fr_isZero" (func $int_isZero))
+  (export "fr_eq" (func $int_eq))
+  (export "g1m_isZero" (func $g1m_isZero))
+  (export "g1m_eq" (func $g1m_eq))
+  (export "g1m_copy" (func $g1m_copy))
+  (export "g1m_zero" (func $g1m_zero))
+  (export "g1m_double" (func $g1m_double))
+  (export "g1m_add" (func $g1m_add))
+  (export "g1m_neg" (func $g1m_neg))
+  (export "g1m_sub" (func $g1m_sub))
+  (export "g1m_fromMontgomery" (func $g1m_fromMontgomery))
+  (export "g1m_toMontgomery" (func $g1m_toMontgomery))
+  (export "g1m_affine" (func $g1m_affine))
+  (export "g1m_timesScalar" (func $g1m_timesScalar))
+  (export "g1m_multiexp" (func $g1m_multiexp))
+  (export "g1m_multiexp2" (func $g1m_multiexp2))
+  (export "fft_fft" (func $fft_fft))
+  (export "fft_ifft" (func $fft_ifft))
+  (export "fft_toMontgomeryN" (func $fft_toMontgomeryN))
+  (export "fft_fromMontgomeryN" (func $fft_fromMontgomeryN))
+  (export "fft_copyNInterleaved" (func $fft_copyNInterleaved))
+  (export "fft_mulN" (func $fft_mulN))
+  (export "pol_zero" (func $pol_zero))
+  (export "pol_constructLC" (func $pol_constructLC))
+  (export "f2m_isZero" (func $f2m_isZero))
+  (export "f2m_zero" (func $f2m_zero))
+  (export "f2m_one" (func $f2m_one))
+  (export "f2m_copy" (func $f2m_copy))
+  (export "f2m_mul" (func $f2m_mul))
+  (export "f2m_mul1" (func $f2m_mul1))
+  (export "f2m_square" (func $f2m_square))
+  (export "f2m_add" (func $f2m_add))
+  (export "f2m_sub" (func $f2m_sub))
+  (export "f2m_neg" (func $f2m_neg))
+  (export "f2m_conjugate" (func $f2m_conjugate))
+  (export "f2m_fromMontgomery" (func $f2m_fromMontgomery))
+  (export "f2m_toMontgomery" (func $f2m_toMontgomery))
+  (export "f2m_eq" (func $f2m_eq))
+  (export "f2m_inverse" (func $f2m_inverse))
+  (export "f2m_exp" (func $f2m_exp))
+  (export "f2m_timesScalar" (func $f2m_timesScalar))
+  (export "g2m_isZero" (func $g2m_isZero))
+  (export "g2m_eq" (func $g2m_eq))
+  (export "g2m_copy" (func $g2m_copy))
+  (export "g2m_zero" (func $g2m_zero))
+  (export "g2m_double" (func $g2m_double))
+  (export "g2m_add" (func $g2m_add))
+  (export "g2m_neg" (func $g2m_neg))
+  (export "g2m_sub" (func $g2m_sub))
+  (export "g2m_fromMontgomery" (func $g2m_fromMontgomery))
+  (export "g2m_toMontgomery" (func $g2m_toMontgomery))
+  (export "g2m_affine" (func $g2m_affine))
+  (export "g2m_timesScalar" (func $g2m_timesScalar))
+  (export "g2m_multiexp" (func $g2m_multiexp))
+  (export "g2m_multiexp2" (func $g2m_multiexp2))
+  (export "f6m_isZero" (func $f6m_isZero))
+  (export "f6m_zero" (func $f6m_zero))
+  (export "f6m_one" (func $f6m_one))
+  (export "f6m_copy" (func $f6m_copy))
+  (export "f6m_mul" (func $f6m_mul))
+  (export "f6m_square" (func $f6m_square))
+  (export "f6m_add" (func $f6m_add))
+  (export "f6m_sub" (func $f6m_sub))
+  (export "f6m_neg" (func $f6m_neg))
+  (export "f6m_fromMontgomery" (func $f6m_fromMontgomery))
+  (export "f6m_toMontgomery" (func $f6m_toMontgomery))
+  (export "f6m_eq" (func $f6m_eq))
+  (export "f6m_inverse" (func $f6m_inverse))
+  (export "f6m_exp" (func $f6m_exp))
+  (export "f6m_timesScalar" (func $f6m_timesScalar))
+  (export "ftm_isZero" (func $ftm_isZero))
+  (export "ftm_zero" (func $ftm_zero))
+  (export "ftm_one" (func $ftm_one))
+  (export "ftm_copy" (func $ftm_copy))
+  (export "ftm_mul" (func $ftm_mul))
+  (export "ftm_mul1" (func $ftm_mul1))
+  (export "ftm_square" (func $ftm_square))
+  (export "ftm_add" (func $ftm_add))
+  (export "ftm_sub" (func $ftm_sub))
+  (export "ftm_neg" (func $ftm_neg))
+  (export "ftm_conjugate" (func $ftm_conjugate))
+  (export "ftm_fromMontgomery" (func $ftm_fromMontgomery))
+  (export "ftm_toMontgomery" (func $ftm_toMontgomery))
+  (export "ftm_eq" (func $ftm_eq))
+  (export "ftm_inverse" (func $ftm_inverse))
+  (export "ftm_exp" (func $ftm_exp))
+  (export "ftm_timesScalar" (func $ftm_timesScalar))
+  (export "bls12381__frobeniusMap0" (func $bls12381__frobeniusMap0))
+  (export "bls12381__frobeniusMap1" (func $bls12381__frobeniusMap1))
+  (export "bls12381__frobeniusMap2" (func $bls12381__frobeniusMap2))
+  (export "bls12381__frobeniusMap3" (func $bls12381__frobeniusMap3))
+  (export "bls12381__frobeniusMap4" (func $bls12381__frobeniusMap4))
+  (export "bls12381__frobeniusMap5" (func $bls12381__frobeniusMap5))
+  (export "bls12381__frobeniusMap6" (func $bls12381__frobeniusMap6))
+  (export "bls12381__frobeniusMap7" (func $bls12381__frobeniusMap7))
+  (export "bls12381__frobeniusMap8" (func $bls12381__frobeniusMap8))
+  (export "bls12381__frobeniusMap9" (func $bls12381__frobeniusMap9))
+  (export "bls12381_pairingEq1" (func $bls12381_pairingEq1))
+  (export "bls12381_pairingEq2" (func $bls12381_pairingEq2))
+  (export "bls12381_pairingEq3" (func $bls12381_pairingEq3))
+  (export "bls12381_pairingEq4" (func $bls12381_pairingEq4))
+  (export "bls12381_pairingEq5" (func $bls12381_pairingEq5))
+  (export "bls12381_pairing" (func $bls12381_pairing))
+  (export "bls12381_prepareG1" (func $bls12381_prepareG1))
+  (export "bls12381_prepareG2" (func $bls12381_prepareG2))
+  (export "bls12381_millerLoop" (func $bls12381_millerLoop))
+  (export "bls12381_finalExponentiation" (func $bls12381_finalExponentiation))
+  (export "bls12381_finalExponentiationOld" (func $bls12381_finalExponentiationOld))
+  (export "bls12381__cyclotomicSquare" (func $bls12381__cyclotomicSquare))
+  (export "bls12381__cyclotomicExp_w0" (func $bls12381__cyclotomicExp_w0))
+  (export "f6m_mul1" (func $f6m_mul1))
+  (export "f6m_mul01" (func $f6m_mul01))
+  (export "ftm_mul014" (func $ftm_mul014))
   (data $d0 (i32.const 0) "0i\04\00")
   (data $d1 (i32.const 8) "\01\00\00\00\ff\ff\ff\ff\fe[\fe\ff\02\a4\bdS\05\d8\a1\09\08\d893H}\9d)S\a7\eds\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
   (data $d2 (i32.const 56) "\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
