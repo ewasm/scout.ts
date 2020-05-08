@@ -104,7 +104,7 @@ export const getImports = (env: EnvData) => {
       },
       eth2_savePostStateRoot: (ptr: number) => {
         res = memget(mem, ptr, 32)
-        //console.log('eth2_savePostStateRoot:', memget(mem, ptr, 144).toString('hex'))
+        console.log('eth2_savePostStateRoot:', memget(mem, ptr, 288).toString('hex'))
       },
       abort: () => { throw ('Wasm aborted') },
       debug_print32: (value: number) => console.log('debug_print32: ', value),
@@ -114,6 +114,7 @@ export const getImports = (env: EnvData) => {
       },
       // modular multiplication of two numbers in montgomery form (i.e. montgomery multiplication)
       bignum_f1m_mul: (aOffset: number, bOffset: number, rOffset: number) => {
+        //console.log('bignum_f1m_mul.')
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le')
         const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES), 'le')
 
@@ -123,6 +124,7 @@ export const getImports = (env: EnvData) => {
         memset(mem, rOffset, result_le)
       },
       bignum_f1m_add: (aOffset: number, bOffset: number, outOffset: number) => {
+        console.log('bignum_f1m_add.')
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le');
         const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES), 'le');
         var result = addmod(a, b);

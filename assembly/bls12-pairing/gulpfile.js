@@ -118,6 +118,9 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
     blsFuncsRenamed = blsFuncsRenamed.replace(/\$g1m_affine/g, "\$websnark_bls12/bls12_g1m_affine");
     blsFuncsRenamed = blsFuncsRenamed.replace(/\$g1m_timesScalar/g, "\$websnark_bls12/bls12_g1m_timesScalar");
     blsFuncsRenamed = blsFuncsRenamed.replace(/\$g1m_neg/g, "\$websnark_bls12/bls12_g1m_neg");
+    blsFuncsRenamed = blsFuncsRenamed.replace(/\$f6m_fromMontgomery/g, "\$websnark_bls12/bls12_f6m_fromMontgomery");
+    blsFuncsRenamed = blsFuncsRenamed.replace(/\$f6m_toMontgomery/g, "\$websnark_bls12/bls12_f6m_toMontgomery");
+    blsFuncsRenamed = blsFuncsRenamed.replace(/\$f6m_mul/g, "\$websnark_bls12/bls12_f6m_mul");
     blsFuncsRenamed = blsFuncsRenamed.replace(/\$ftm_one/g, "\$websnark_bls12/bls12_ftm_one");
     blsFuncsRenamed = blsFuncsRenamed.replace(/\$bls12381_pairingEq2/g, "\$websnark_bls12/bls12_pairingEq2");
 

@@ -42,6 +42,19 @@ export declare function bls12_g1m_timesScalar(p0: i32, p1: i32, p2: i32, p3: i32
 @external("watimports", "$g2m_timesScalar")
 export declare function bls12_g2m_timesScalar(p0: i32, p1: i32, p2: i32, p3: i32): void;
 
+
+// (func $f6m_toMontgomery (export "f6m_toMontgomery") (type $t0) (param $p0 i32) (param $p1 i32)
+@external("watimports", "$f6m_toMontgomery")
+export declare function bls12_f6m_toMontgomery(p0: i32, p1: i32): void;
+
+@external("watimports", "$f6m_fromMontgomery")
+export declare function bls12_f6m_fromMontgomery(p0: i32, p1: i32): void;
+
+//   (func $f6m_mul (export "f6m_mul") (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
+@external("watimports", "$f6m_mul")
+export declare function bls12_f6m_mul(p0: i32, p1: i32, p2: i32): void;
+
+
 //   (func $ftm_one (export "ftm_one") (type $t1) (param $p0 i32)
 @external("watimports", "$ftm_one")
 export declare function bls12_ftm_one(p0: i32): void;

@@ -25720,7 +25720,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $f6m_mul  (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $websnark_bls12/bls12_f6m_mul  (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f2m_mul
       (local.get $p0)
       (local.get $p1)
@@ -26019,7 +26019,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $f6m_toMontgomery  (param $p0 i32) (param $p1 i32)
+  (func $websnark_bls12/bls12_f6m_toMontgomery  (param $p0 i32) (param $p1 i32)
     (call $f2m_toMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -26037,7 +26037,7 @@
       (i32.add
         (local.get $p1)
         (i32.const 192))))
-  (func $f6m_fromMontgomery  (param $p0 i32) (param $p1 i32)
+  (func $websnark_bls12/bls12_f6m_fromMontgomery  (param $p0 i32) (param $p1 i32)
     (call $f2m_fromMontgomery
       (local.get $p0)
       (local.get $p1))
@@ -26229,7 +26229,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 128)))
-            (call $f6m_mul
+            (call $websnark_bls12/bls12_f6m_mul
               (i32.const 242504)
               (local.get $p3)
               (local.get $p3))))
@@ -26245,7 +26245,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 64)))
-            (call $f6m_mul
+            (call $websnark_bls12/bls12_f6m_mul
               (i32.const 242504)
               (local.get $p3)
               (local.get $p3))))
@@ -26261,7 +26261,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 32)))
-            (call $f6m_mul
+            (call $websnark_bls12/bls12_f6m_mul
               (i32.const 242504)
               (local.get $p3)
               (local.get $p3))))
@@ -26277,7 +26277,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 16)))
-            (call $f6m_mul
+            (call $websnark_bls12/bls12_f6m_mul
               (i32.const 242504)
               (local.get $p3)
               (local.get $p3))))
@@ -26293,7 +26293,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 8)))
-            (call $f6m_mul
+            (call $websnark_bls12/bls12_f6m_mul
               (i32.const 242504)
               (local.get $p3)
               (local.get $p3))))
@@ -26309,7 +26309,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 4)))
-            (call $f6m_mul
+            (call $websnark_bls12/bls12_f6m_mul
               (i32.const 242504)
               (local.get $p3)
               (local.get $p3))))
@@ -26325,7 +26325,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 2)))
-            (call $f6m_mul
+            (call $websnark_bls12/bls12_f6m_mul
               (i32.const 242504)
               (local.get $p3)
               (local.get $p3))))
@@ -26341,7 +26341,7 @@
               (i32.sub
                 (local.get $l5)
                 (i32.const 1)))
-            (call $f6m_mul
+            (call $websnark_bls12/bls12_f6m_mul
               (i32.const 242504)
               (local.get $p3)
               (local.get $p3))))
@@ -26404,11 +26404,11 @@
         (local.get $p1)
         (i32.const 288))))
   (func $ftm_mul  (param $p0 i32) (param $p1 i32) (param $p2 i32)
-    (call $f6m_mul
+    (call $websnark_bls12/bls12_f6m_mul
       (local.get $p0)
       (local.get $p1)
       (i32.const 242888))
-    (call $f6m_mul
+    (call $websnark_bls12/bls12_f6m_mul
       (i32.add
         (local.get $p0)
         (i32.const 288))
@@ -26428,7 +26428,7 @@
         (local.get $p1)
         (i32.const 288))
       (i32.const 243752))
-    (call $f6m_mul
+    (call $websnark_bls12/bls12_f6m_mul
       (i32.const 243464)
       (i32.const 243752)
       (i32.const 243464))
@@ -26454,11 +26454,11 @@
         (local.get $p2)
         (i32.const 288))))
   (func $ftm_mul1  (param $p0 i32) (param $p1 i32) (param $p2 i32)
-    (call $f6m_mul
+    (call $websnark_bls12/bls12_f6m_mul
       (local.get $p0)
       (local.get $p1)
       (local.get $p2))
-    (call $f6m_mul
+    (call $websnark_bls12/bls12_f6m_mul
       (i32.add
         (local.get $p0)
         (i32.const 288))
@@ -26467,7 +26467,7 @@
         (local.get $p2)
         (i32.const 288))))
   (func $ftm_square  (param $p0 i32) (param $p1 i32)
-    (call $f6m_mul
+    (call $websnark_bls12/bls12_f6m_mul
       (local.get $p0)
       (i32.add
         (local.get $p0)
@@ -26495,7 +26495,7 @@
       (i32.const 244904)
       (i32.const 244040)
       (i32.const 244904))
-    (call $f6m_mul
+    (call $websnark_bls12/bls12_f6m_mul
       (i32.const 244328)
       (i32.const 244616)
       (local.get $p1))
@@ -26562,10 +26562,10 @@
         (local.get $p1)
         (i32.const 288))))
   (func $ftm_toMontgomery  (param $p0 i32) (param $p1 i32)
-    (call $f6m_toMontgomery
+    (call $websnark_bls12/bls12_f6m_toMontgomery
       (local.get $p0)
       (local.get $p1))
-    (call $f6m_toMontgomery
+    (call $websnark_bls12/bls12_f6m_toMontgomery
       (i32.add
         (local.get $p0)
         (i32.const 288))
@@ -26573,10 +26573,10 @@
         (local.get $p1)
         (i32.const 288))))
   (func $ftm_fromMontgomery  (param $p0 i32) (param $p1 i32)
-    (call $f6m_fromMontgomery
+    (call $websnark_bls12/bls12_f6m_fromMontgomery
       (local.get $p0)
       (local.get $p1))
-    (call $f6m_fromMontgomery
+    (call $websnark_bls12/bls12_f6m_fromMontgomery
       (i32.add
         (local.get $p0)
         (i32.const 288))
@@ -26614,11 +26614,11 @@
     (call $f6m_inverse
       (i32.const 245768)
       (i32.const 246056))
-    (call $f6m_mul
+    (call $websnark_bls12/bls12_f6m_mul
       (local.get $p0)
       (i32.const 246056)
       (local.get $p1))
-    (call $f6m_mul
+    (call $websnark_bls12/bls12_f6m_mul
       (i32.add
         (local.get $p0)
         (i32.const 288))
@@ -26800,7 +26800,7 @@
           (i32.eqz
             (local.get $l4)))
         (br $L1))))
-  (func $f6m_mul1  (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (func $websnark_bls12/bls12_f6m_mul1  (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f2m_add
       (local.get $p0)
       (i32.add
@@ -26852,7 +26852,7 @@
       (i32.add
         (local.get $p2)
         (i32.const 96))))
-  (func $f6m_mul01  (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
+  (func $websnark_bls12/bls12_f6m_mul01  (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32)
     (call $f2m_mul
       (local.get $p0)
       (local.get $p1)
@@ -26951,12 +26951,12 @@
         (local.get $p3)
         (i32.const 192))))
   (func $ftm_mul014  (param $p0 i32) (param $p1 i32) (param $p2 i32) (param $p3 i32) (param $p4 i32)
-    (call $f6m_mul01
+    (call $websnark_bls12/bls12_f6m_mul01
       (local.get $p0)
       (local.get $p1)
       (local.get $p2)
       (i32.const 247560))
-    (call $f6m_mul1
+    (call $websnark_bls12/bls12_f6m_mul1
       (i32.add
         (local.get $p0)
         (i32.const 288))
@@ -26974,7 +26974,7 @@
       (i32.add
         (local.get $p4)
         (i32.const 288)))
-    (call $f6m_mul01
+    (call $websnark_bls12/bls12_f6m_mul01
       (i32.add
         (local.get $p4)
         (i32.const 288))
@@ -29302,13 +29302,13 @@
   (export "f6m_zero" (func $f6m_zero))
   (export "f6m_one" (func $f6m_one))
   (export "f6m_copy" (func $f6m_copy))
-  (export "f6m_mul" (func $f6m_mul))
+  (export "f6m_mul" (func $websnark_bls12/bls12_f6m_mul))
   (export "f6m_square" (func $f6m_square))
   (export "f6m_add" (func $f6m_add))
   (export "f6m_sub" (func $f6m_sub))
   (export "f6m_neg" (func $f6m_neg))
-  (export "f6m_fromMontgomery" (func $f6m_fromMontgomery))
-  (export "f6m_toMontgomery" (func $f6m_toMontgomery))
+  (export "f6m_fromMontgomery" (func $websnark_bls12/bls12_f6m_fromMontgomery))
+  (export "f6m_toMontgomery" (func $websnark_bls12/bls12_f6m_toMontgomery))
   (export "f6m_eq" (func $f6m_eq))
   (export "f6m_inverse" (func $f6m_inverse))
   (export "f6m_exp" (func $f6m_exp))
@@ -29353,8 +29353,8 @@
   (export "bls12381_finalExponentiationOld" (func $bls12381_finalExponentiationOld))
   (export "bls12381__cyclotomicSquare" (func $bls12381__cyclotomicSquare))
   (export "bls12381__cyclotomicExp_w0" (func $bls12381__cyclotomicExp_w0))
-  (export "f6m_mul1" (func $f6m_mul1))
-  (export "f6m_mul01" (func $f6m_mul01))
+  (export "f6m_mul1" (func $websnark_bls12/bls12_f6m_mul1))
+  (export "f6m_mul01" (func $websnark_bls12/bls12_f6m_mul01))
   (export "ftm_mul014" (func $ftm_mul014))
   (data $d0 (i32.const 0) "0i\04\00")
   (data $d1 (i32.const 8) "\01\00\00\00\ff\ff\ff\ff\fe[\fe\ff\02\a4\bdS\05\d8\a1\09\08\d893H}\9d)S\a7\eds\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
