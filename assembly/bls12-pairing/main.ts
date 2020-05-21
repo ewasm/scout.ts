@@ -3,14 +3,14 @@ import { bls12_g1m_toMontgomery, bls12_g2m_toMontgomery, bls12_g2m_timesScalar, 
 //@external("env", "debug_printMemHex")
 //export declare function debug_mem(pos: i32, len: i32): void;
 
-@external("env", "debug_print_f2")
-export declare function debug_print_f2(pos: i32): void;
+//@external("env", "debug_print_f2")
+//export declare function debug_print_f2(pos: i32): void;
 
-@external("env", "debug_print_f6")
-export declare function debug_print_f6(pos: i32): void;
+//@external("env", "debug_print_f6")
+//export declare function debug_print_f6(pos: i32): void;
 
-@external("env", "debug_print32")
-export declare function debug_print32(pos: i32): void;
+//@external("env", "debug_print32")
+//export declare function debug_print32(pos: i32): void;
 
 @external("env", "eth2_blockDataSize")
 export declare function eth2_blockDataSize(): i32;
