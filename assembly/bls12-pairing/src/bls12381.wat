@@ -24160,9 +24160,6 @@
         (local.get $p1)
         (i32.const 48))))
   (func $f2m_mul (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
-    (call $main/debug_print32 (i32.const 221))
-    (call $main/debug_print_f2 (local.get $p0))
-    (call $main/debug_print_f2 (local.get $p1))
     (call $f1m_mul
       (local.get $p0)
       (local.get $p1)
@@ -24211,10 +24208,7 @@
         (i32.const 48))
       (i32.add
         (local.get $p2)
-        (i32.const 48)))
-    (call $main/debug_print32 (i32.const 222))
-    (call $main/debug_print_f2 (local.get $p2))
-  )
+        (i32.const 48))))
   (func $f2m_mul1 (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
     (call $f1m_mul
       (local.get $p0)
@@ -25743,9 +25737,6 @@
         (local.get $p1)
         (i32.const 192))))
   (func $f6m_mul (type $t5) (param $p0 i32) (param $p1 i32) (param $p2 i32)
-    (call $main/debug_print32 (i32.const 661))
-    (call $main/debug_print_f6 (local.get $p0))
-    (call $main/debug_print_f6 (local.get $p1))
     (call $f2m_mul
       (local.get $p0)
       (local.get $p1)
@@ -25879,10 +25870,7 @@
       (i32.const 239624)
       (i32.add
         (local.get $p2)
-        (i32.const 192)))
-    (call $main/debug_print32 (i32.const 662))
-    (call $main/debug_print_f6 (local.get $p2))
-  )
+        (i32.const 192))))
   (func $f6m_square (type $t0) (param $p0 i32) (param $p1 i32)
     (call $f2m_square
       (local.get $p0)

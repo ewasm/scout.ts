@@ -104,7 +104,7 @@ export const getImports = (env: EnvData) => {
       },
       eth2_savePostStateRoot: (ptr: number) => {
         res = memget(mem, ptr, 32)
-        console.log('eth2_savePostStateRoot:', memget(mem, ptr, 288).toString('hex'))
+        //console.log('eth2_savePostStateRoot:', memget(mem, ptr, 288).toString('hex'))
       },
       abort: () => { throw ('Wasm aborted') },
       debug_print32: (value: number) => {
@@ -113,9 +113,11 @@ export const getImports = (env: EnvData) => {
         } else if (value == 112) {
           console.log('f1m_mul output point:')
         } else if (value == 221) {
+          console.log("****** begin f2m_mul \n");
           console.log('f2m_mul input points:')
         } else if (value == 222) {
           console.log('f2m_mul output result:');
+          console.log("------ end f2m_mul \n");
         } else if (value == 661) {
           console.log('f6m_mul input points:')
         } else if (value == 662) {
@@ -128,6 +130,12 @@ export const getImports = (env: EnvData) => {
           console.log('f6m_mul input point1 in montgomery form:')
         } else if (value == 78) {
           console.log('f6m_mul input point2 in montgomery form:')
+        } else if (value == 42) {
+          console.log('-- begin ... cd.call(f1mPrefix + "_sub", r1, aA_bB, r1),')
+        } else if (value == 43) {
+          console.log('-- begin ... cd.call(mulNonResidueFn, cC, AUX),')
+        } else if (value == 44) {
+          console.log('-- end ... cd.call(mulNonResidueFn, cC, AUX),')
         } else {
           console.log('debug_print32:', value);
         }
@@ -146,35 +154,47 @@ export const getImports = (env: EnvData) => {
       bignum_f1m_mul: (aOffset: number, bOffset: number, rOffset: number) => {
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le')
         const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES), 'le')
-        console.log('bignum_f1m_mul input a (little endian):', memget(mem, aOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
-        console.log('bignum_f1m_mul input b (little endian):', memget(mem, bOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
-        console.log('bignum_f1m_mul. input a (big endian):', a.toString(16))
-        console.log('bignum_f1m_mul. input b (big endian):', b.toString(16))
+        //console.log('bignum_f1m_mul input a (little endian):', memget(mem, aOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
+        //console.log('bignum_f1m_mul input b (little endian):', memget(mem, bOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
+        //console.log('bignum_f1m_mul. input a (big endian):', a.toString(16))
+        //console.log('bignum_f1m_mul. input b (big endian):', b.toString(16))
 
         var result = mulmodmont(a, b);
         var result_le = result.toArrayLike(Buffer, 'le', BIGNUM_WIDTH_BYTES);
 
-        console.log('bignum_f1m_mul. result (big endian):', result.toString(16))
+        //console.log('bignum_f1m_mul. result (big endian):', result.toString(16))
         memset(mem, rOffset, result_le)
-        console.log('bignum_f1m_mul. result (little endian):', memget(mem, rOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
+        //console.log('bignum_f1m_mul. result (little endian):', memget(mem, rOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
       },
       bignum_f1m_add: (aOffset: number, bOffset: number, outOffset: number) => {
-        //console.log('bignum_f1m_add.')
+        //console.log("\nbignum_f1m_add.")
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le');
         const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES), 'le');
+        //console.log('bignum_f1m_add input a (little endian):', memget(mem, aOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
+        //console.log('bignum_f1m_add input b (little endian):', memget(mem, bOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
+        //console.log('bignum_f1m_add. input a (big endian):', a.toString(16))
+        //console.log('bignum_f1m_add. input b (big endian):', b.toString(16))
         var result = addmod(a, b);
 
         var result_le = result.toArrayLike(Buffer, 'le', BIGNUM_WIDTH_BYTES)
-
+        //console.log('bignum_f1m_add. result (big endian):', result.toString(16))
         memset(mem, outOffset, result_le)
+        //console.log('bignum_f1m_add. result (little endian):', memget(mem, outOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
       },
       bignum_f1m_sub: (aOffset: number, bOffset: number, outOffset: number) => {
+        //console.log("\nbignum_f1m_sub.")
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le');
         const b = new BN(memget(mem, bOffset, BIGNUM_WIDTH_BYTES), 'le');
+        //console.log('bignum_f1m_sub input a (little endian):', memget(mem, aOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
+        //console.log('bignum_f1m_sub input b (little endian):', memget(mem, bOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
+        //console.log('bignum_f1m_sub. input a (big endian):', a.toString(16))
+        //console.log('bignum_f1m_sub. input b (big endian):', b.toString(16))
         var result = submod(a, b);
 
         var result_le = result.toArrayLike(Buffer, 'le', BIGNUM_WIDTH_BYTES)
+        //console.log('bignum_f1m_sub. result (big endian):', result.toString(16))
         memset(mem, outOffset, result_le)
+        //console.log('bignum_f1m_sub. result (little endian):', memget(mem, outOffset, BIGNUM_WIDTH_BYTES).toString('hex'));
       },
       bignum_int_add: (aOffset: number, bOffset: number, outOffset: number) => {
         const a = new BN(memget(mem, aOffset, BIGNUM_WIDTH_BYTES), 'le');
