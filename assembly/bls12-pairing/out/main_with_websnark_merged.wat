@@ -4,11 +4,11 @@
  (type $FUNCSIG$vi (func (param i32)))
  (type $FUNCSIG$iiiiii (func (param i32 i32 i32 i32 i32) (result i32)))
  (type $FUNCSIG$v (func))
- (type $FUNCSIG$i (func (result i32)))
  (type $FUNCSIG$ii (func (param i32) (result i32)))
  (type $FUNCSIG$iii (func (param i32 i32) (result i32)))
  (type $FUNCSIG$iiii (func (param i32 i32 i32) (result i32)))
  (type $FUNCSIG$viii (func (param i32 i32 i32)))
+ (type $FUNCSIG$i (func (result i32)))
  (memory $0 8)
  (data (i32.const 512000) "@\02\00\00\01\00\00\00\00\00\00\00@\02\00\00\139.AJ[\fc\1c\1f\9c\96\f8K\81\fd\fclNV\d9 2N\92\00\15}\f0\85\17\e7d\d5\c9\1c_P\84\b8\d3:\10v\d8\fejw\02AM\cd\a5\a3\9b\d7\\x\06\9bb>nn\08\d3M\e1\1f!^S\d4\c8<\beNL\1df\d8\14\cc\ab\95\b8\84:m\9a[\e9\07\9e&a\05\b6U\cb\cc5\8f\0b\aaQ\82\ee\19p\9d\a3\een\16\be\c7E~J3\e8\dd6\db\a7_\f0d\e7\b7\ebYJ{\bb\87\e0E\cc /\19\91\0b\82\e3g\d6(\1bR\87\f4\d1\7f\9d\dfaTw-\aa\0e\ba\0f\d7sh+[1\0d\ec\0dM\d2\84\02\8cc\c54\0f\nF\9db5\06K\80\04\da\13h\f7\93e_\7fs\fd\c2g\15\c5\ef\88$%\c7\17\812\e5\02\e2\99\f5J\1c\ad\1aQ\0fbt.\01*sm Hw5\06\95V\19\e97\f1\8a\bc5s\ee\b5\bf\b9\94%qb\fc\c1Xl\d45\cf\d2\cd\19\'(\8a\19r\"\c9\93\8endJYi(\bd\a5\a7.U\abb\14\cc\bcA\07b\acg\80\11\a7u\bb\d16\81Y\b5phu\81m\1f4:[\0cwt2n\96\01\b4m\f4\t\91\e7;DR\0d\17\1b\b1\bb\19/@\1f\1f\9f\ecc^\c70>\96\044\ac\9b\11\05\c5\0b\9a\b9\e6\bc\b7D\d8\82:\0d\17\d1\a4p\be\f1)\90B\b0\'r$\04q\173\03\ad\cfo\c0\d7q\cfO\bd\e8W\c3&\8b\d7m\00\7f\13\de%:A\c5\ef\8b$\c9\e9\e7\d3y\8c\c6=<\ef\15\9bx\98_\df\bd\95\d3\9b\04\1b\dc\8a\ba\1f\tuKEb\c2\a4\b1\97\92\19\95z1\ed\f7\9aa\e7\c0\ac\c0\80\bct\82\a0y\c3\10\f1\80@\a8\c8\a6$\9e\8c\a9\0d\ec\0e\99\a9Y\e1v\cc\a0\c4\b4;\f1ej\d2\1f9\df\c6\d9\12\b5u\ce.u\f8`\efaD\e0\b0\b0f>Pn(\d6q\11\a9U\fb\95\ba\aa\t\a2\1d\b5\8dj\ca\ad\9d\e4\fbu\ea\94U\9d\db\87d\8b$E5\99\ed\01\ae-\d1\ea\c2\91\db\87m\a0\07<\9b?\fe\f3\d0a\fd\1f\11@\n")
  (data (i32.const 512592) " \00\00\00\01\00\00\00\00\00\00\00 \00\00\00t\"\9f\c6e\e6\c3\f4@\19\05\c1\a4T\eaW\c8\93\179\d0Z\07O\d6\04\00\f1\96\84\d6\80")
@@ -789,7 +789,7 @@
   i32.add
   i32.load8_u
  )
- (func $main/main (; 24 ;) (type $FUNCSIG$i) (result i32)
+ (func $main/main (; 24 ;) (type $FUNCSIG$v)
   (local $0 i32)
   (local $1 i32)
   (local $2 i32)
@@ -952,7 +952,6 @@
   if
    unreachable
   end
-  i32.const 1
  )
  (func $start (; 25 ;) (type $FUNCSIG$v)
   i32.const 512640

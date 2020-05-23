@@ -25,7 +25,7 @@ import { bls12_g1m_toMontgomery, bls12_g2m_toMontgomery, bls12_g2m_timesScalar, 
 //export declare function eth2_savePostStateRoot(offset: i32): void;
 
 
-export function main(): i32 {
+export function main(): void {
 
   //let input_data_len = eth2_blockDataSize();
   //let input_data_buff = new ArrayBuffer(input_data_len);
@@ -430,7 +430,7 @@ export function main(): i32 {
   eth2_savePostStateRoot(return_buf.buffer as usize);
   */
 
-  return 1;
+  //return 1;
 }
 
 

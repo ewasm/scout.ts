@@ -4,11 +4,11 @@
  (type $FUNCSIG$vi (func (param i32)))
  (type $FUNCSIG$iiiiii (func (param i32 i32 i32 i32 i32) (result i32)))
  (type $FUNCSIG$v (func))
- (type $FUNCSIG$i (func (result i32)))
  (type $FUNCSIG$ii (func (param i32) (result i32)))
  (type $FUNCSIG$iii (func (param i32 i32) (result i32)))
  (type $FUNCSIG$iiii (func (param i32 i32 i32) (result i32)))
  (type $FUNCSIG$viii (func (param i32 i32 i32)))
+ (type $FUNCSIG$i (func (result i32)))
  (import "watimports" "$g1m_toMontgomery" (func $websnark_bls12/bls12_g1m_toMontgomery (param i32 i32)))
  (import "watimports" "$g2m_toMontgomery" (func $websnark_bls12/bls12_g2m_toMontgomery (param i32 i32)))
  (import "watimports" "$g2m_timesScalar" (func $websnark_bls12/bls12_g2m_timesScalar (param i32 i32 i32 i32)))
@@ -799,7 +799,7 @@
   i32.add
   i32.load8_u
  )
- (func $main/main (; 24 ;) (type $FUNCSIG$i) (result i32)
+ (func $main/main (; 24 ;) (type $FUNCSIG$v)
   (local $0 i32)
   (local $1 i32)
   (local $2 i32)
@@ -962,7 +962,6 @@
   if
    unreachable
   end
-  i32.const 1
  )
  (func $start (; 25 ;) (type $FUNCSIG$v)
   i32.const 512640
