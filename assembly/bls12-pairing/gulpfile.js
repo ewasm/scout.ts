@@ -222,7 +222,8 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
 
       bignum_func_list.forEach(bignum_func => {
         //let find_regex = /\(call \$f1m_mul/g
-        const find_regex = new RegExp('\\(call \$' + bignum_func + "", "g");
+        const find_regex = new RegExp('\\(call \\$' + bignum_func, "g");
+        console.log('find_regex:', find_regex)
         const replacement_str = '\(call \$main/bignum_' + bignum_func;
         blsUsingBignumFuncs = blsUsingBignumFuncs.replace(find_regex, replacement_str);
       });
