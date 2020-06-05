@@ -223,7 +223,6 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
       bignum_func_list.forEach(bignum_func => {
         //let find_regex = /\(call \$f1m_mul/g
         const find_regex = new RegExp('\\(call \\$' + bignum_func, "g");
-        console.log('find_regex:', find_regex)
         const replacement_str = '\(call \$main/bignum_' + bignum_func;
         blsUsingBignumFuncs = blsUsingBignumFuncs.replace(find_regex, replacement_str);
       });
@@ -250,7 +249,7 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
 
 
     function finishMergingWebsnark(bls_funcs_wat, main_lines) {
-      console.log('finishMergingWebsnark main_lines:', main_lines);
+      //console.log('finishMergingWebsnark main_lines:', main_lines);
       /****
       * insert websnark code
       */
@@ -321,6 +320,10 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
     if (useBignumHostFuncs) {
 
       BignumSpectrum.forEach(bignum_func_combo => {
+        console.log('bignum_func_combo:', bignum_func_combo)
+        console.log('bignum_func_combo.length:', bignum_func_combo.length)
+        console.log('BignumHostFuncImports.length:', Object.keys(BignumHostFuncImports).length)
+
 
         let mainLinesCopy = Array.from(mainLines);
 
@@ -333,7 +336,8 @@ function mergeAndWriteWasm(useBignumHostFuncs, finalFileName) {
 
         parseMergedWatAndWriteWasmFile(mergedWat, host_func_file_name);
 
-        if (bignum_func_combo.length == BignumHostFuncImports.length) {
+        if (bignum_func_combo.length == Object.keys(BignumHostFuncImports).length) {
+          console.log('doing all host funcs version..')
           // save a copy of the "all host funcs" version using the standard file name
           parseMergedWatAndWriteWasmFile(mergedWat, "out/" + finalFileName + ".wasm");
         }

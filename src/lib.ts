@@ -10,7 +10,14 @@ export const setMemory = (m: WebAssembly.Memory) => {
   mem = m
 }
 
-export const getRes = () => res
+export const getRes = () => {
+  if (res) {
+    return res
+  } else {
+    return Buffer.from([])
+  }
+  
+}
 
 const memset = (mem: WebAssembly.Memory, offset: number, data: Buffer) => {
   const asBytes = new Uint8Array(mem.buffer, offset, data.length)
@@ -210,8 +217,8 @@ export function parseYaml (file: string): TestCase[] {
     const script = scripts[i]
     const preStateRoot = Buffer.from(testCase.shard_pre_state.exec_env_states[i], 'hex')
     const postStateRoot = Buffer.from(testCase.shard_post_state.exec_env_states[i], 'hex')
-    assert(preStateRoot.length === 32)
-    assert(postStateRoot.length === 32)
+    //assert(preStateRoot.length === 32)
+    //assert(postStateRoot.length === 32)
 
     const blocks = []
     for (let b of shardBlocks) {
