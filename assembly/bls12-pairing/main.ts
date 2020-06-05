@@ -6,9 +6,6 @@ import { bls12_g1m_toMontgomery, bls12_g2m_toMontgomery, bls12_g2m_timesScalar, 
 //@external("env", "debug_print32")
 //export declare function debug_print32(pos: i32): void;
 
-@external("env", "eth2_savePostStateRoot")
-export declare function eth2_savePostStateRoot(offset: i32): void;
-
 
 export function main(): void {
 

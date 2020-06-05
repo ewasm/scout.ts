@@ -17,17 +17,15 @@
  (import "watimports" "$g1m_neg" (func $websnark_bls12/bls12_g1m_neg (param i32 i32)))
  (import "watimports" "$ftm_one" (func $websnark_bls12/bls12_ftm_one (param i32)))
  (import "watimports" "$bls12_pairingEq2" (func $websnark_bls12/bls12_pairingEq2 (param i32 i32 i32 i32 i32) (result i32)))
- (import "env" "eth2_savePostStateRoot" (func $main/eth2_savePostStateRoot (param i32)))
  (memory $0 8)
  (data (i32.const 512000) "`\03\00\00\01\00\00\00\00\00\00\00`\03\00\008\d9\d4]\e0o\ac\e1^v%\f7\c1j)>Oi|\e8\ebB\b6\97?\1d\91\1e}vi\b2\88\e5\15\f2\ff\\.\92+\10\0b\c3H\80\82\00\19\8c\dalox\d7O\a6\c2\07\f5*\b4a\e7\18\a1\cb\da[\bda\aaG\8fPW\b9Hg\931\a9\bfI(\8e\cc\aa\da]:\f7z\f4Q\13\fd\ff\02\00\00\00\tv\02\00\0c\c4\0b\00\f4\eb\baX\c7SW\98H_EWRpSX\cewm\ecV\a2\97\1a\07\\\93\e4\80\fa\c3^\f6\15\c8\cd?\8e+\b4*t=+\17\c40\d8}g\a5\91\82z\c8$\d4\de\b3\80\ba\dd\05#\00,\9a5U\a1\a8Oo\c6q\edY\f0h\c8\e5\0e\aa\c0\94\da\b1\af2&\d6\c3\d2\b4\b0(\c8/\0e\9f\1c\db\a9\1a.\83\f3e=;FO\c3Z\d0:\c3\9b\deTp\d1\18\8a\dc\8f\fe\bd.\0f\aaB7+a\00holcN\f7K|k\afhN\03\9dZ\c1\a2\dd\e2*?\7fQ\82\fd\efH\13\c9\ef\ec\1f\ee\bd\d6\f5\982\94\7f\b5\00\0b*\8b\92\dd\nrGl\d1c\b0\96\ab\a8X\ac\be\af-s\a1\c8\83\d1\b2\a3\fb5\8b\98\dbcq3\\\f5\ff\n\da\d1\1e\n\af\81,\0c\00\fd\ff\02\00\00\00\tv\02\00\0c\c4\0b\00\f4\eb\baX\c7SW\98H_EWRpSX\cewm\ecV\a2\97\1a\07\\\93\e4\80\fa\c3^\f6\15")
  (data (i32.const 512448) "\f5\d8V\8d\f1M\96#\bb)\8a\cf(=\f3\d3p!`\e7\ed\1e\94v@\bb\f0d\11\fah\00\16\0d\161\c4\ff&[&\ceS\1e\ea\88\13\14)\e91\8c\82\e5_X\9ba\n\a0EL8\cc\ff\bd\dc\c3`\00\87\0e\1cH\c6\a29\8a:h\d5\b0Pj3\de\96&\de6,\19\8d\01\03\10\fd\ff\02\00\00\00\tv\02\00\0c\c4\0b\00\f4\eb\baX\c7SW\98H_EWRpSX\cewm\ecV\a2\97\1a\07\\\93\e4\80\fa\c3^\f6\15\10\n\94\02\a2\8f\f2\f5\1a\96\b4\87&\fb\f5\b3\80\e5*>\b5\93\a8\a1\e9\ae<\1a\9d\99\94\98k6c\18c\b7go\d7\bcPC\92\91\81\05\06\f6#\9eu\c0\a9\a5\c3`\cd\bc\9d\c5\a0\aa\06x\86\e2\18~\b1;g\b3A\85\cc\b6\1a\1bG\85\15\f2\0e\ed\b6\c2\f3\ed`s\t*\92\11JLI`\f8\nsLZ\9c6^\1f\fa|YZc\n\aal\85\e6\e7_I\0dn\e9\b5\ef\bb\a2%\ef\f0u\a9\d3\07\e5\da\80~\8e\fd\83\00]\b0d\df\92\fc\c0\ad\dca\14+\n\'\aa\18\a0\eb\e4;j\ac\ad\86:\a3=\c9N\\Iy\ed\ca<\a4PX\17\e7\f2\1b\dec\a1\c2+\0b\fd\ff\02\00\00\00\tv\02\00\0c\c4\0b\00\f4\eb\baX\c7SW\98H_EWRpSX\cewm\ecV\a2\97\1a\07\\\93\e4\80\fa\c3^\f6\15")
  (global $~lib/rt/stub/startOffset (mut i32) (i32.const 0))
  (global $~lib/rt/stub/offset (mut i32) (i32.const 0))
  (export "memory" (memory $0))
- (export "eth2_savePostStateRoot" (func $main/eth2_savePostStateRoot))
  (export "main" (func $main/main))
  (start $start)
- (func $~lib/rt/stub/maybeGrowMemory (; 9 ;) (type $FUNCSIG$vi) (param $0 i32)
+ (func $~lib/rt/stub/maybeGrowMemory (; 8 ;) (type $FUNCSIG$vi) (param $0 i32)
   (local $1 i32)
   (local $2 i32)
   local.get $0
@@ -69,7 +67,7 @@
   local.get $0
   global.set $~lib/rt/stub/offset
  )
- (func $~lib/rt/stub/__alloc (; 10 ;) (type $FUNCSIG$iii) (param $0 i32) (param $1 i32) (result i32)
+ (func $~lib/rt/stub/__alloc (; 9 ;) (type $FUNCSIG$iii) (param $0 i32) (param $1 i32) (result i32)
   (local $2 i32)
   (local $3 i32)
   (local $4 i32)
@@ -114,7 +112,7 @@
   i32.store offset=12
   local.get $3
  )
- (func $~lib/memory/memory.fill (; 11 ;) (type $FUNCSIG$vii) (param $0 i32) (param $1 i32)
+ (func $~lib/memory/memory.fill (; 10 ;) (type $FUNCSIG$vii) (param $0 i32) (param $1 i32)
   (local $2 i32)
   block $~lib/util/memory/memset|inlined.0
    local.get $1
@@ -323,7 +321,7 @@
    end
   end
  )
- (func $~lib/arraybuffer/ArrayBufferView#constructor (; 12 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/arraybuffer/ArrayBufferView#constructor (; 11 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   (local $1 i32)
   i32.const 864
   i32.const 0
@@ -362,7 +360,7 @@
   i32.store offset=8
   local.get $0
  )
- (func $~lib/memory/memory.copy (; 13 ;) (type $FUNCSIG$viii) (param $0 i32) (param $1 i32) (param $2 i32)
+ (func $~lib/memory/memory.copy (; 12 ;) (type $FUNCSIG$viii) (param $0 i32) (param $1 i32) (param $2 i32)
   (local $3 i32)
   (local $4 i32)
   block $~lib/util/memory/memmove|inlined.0
@@ -537,7 +535,7 @@
    end
   end
  )
- (func $~lib/rt/stub/__realloc (; 14 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/rt/stub/__realloc (; 13 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   (local $1 i32)
   (local $2 i32)
   local.get $0
@@ -622,7 +620,7 @@
   i32.store offset=12
   local.get $0
  )
- (func $~lib/array/ensureSize (; 15 ;) (type $FUNCSIG$vi) (param $0 i32)
+ (func $~lib/array/ensureSize (; 14 ;) (type $FUNCSIG$vi) (param $0 i32)
   (local $1 i32)
   (local $2 i32)
   (local $3 i32)
@@ -659,7 +657,7 @@
    i32.store offset=8
   end
  )
- (func $~lib/array/Array.create<u8> (; 16 ;) (type $FUNCSIG$i) (result i32)
+ (func $~lib/array/Array.create<u8> (; 15 ;) (type $FUNCSIG$i) (result i32)
   (local $0 i32)
   i32.const 16
   i32.const 3
@@ -681,7 +679,7 @@
   i32.store offset=12
   local.get $0
  )
- (func $~lib/rt/__allocArray (; 17 ;) (type $FUNCSIG$i) (result i32)
+ (func $~lib/rt/__allocArray (; 16 ;) (type $FUNCSIG$i) (result i32)
   (local $0 i32)
   (local $1 i32)
   i32.const 16
@@ -708,13 +706,13 @@
   call $~lib/memory/memory.copy
   local.get $0
  )
- (func $~lib/arraybuffer/ArrayBuffer#get:byteLength (; 18 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/arraybuffer/ArrayBuffer#get:byteLength (; 17 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   local.get $0
   i32.const 16
   i32.sub
   i32.load offset=12
  )
- (func $~lib/typedarray/Uint8Array.wrap (; 19 ;) (type $FUNCSIG$iiii) (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
+ (func $~lib/typedarray/Uint8Array.wrap (; 18 ;) (type $FUNCSIG$iiii) (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
   (local $3 i32)
   block $folding-inner0
    local.get $1
@@ -765,14 +763,14 @@
   end
   unreachable
  )
- (func $~lib/arraybuffer/ArrayBufferView#get:byteOffset (; 20 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+ (func $~lib/arraybuffer/ArrayBufferView#get:byteOffset (; 19 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
   local.get $0
   i32.load offset=4
   local.get $0
   i32.load
   i32.sub
  )
- (func $main/main (; 21 ;) (type $FUNCSIG$v)
+ (func $main/main (; 20 ;) (type $FUNCSIG$v)
   (local $0 i32)
   (local $1 i32)
   (local $2 i32)
@@ -838,13 +836,13 @@
    unreachable
   end
  )
- (func $start (; 22 ;) (type $FUNCSIG$v)
+ (func $start (; 21 ;) (type $FUNCSIG$v)
   i32.const 512880
   global.set $~lib/rt/stub/startOffset
   i32.const 512880
   global.set $~lib/rt/stub/offset
  )
- (func $null (; 23 ;) (type $FUNCSIG$v)
+ (func $null (; 22 ;) (type $FUNCSIG$v)
   nop
  )
 )
